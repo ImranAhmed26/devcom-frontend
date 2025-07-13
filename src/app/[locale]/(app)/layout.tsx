@@ -3,7 +3,7 @@ import { AppSidebar } from "@/components/Sidebar";
 
 export default async function LocaleLayout({ children }: { children: React.ReactNode }) {
   return (
-    <body className="bg-gray-100 dark:bg-quadraGray">
+    <div className="bg-gray-100 dark:bg-quadraGray">
       <div className="flex h-screen">
         <AppSidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -11,6 +11,6 @@ export default async function LocaleLayout({ children }: { children: React.React
           <main className="flex-1 overflow-auto p-4">{children}</main>
         </div>
       </div>
-    </body>
+    </div>
   );
 }

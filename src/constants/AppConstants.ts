@@ -1,5 +1,5 @@
 import { NavLink } from "@/types/Home/banner";
-import { Upload, History, Settings, BarChart3, Folder } from "lucide-react";
+import { Upload, History, Settings, BarChart3, Folder, Home } from "lucide-react";
 
 export const metadataConst = {
   title: "Dev",
@@ -12,12 +12,12 @@ export const navLinkData: NavLink[] = [
     name: "Service",
     id: 2,
     value: "app",
-    link: "/en",
+    link: "/",
     dropdown: true,
     options: [
       {
         name: "App",
-        link: "/dashboard",
+        link: "dashboard",
         details: "Collaborate, Share, and Track Your Work",
       },
     ],
@@ -34,22 +34,22 @@ export const sideBarData = {
   menuItems: [
     {
       title: "Dashboard",
-      path: "/en/dashboard",
+      path: "/dashboard",
       icon: BarChart3,
     },
     {
       title: "Workspace",
-      path: "/en/workspace",
+      path: "/workspace",
       icon: Folder,
     },
     {
       title: "Upload",
-      path: "/en/uploads",
+      path: "/uploads",
       icon: Upload,
     },
     {
       title: "Documents",
-      path: "/en/documents",
+      path: "/documents",
       icon: Folder,
     },
     {
@@ -61,6 +61,11 @@ export const sideBarData = {
       title: "Settings",
       path: "#",
       icon: Settings,
+    },
+    {
+      title: "Home",
+      path: "/",
+      icon: Home,
     },
   ],
 };
