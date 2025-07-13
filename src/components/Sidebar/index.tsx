@@ -40,7 +40,7 @@ const SidebarNav = ({ onItemClick }: { onItemClick?: () => void }) => {
                 'flex items-center gap-3 px-3 py-2 text-sm rounded-medium transition-colors',
                 isActive
                   ? 'bg-brandLight dark:bg-brandDark text-white dark:text-gray-800 font-medium'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-brandDark'
+                  : 'hover:bg-gray-500 hover:text-white dark:hover:bg-hexaGray dark:hover:text-brandDark'
               )}
             >
               <item.icon className='h-4 w-4' />

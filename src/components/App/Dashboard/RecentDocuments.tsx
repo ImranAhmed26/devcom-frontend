@@ -10,18 +10,18 @@ export function RecentDocuments() {
   return (
     <div className='rounded-medium border border-gray-200 dark:border-gray-700'>
       <div className='px-6 rounded-t-medium py-4 border-b border-gray-200 dark:border-gray-700 dark:bg-quadraGray'>
-        <h2 className='text-lg font-semibold  dark:text-white'>Your Workflows</h2>
+        <h2 className='text-lg font-semibold  dark:text-white'>Recent Documents</h2>
       </div>
       <div className='p-6 dark:bg-'>
         <div className='space-y-4'>
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className='flex items-center justify-between p-4 dark:bg-hexaGray rounded-medium'
+              className='flex items-center justify-between p-4 border dark:border-none dark:bg-hexaGray rounded-medium'
             >
               <div className='flex items-center gap-3'>
                 <div className='flex h-10 w-10 items-center rounded-medium justify-center bg-gray-100 dark:bg-quadraGray'>
-                  <FileText className='h-5 w-5 text-gra' />
+                  <FileText className='h-5 w-5' />
                 </div>
                 <div className='space-y-1'>
                   <p className='text-sm font-medium '>{doc.name}</p>
