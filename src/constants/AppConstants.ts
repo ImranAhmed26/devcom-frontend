@@ -1,5 +1,6 @@
 import { NavLink } from "@/types/Home/banner";
 import { Upload, History, Settings, BarChart3, Folder, Home } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 
 export const metadataConst = {
   title: "Dev",
@@ -69,6 +70,12 @@ export const sideBarData = {
     },
   ],
 };
+
+export const countryList = [
+  { code: "en", name: "English", countryCode: "US" },
+  { code: "fr", name: "Français", countryCode: "FR" },
+  { code: "de", name: "Deutsch", countryCode: "DE" },
+];
 
 export const workspaces = {
   data: [

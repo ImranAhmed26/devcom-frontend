@@ -14,9 +14,9 @@ const AppNavbar = () => {
         <h1 className="text-lg font-semibold">{t("title")}</h1>
       </div>
       <div>
-        <div className="w-20 lg:px-3 py-2.5 lg:flex justify-end">
-          <ThemeSwitch />
+        <div className="w-40 lg:px-3 py-2 flex gap-3 justify-end items-center">
           <LanguageDropdown />
+          <ThemeSwitch />
         </div>
       </div>
     </header>
