@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import ThemeSwitch from "../Interface/CustomFeature/ThemeSwitch";
 
 import React from "react";
-import LanguageDropdown from "../Shared/LanguageSwitch";
+import LanguageDropdown from "../Interface/CustomFeature/LanguageSwitch";
 
 const AppNavbar = () => {
   const t = useTranslations("home");

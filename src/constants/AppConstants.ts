@@ -73,8 +73,8 @@ export const sideBarData = {
 
 export const countryList = [
   { code: "en", name: "English", countryCode: "US" },
-  { code: "fr", name: "Français", countryCode: "FR" },
   { code: "de", name: "Deutsch", countryCode: "DE" },
+  { code: "nl", name: "Dutch", countryCode: "NL" },
 ];
 
 export const workspaces = {

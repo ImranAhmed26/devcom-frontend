@@ -1,67 +1,58 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import RoamingCards from '../RoamingCards';
-
-import {
-  containerVariants,
-  itemVariants,
-} from '@/components/Shared/FramerConsts';
-import { HighlightWords } from '../../Interface/CustomFeature/HighlightedWords';
-import H4 from '@/components/Interface/Typography/H4';
-import ActionButton from '@/components/Interface/Button/ActionButton';
-import AltButton from '@/components/Interface/Button/AltButton';
-import { useRouter } from 'next/navigation';
-import { BANNER_DATA } from '@/constants/landingPage';
+import React from "react";
+import { motion } from "framer-motion";
+import RoamingCards from "../RoamingCards";
+import { containerVariants, itemVariants } from "@/components/Shared/FramerConsts";
+import { HighlightWords } from "../../Interface/CustomFeature/HighlightedWords";
+import H4 from "@/components/Interface/Typography/H4";
+import ActionButton from "@/components/Interface/Button/ActionButton";
+import AltButton from "@/components/Interface/Button/AltButton";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const Banner = () => {
   const router = useRouter();
+  const t = useTranslations("landing.banner");
 
   const handleStartBuilding = (link: string) => {
     router.push(link);
   };
 
+  const title = t.raw("title"); // raw for HighlightWords
+  const highlightedWords = t.raw("highlightedWords") as string[]; // if using array
+  const subTitle = t("subTitle");
+  const description = t("description");
+  const actionTitle = t("button.action.title");
+  const actionLink = t("button.action.link");
+  const altTitle = t("button.alt.title");
+  const altLink = t("button.alt.link");
+
   return (
     <motion.div
-      className='flex flex-col items-center justify-between lg:justify-start gap-4 w-full h-[75vh] lg:h-[80vh] sm:px-4 px-8 my-20 lg:my-0 lg:mt-20 xl:mt-28 bg-lime-30 z-10'
+      className="flex flex-col items-center justify-between lg:justify-start gap-4 w-full h-[75vh] lg:h-[80vh] sm:px-4 px-8 my-20 lg:my-0 lg:mt-20 xl:mt-28 bg-lime-30 z-10"
       variants={containerVariants()}
-      initial='hidden'
-      animate='visible'
+      initial="hidden"
+      animate="visible"
     >
-      <motion.div
-        className='space-y-5 max-w-80 lg:max-w-4xl mx-auto text-center '
-        variants={itemVariants()}
-      >
-        <motion.h1
-          className='text-3xl md:text-5xl lg:text-6xl font-extrabold mx-auto '
-          variants={itemVariants()}
-        >
-          {HighlightWords(BANNER_DATA.title, BANNER_DATA.highLightedWords)}
+      <motion.div className="space-y-5 max-w-80 lg:max-w-4xl mx-auto text-center" variants={itemVariants()}>
+        <motion.h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mx-auto" variants={itemVariants()}>
+          {HighlightWords(title, highlightedWords)}
         </motion.h1>
         <motion.p
-          className='max-w-2xl font-extralight text-xl sm:text-2xl text-brandLight dark:text-brandDark mx-auto'
+          className="max-w-2xl font-extralight text-xl sm:text-2xl text-brandLight dark:text-brandDark mx-auto"
           variants={itemVariants()}
         >
-          {BANNER_DATA.subTitle}
+          {subTitle}
         </motion.p>
       </motion.div>
-      <motion.div
-        className='flex items-center justify-center gap-4 pt-10'
-        variants={itemVariants()}
-      >
-        <ActionButton
-          title={BANNER_DATA.button.actionBtn.title}
-          func={() => handleStartBuilding(BANNER_DATA.button.actionBtn.link)}
-        />
-        <AltButton
-          title={BANNER_DATA.button.altBtn.title}
-          func={() => handleStartBuilding(BANNER_DATA.button.altBtn.link)}
-        />
+      <motion.div className="flex items-center justify-center gap-4 pt-10" variants={itemVariants()}>
+        <ActionButton title={actionTitle} func={() => handleStartBuilding(actionLink)} />
+        <AltButton title={altTitle} func={() => handleStartBuilding(altLink)} />
       </motion.div>
       <motion.div>
-        <div className='pt-20 '>
-          <H4 para={BANNER_DATA.description} />
+        <div className="pt-20">
+          <H4 para={description} />
         </div>
       </motion.div>
       <RoamingCards />

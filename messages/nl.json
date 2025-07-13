@@ -1,0 +1,24 @@
+{
+  "home": {
+    "title": "Slimme OCR-dashboard",
+    "description": "Haal eenvoudig gegevens uit facturen, bonnetjes en documenten."
+  },
+  "landing": {
+    "banner": {
+      "title": "Bouw AI-tools met OCR in enkele minuten",
+      "highlightedWords": ["ocr"],
+      "subTitle": "De snelste manier om documentverwerking te automatiseren.",
+      "description": "Begin vandaag nog met het extraheren van gestructureerde gegevens uit documenten.",
+      "button": {
+        "action": {
+          "title": "Begin met bouwen",
+          "link": "/get-started"
+        },
+        "alt": {
+          "title": "Meer informatie",
+          "link": "/learn-more"
+        }
+      }
+    }
+  }
+}

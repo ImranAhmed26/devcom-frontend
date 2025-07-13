@@ -11,7 +11,7 @@ import ThemeSwitch from "../Interface/CustomFeature/ThemeSwitch";
 import Dropdown from "../Interface/Dropdown/Dropdown";
 import { MenuItem } from "@headlessui/react";
 import { NavLink } from "@/types/Home/banner";
-import LanguageSwitch from "../Shared/LanguageSwitch";
+import LanguageSwitch from "../Interface/CustomFeature/LanguageSwitch";
 
 // type NavLink = {
 //   name: string;

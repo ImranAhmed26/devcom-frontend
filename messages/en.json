@@ -1,6 +1,24 @@
 {
   "home": {
-    "title": "OCR Dashboard EN",
-    "description": "This is the English version."
+    "title": "OCR Dashboard",
+    "description": "Extract data effortlessly from invoices, receipts, and documents."
+  },
+  "landing": {
+    "banner": {
+      "title": "Accurate OCR for invoices, receipts, and documents",
+      "highlightedWords": ["ocr"],
+      "subTitle": "Fast, reliable document data extraction.",
+      "description": "Automate your data capture and save time today.",
+      "button": {
+        "action": {
+          "title": "Get Started",
+          "link": "/get-started"
+        },
+        "alt": {
+          "title": "Learn More",
+          "link": "/learn-more"
+        }
+      }
+    }
   }
 }
