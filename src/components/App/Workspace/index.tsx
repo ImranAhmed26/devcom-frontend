@@ -14,7 +14,7 @@ export function WorkSpaceList() {
         {workspaces.data.map((ws) => (
           <Link
             key={ws.id}
-            href={`/app/workspace/${ws.id}`}
+            href={`/workspace/${ws.id}`}
             className="group border border-gray-200 dark:border-gray-600 rounded-xl p-5 bg-white dark:bg-hexaGray hover:shadow-md transition-shadow"
           >
             <div className="flex items-start gap-4">

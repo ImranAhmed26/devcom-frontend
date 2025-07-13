@@ -10,8 +10,8 @@ import CommonModal from "../Interface/modal/CommonModal";
 import ThemeSwitch from "../Interface/CustomFeature/ThemeSwitch";
 import Dropdown from "../Interface/Dropdown/Dropdown";
 import { MenuItem } from "@headlessui/react";
-import NavbarMenu from "../Interface/Dropdown/NavMenu";
 import { NavLink } from "@/types/Home/banner";
+import LanguageSwitch from "../Shared/LanguageSwitch";
 
 // type NavLink = {
 //   name: string;
@@ -90,8 +90,9 @@ const PrimaryNavbar = () => {
             );
           })}
         </div>
-        <div className="justify-between flex lg:w-40">
-          <div className="w-1/2 lg:px-3 py-2.5 lg:flex justify-end">
+        <div className="justify-between flex lg:w-44">
+          <div className="lg:px-3 py-2.5 flex gap-2 justify-between items-center">
+            <LanguageSwitch />
             <ThemeSwitch />
           </div>
           {/* <button
@@ -113,7 +114,7 @@ const PrimaryNavbar = () => {
           >
             <div>Sign In form in progress</div>
           </CommonModal>
-          <div className="block lg:hidden">
+          {/* <div className="block lg:hidden">
             <NavbarMenu
               menuOptions={[
                 ...navLinkData,
@@ -123,7 +124,7 @@ const PrimaryNavbar = () => {
                 },
               ]}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { ChevronDown, Check } from "lucide-react";
 import { countryList } from "@/constants/AppConstants";
 import ReactCountryFlag from "react-country-flag";
 
-export default function LanguageDropdown() {
+export default function LanguageSwitch() {
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
@@ -28,10 +28,10 @@ export default function LanguageDropdown() {
   };
 
   return (
-    <div className="relative inline-block text-left text-sm w-32">
+    <div className="relative inline-block text-left text-sm w-12 md:w-32">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-4 py-2 bg-black/10 dark:bg-gray-800 border-none rounded-medium hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none h-9 w-32"
+        className="flex items-center gap-2 px-4 py-2 bg-black/10 dark:bg-gray-800 border-none rounded-medium hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none h-9 w-12 md:w-32"
       >
         <ReactCountryFlag
           countryCode={currentLanguage?.countryCode}
