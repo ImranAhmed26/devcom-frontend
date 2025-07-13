@@ -1,32 +1,35 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Upload, FileText, ImageIcon } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { Upload, FileText, ImageIcon } from "lucide-react";
+import { AppButton } from "@/components/Interface/Button/AppButton";
 
 export function UploadZone() {
-  const [isDragOver, setIsDragOver] = useState(false)
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(true)
-  }
+    e.preventDefault();
+    setIsDragOver(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
-  }
+    e.preventDefault();
+    setIsDragOver(false);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
+    e.preventDefault();
+    setIsDragOver(false);
     // Handle file drop logic here
-  }
+  };
 
   return (
     <div
       className={`border-2 border-dashed rounded-medium transition-colors ${
-        isDragOver ? "border-brandLight bg-violet-50 dark:border-brandDark dark:bg-hexaGray" : "border-gray-300 dark:border-gray-700"
+        isDragOver
+          ? "border-brandLight bg-violet-50 dark:border-brandDark dark:bg-hexaGray"
+          : "border-gray-300 dark:border-gray-700"
       }`}
     >
       <div
@@ -39,7 +42,9 @@ export function UploadZone() {
           <Upload className="h-8 w-8 text-gray-500" />
         </div>
         <h3 className="text-lg font-semibold mb-2">Upload Documents</h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-sm">Drag and drop your images or PDFs here, or click to browse files</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-sm">
+          Drag and drop your images or PDFs here, or click to browse files
+        </p>
         <div className="flex gap-4 mb-4">
           <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-300">
             <ImageIcon className="h-3 w-3" />
@@ -50,13 +55,12 @@ export function UploadZone() {
             PDF
           </div>
         </div>
-        <button className="inline-flex items-center px-4 py-2 bg-brandLight dark:bg-brandDark text-white dark:text-gray-800 text-sm font-medium hover:bg-brandDark transition-colors rounded-small">
-          <Upload className="mr-2 h-4 w-4" />
-          Choose Files
-        </button>
+        <AppButton onClick={() => {}} icon={<Upload />}>
+          Upload
+        </AppButton>
       </div>
     </div>
-  )
+  );
 }
 
 //LOVABLE CODE
@@ -71,10 +75,10 @@ export function UploadZone() {
 //   maxSize?: number; // in MB
 // }
 //
-// const FileUpload: React.FC<FileUploadProps> = ({ 
-//   onFileSelect, 
+// const FileUpload: React.FC<FileUploadProps> = ({
+//   onFileSelect,
 //   acceptedTypes = ['image/*', 'application/pdf'],
-//   maxSize = 10 
+//   maxSize = 10
 // }) => {
 //   const [isDragOver, setIsDragOver] = useState(false);
 //   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -109,7 +113,7 @@ export function UploadZone() {
 
 //   return (
 //     <Card className={`transition-all duration-200 ${isDragOver ? 'border-blue-400 bg-blue-50' : 'border-dashed border-gray-300'}`}>
-//       <div 
+//       <div
 //         className="text-center py-8"
 //         onDragOver={handleDragOver}
 //         onDragLeave={handleDragLeave}
@@ -140,7 +144,6 @@ export function UploadZone() {
 // };
 
 // export default FileUpload;
-
 
 // BOLT CODE
 
@@ -203,12 +206,12 @@ export function UploadZone() {
 //     // Simulate upload and processing
 //     newFiles.forEach((file, index) => {
 //       setTimeout(() => {
-//         setFiles(prev => prev.map(f => 
+//         setFiles(prev => prev.map(f =>
 //           f.id === file.id ? { ...f, status: 'processing' } : f
 //         ));
-        
+
 //         setTimeout(() => {
-//           setFiles(prev => prev.map(f => 
+//           setFiles(prev => prev.map(f =>
 //             f.id === file.id ? { ...f, status: 'completed' } : f
 //           ));
 //         }, 2000);
@@ -274,7 +277,7 @@ export function UploadZone() {
 //         <p className="text-sm text-muted-foreground">
 //           Supports PDF, JPG, PNG, TIFF up to 10MB each
 //         </p>
-        
+
 //         <input
 //           ref={fileInputRef}
 //           type="file"
