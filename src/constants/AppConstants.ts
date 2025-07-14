@@ -26,7 +26,7 @@ export const navLinkData: NavLink[] = [
 ];
 
 export const brandData = {
-  name: `DevCom`,
+  name: `Panda Parse`,
   slogan: `. . .`,
   address: `Add Address`,
 };

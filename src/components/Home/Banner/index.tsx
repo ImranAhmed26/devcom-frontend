@@ -30,9 +30,9 @@ const Banner = () => {
   const altLink = t("button.alt.link");
 
   return (
-    <motion.div className="flex flex-col justify-center items-center  min-h-[80vh] ">
+    <motion.div className="flex flex-col justify-center items-center min-h-[80vh] ">
       <motion.div
-        className="flex flex-col lg:flex-row items-center justify-between w-full lg:min-w-[80vw] sm:px-4 px-8 py-8"
+        className="flex flex-col lg:flex-row items-center justify-between w-full lg:min-w-[70vw] sm:px-4 px-8 py-8"
         variants={containerVariants()}
         initial="hidden"
         animate="visible"
