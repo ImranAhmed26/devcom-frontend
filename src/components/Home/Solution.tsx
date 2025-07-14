@@ -54,27 +54,21 @@ const Solution = () => {
             <CheckCircle className="mr-1 h-3 w-3" />
             The Solution
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Transform Documents in 3 Simple Steps</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-brandLight dark:text-brandDark mb-4">Transform Documents in 3 Simple Steps</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Our AI-powered platform eliminates the manual work, giving your team back hours every day while ensuring perfect
             accuracy.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid lg:grid-cols-3 gap-8 mb-16">
           {steps.map((step, index) => (
             <div key={index} className="text-center relative">
-              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <step.icon className="w-10 h-10 text-blue-600" />
+              <div className="w-20 h-20 bg-indigo-100 dark:bg-brandDark rounded-full flex items-center justify-center mx-auto mb-6">
+                <step.icon className="w-10 h-10 text-brandLight dark:text-brandLight" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">{step.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{step.description}</p>
-
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-10 left-full w-full">
-                  <div className="w-8 h-0.5 bg-blue-200 mx-auto"></div>
-                </div>
-              )}
+              <h3 className="text-xl font-semibold text-brandLight dark:text-brandDark mb-3">{step.title}</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>
