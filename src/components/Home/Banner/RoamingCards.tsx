@@ -10,6 +10,11 @@ const RoamingCards = () => {
     file: <FaFileAlt className="text-red-600" size={28} />,
     cloud: <FaCloudUploadAlt className="text-teal-600" size={28} />,
   };
+  const COLOR_MAP: Record<string, string> = {
+    invoice: "bg-indigo-50 dark:bg-indigo-900/40",
+    file: "bg-red-50 dark:bg-red-900/40",
+    cloud: "bg-teal-50 dark:bg-teal-900/40",
+  };
 
   return (
     <div className="relative w-full h-[600px] z-0">
@@ -52,7 +57,9 @@ const RoamingCards = () => {
               });
             }}
             animate={controls}
-            className={`cursor-pointer absolute shadow-lg rounded-2xl ${card.bg}  backdrop-blur-md px-5 py-4 min-w-[300px] max-w-[320px] pointer-events-auto border border-white/20 dark:border-gray-700/20`}
+            className={`cursor-pointer absolute shadow-lg rounded-2xl ${
+              COLOR_MAP[card.name]
+            }  backdrop-blur-md px-5 py-4 min-w-[300px] max-w-[320px] pointer-events-auto border border-white/20 dark:border-gray-700/20`}
             style={{
               boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
               top: card.initial.top,
