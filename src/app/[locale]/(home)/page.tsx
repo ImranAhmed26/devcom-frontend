@@ -1,7 +1,7 @@
 import Banner from "@/components/Home/Banner";
 import { PainPoints } from "@/components/Home/Bolt/PainPoints";
 import Solution from "@/components/Home/Solution";
-import Features from "@/components/Home/Features";
+import { Features } from "@/components/Home/Bolt/Features";
 import Testimonials from "@/components/Home/Testimonials";
 import Pricing from "@/components/Home/Pricing";
 import FAQ from "@/components/Home/FAQ";
