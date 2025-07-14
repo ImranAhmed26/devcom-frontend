@@ -1,16 +1,16 @@
-'use client';
-import React from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import { motion } from 'framer-motion';
-import { Navigation } from 'swiper/modules';
-import { Card } from '@/components/Home/Projects/Card';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { BANNER_DATA } from '@/constants/landingPage';
+"use client";
+import React from "react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { motion } from "framer-motion";
+import { Navigation } from "swiper/modules";
+import { Card } from "@/components/Home/unused items/Projects/Card";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { BANNER_DATA } from "@/constants/landingPage";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const NavigationBtn = () => {
   const swiper = useSwiper();
@@ -35,15 +35,8 @@ const NavigationBtn = () => {
 
 export default function Carousel() {
   return (
-    <motion.div
-      className=" py-0 md:px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <h1 className="text-2xl md:text-4xl font-bold text-center mb-10">
-        Our Past Projects
-      </h1>
+    <motion.div className=" py-0 md:px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+      <h1 className="text-2xl md:text-4xl font-bold text-center mb-10">Our Past Projects</h1>
       <div className="relative max-w-xs md:max-w-2xl lg:max-w-5xl xl:max-w-6xl mx-auto bg-gray-300/40 dark:bg-gray-900/70 backdrop-blur-2xl rounded-xl lg:rounded-3xl drop-shadow-md overflow-hidden">
         <Swiper
           modules={[Navigation]}

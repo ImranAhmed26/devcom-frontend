@@ -1,5 +1,5 @@
-import React from 'react';
-import Contact from '@/components/Home/Contact';
+import React from "react";
+import Contact from "@/components/Home/unused items/Contact";
 
 const page = () => {
   return (

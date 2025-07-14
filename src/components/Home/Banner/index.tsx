@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import RoamingCards from "../RoamingCards";
+import RoamingCards from "./RoamingCards";
 import { containerVariants, itemVariants } from "@/components/Shared/FramerConsts";
 import { HighlightWords } from "../../Interface/CustomFeature/HighlightedWords";
 import H4 from "@/components/Interface/Typography/H4";
@@ -10,6 +10,7 @@ import ActionButton from "@/components/Interface/Button/ActionButton";
 import AltButton from "@/components/Interface/Button/AltButton";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { FileText, Shield, Zap } from "lucide-react";
 
 const Banner = () => {
   const router = useRouter();
@@ -40,6 +41,10 @@ const Banner = () => {
         className="w-full lg:w-1/2 flex flex-col items-center justify-center text-center gap-6 h-full"
         variants={itemVariants()}
       >
+        <div className="mb-4 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 hover:bg-blue-200 transition-colors">
+          <Zap className="mr-1 h-3 w-3" />
+          AI-Powered Document Processing
+        </div>
         <motion.h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold" variants={itemVariants()}>
           {HighlightWords(title, highlightedWords)}
         </motion.h1>
@@ -49,6 +54,20 @@ const Banner = () => {
         >
           {subTitle}
         </motion.p>
+        <motion.div className="mt-0 flex items-center justify-center gap-8 text-sm text-gray-500" variants={itemVariants()}>
+          <div className="flex items-center gap-1">
+            <FileText className="h-4 w-4" />
+            <span>14-day free trial</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Shield className="h-4 w-4" />
+            <span>GDPR compliant</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Zap className="h-4 w-4" />
+            <span>Setup in 5 minutes</span>
+          </div>
+        </motion.div>
         <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6" variants={itemVariants()}>
           <ActionButton title={actionTitle} func={() => handleStartBuilding(actionLink)} />
           <AltButton title={altTitle} func={() => handleStartBuilding(altLink)} />

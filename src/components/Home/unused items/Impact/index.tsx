@@ -1,15 +1,15 @@
-'use client';
-import { useScroll } from 'framer-motion';
-import { useEffect, useRef } from 'react';
-import Lenis from 'lenis';
-import StackedCards from '@/components/Home/Impact/StackedCards';
-import { BANNER_DATA } from '@/constants/landingPage';
+"use client";
+import { useScroll } from "framer-motion";
+import { useEffect, useRef } from "react";
+import Lenis from "lenis";
+import StackedCards from "@/components/Home/unused items/Impact/StackedCards";
+import { BANNER_DATA } from "@/constants/landingPage";
 
 export default function Impact() {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ['start start', 'end end'],
+    offset: ["start start", "end end"],
   });
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Impact() {
   });
 
   return (
-    <main ref={container} className='relative mt-[1vh] w-full'>
+    <main ref={container} className="relative mt-[1vh] w-full">
       {BANNER_DATA.impactData.map((cardItem, i) => {
         const targetScale = 1 - (BANNER_DATA.impactData.length - i) * 0.05;
         return (
