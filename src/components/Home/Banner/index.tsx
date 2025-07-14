@@ -19,8 +19,8 @@ const Banner = () => {
     router.push(link);
   };
 
-  const title = t.raw("title"); // raw for HighlightWords
-  const highlightedWords = t.raw("highlightedWords") as string[]; // if using array
+  const title = t.raw("title");
+  const highlightedWords = t.raw("highlightedWords") as string[];
   const subTitle = t("subTitle");
   const description = t("description");
   const actionTitle = t("button.action.title");
@@ -30,32 +30,38 @@ const Banner = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-between lg:justify-start gap-4 w-full h-[75vh] lg:h-[80vh] sm:px-4 px-8 my-20 lg:my-0 lg:mt-20 xl:mt-28 bg-lime-30 z-10"
+      className="flex flex-col lg:flex-row items-center justify-between w-full lg:min-w-[80vw] h-[80vh] sm:px-4 px-8 py-12 lg:py-20 "
       variants={containerVariants()}
       initial="hidden"
       animate="visible"
     >
-      <motion.div className="space-y-5 max-w-80 lg:max-w-4xl mx-auto text-center" variants={itemVariants()}>
-        <motion.h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mx-auto" variants={itemVariants()}>
+      {/* Left: Banner Content */}
+      <motion.div
+        className="w-full lg:w-1/2 flex flex-col items-center justify-center text-center gap-6 h-full"
+        variants={itemVariants()}
+      >
+        <motion.h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold" variants={itemVariants()}>
           {HighlightWords(title, highlightedWords)}
         </motion.h1>
         <motion.p
-          className="max-w-2xl font-extralight text-xl sm:text-2xl text-brandLight dark:text-brandDark mx-auto"
+          className="max-w-2xl font-extralight text-xl sm:text-2xl text-brandLight dark:text-brandDark"
           variants={itemVariants()}
         >
           {subTitle}
         </motion.p>
-      </motion.div>
-      <motion.div className="flex items-center justify-center gap-4 pt-10" variants={itemVariants()}>
-        <ActionButton title={actionTitle} func={() => handleStartBuilding(actionLink)} />
-        <AltButton title={altTitle} func={() => handleStartBuilding(altLink)} />
-      </motion.div>
-      <motion.div>
-        <div className="pt-20">
+        <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6" variants={itemVariants()}>
+          <ActionButton title={actionTitle} func={() => handleStartBuilding(actionLink)} />
+          <AltButton title={altTitle} func={() => handleStartBuilding(altLink)} />
+        </motion.div>
+        <motion.div className="pt-10 max-w-xl" variants={itemVariants()}>
           <H4 para={description} />
-        </div>
+        </motion.div>
       </motion.div>
-      <RoamingCards />
+
+      {/* Right: Roaming Cards */}
+      <motion.div className="w-full lg:w-1/2 flex items-center justify-center mt-10 lg:mt-0" variants={itemVariants()}>
+        <RoamingCards />
+      </motion.div>
     </motion.div>
   );
 };

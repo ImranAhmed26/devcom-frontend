@@ -1,7 +1,17 @@
 import PlaceHolderImage from "../../public/assets/placeholder-image.jpg";
 import { Search, Lightbulb, Code2, Gauge, Rocket } from "lucide-react";
 import { ProcessStep, ProcessStepItem } from "@/types/Home/processStep";
-import { FaCloud, FaLaptopCode, FaLifeRing, FaMobileAlt, FaPalette, FaRocket } from "react-icons/fa";
+import {
+  FaCloud,
+  FaCloudUploadAlt,
+  FaFileAlt,
+  FaFileInvoiceDollar,
+  FaLaptopCode,
+  FaLifeRing,
+  FaMobileAlt,
+  FaPalette,
+  FaRocket,
+} from "react-icons/fa";
 import { Service } from "@/types/Home/serviceItem";
 import { projectItem } from "@/types/projectItem";
 import { JSX } from "react";
@@ -57,6 +67,24 @@ export const BANNER_DATA: {
   impactData: ImpactDataItem[];
   serviceData: ServiceItem[];
   projectData: ProjectItem[];
+  miniFloatingCardsData: {
+    title: string;
+    description: string;
+    icon: JSX.Element;
+    name: string;
+    bg: string;
+    initial: { top: string; left: string };
+    animate: {
+      x: number[];
+      y: number[];
+      transition: {
+        duration: number;
+        repeat: number;
+        repeatType: "reverse";
+        ease: string;
+      };
+    };
+  }[];
 } = {
   title: "A community for developers",
   subTitle: " Connect • Code • Collaborate",
@@ -238,6 +266,62 @@ export const BANNER_DATA: {
       imageSecondary: PlaceHolderImage,
       color: "orange",
       link: "#",
+    },
+  ],
+  miniFloatingCardsData: [
+    {
+      title: "Accurate Invoice Extraction",
+      description: "Save time with automatic, precise data capture from invoices and receipts.",
+      icon: <FaFileInvoiceDollar className="text-indigo-600" size={28} />,
+      name: "invoice",
+      bg: "bg-indigo-50 dark:bg-indigo-900/40",
+      initial: { top: "15%", left: "30%" },
+      animate: {
+        x: [0, 10, 0],
+        y: [0, 2, 0],
+        transition: {
+          duration: 15,
+          repeat: Infinity,
+          repeatType: "reverse" as "reverse",
+          ease: "easeInOut",
+        },
+      },
+    },
+    {
+      title: "Supports Multiple Formats",
+      description: "Upload PDFs, photos, scans, and get reliable data extraction every time.",
+      icon: <FaFileAlt className="text-red-600" size={28} />,
+      name: "file",
+      bg: "bg-red-50 dark:bg-red-900/40",
+      initial: { top: "34%", left: "32%" },
+      animate: {
+        x: [0, -20, 0],
+        y: [0, 4, 0],
+        transition: {
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse" as "reverse",
+          ease: "easeInOut",
+        },
+      },
+    },
+    {
+      title: "Cloud-Based Processing",
+      description: "Upload and process documents securely from anywhere—no setup required.",
+      icon: <FaCloudUploadAlt className="text-teal-600" size={28} />,
+      name: "cloud",
+      bg: "bg-teal-50 dark:bg-teal-900/40",
+      initial: { top: "53%", left: "31%" },
+      animate: {
+        x: [0, 10, 0],
+        y: [0, 2, 0],
+        transition: {
+          duration: 10,
+          repeat: Infinity,
+          repeatType: "reverse" as "reverse",
+          ease: "easeInOut",
+        },
+      },
     },
   ],
 };
