@@ -1,5 +1,5 @@
 import Banner from "@/components/Home/Banner";
-import PainPoints from "@/components/Home/PainPoints";
+import { PainPoints } from "@/components/Home/Bolt/PainPoints";
 import Solution from "@/components/Home/Solution";
 import Features from "@/components/Home/Features";
 import Testimonials from "@/components/Home/Testimonials";
