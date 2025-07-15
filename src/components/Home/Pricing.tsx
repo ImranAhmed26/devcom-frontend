@@ -1,143 +1,248 @@
 "use client";
-import { motion } from "framer-motion";
-import { FaCheck } from "react-icons/fa";
 
-const plans = [
-  {
-    name: "Starter",
-    price: "€49",
-    period: "per month",
-    description: "Perfect for small businesses just getting started",
-    features: [
-      "1,000 documents per month",
-      "Standard OCR accuracy",
-      "Email support",
-      "Basic API access",
-      "Data export (JSON/CSV)",
-      "7-day data retention"
-    ],
-    cta: "Start Free Trial",
-    popular: false
-  },
-  {
-    name: "Professional",
-    price: "€199",
-    period: "per month",
-    description: "Ideal for growing companies with higher volume needs",
-    features: [
-      "5,000 documents per month",
-      "Enhanced OCR accuracy",
-      "Priority email & chat support",
-      "Full API access",
-      "Advanced analytics",
-      "30-day data retention",
-      "Custom field extraction",
-      "Batch processing"
-    ],
-    cta: "Start Free Trial",
-    popular: true
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "contact sales",
-    description: "Tailored solutions for large organizations",
-    features: [
-      "Unlimited documents",
-      "Highest OCR accuracy",
-      "24/7 dedicated support",
-      "Custom API integration",
-      "Advanced security features",
-      "Custom data retention",
-      "SLA guarantee",
-      "On-premise deployment option"
-    ],
-    cta: "Contact Sales",
-    popular: false
-  }
-];
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check } from "lucide-react";
 
-const Pricing = () => {
+export default function PricingPlans() {
+  const [isYearly, setIsYearly] = useState(false);
+
+  const plans = [
+    {
+      name: "Basic",
+      monthlyPrice: 39,
+      yearlyPrice: 390,
+      documents: "Perfect for individuals and small companies",
+      extraDocPrice: "",
+      features: [
+        "500 Documents monthly",
+        "$0.15 / extra doc",
+        "Invoice & receipt OCR",
+        "30 days data retention",
+        "Email support",
+      ],
+      buttonText: "Get Started",
+      buttonStyle: "bg-gray-900 hover:bg-gray-800 text-white",
+    },
+    {
+      name: "Growth",
+      monthlyPrice: 99,
+      yearlyPrice: 990,
+      documents: "For companies with high volume of documents",
+      extraDocPrice: "",
+      features: [
+        "1,500 Documents monthly",
+        "$0.10 / extra doc",
+        "All Basic features +",
+        "Advanced analytics & reporting",
+        "API access",
+      ],
+      buttonText: "Get Started",
+      buttonStyle: "bg-indigo-600 hover:bg-indigo-700 text-white",
+      popular: true,
+    },
+    {
+      name: "Pro",
+      monthlyPrice: 299,
+      yearlyPrice: 2990,
+      documents: "For large teams and enterprises with high volume of documents",
+      extraDocPrice: "",
+      features: [
+        "5,000 Documents monthly",
+        "$0.08 / extra doc",
+        "All Growth features +",
+        "Priority support",
+        "SLA & dedicated account manager",
+      ],
+      buttonText: "Get Started",
+      buttonStyle: "bg-gray-900 hover:bg-gray-800 text-white",
+      isEnterprise: true,
+    },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const priceVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3 },
+    },
+    exit: {
+      opacity: 0,
+      y: 20,
+      transition: { duration: 0.2 },
+    },
+  };
+
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900/40">
+    <div className="py-24 bg-gray-50 rounded-large">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-4"
-          >
-            Transparent Pricing for Every Business
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-gray-600 dark:text-gray-300"
-          >
-            Choose the perfect plan for your needs
-          </motion.p>
-        </div>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Pricing Plans.</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Simple and transparent pricing. No surprise fees.</p>
+        </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Monthly/Yearly Toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex justify-center mb-16"
+        >
+          <div className="flex items-center space-x-4">
+            <span className={`text-sm font-medium transition-colors ${!isYearly ? "text-gray-900" : "text-gray-500"}`}>
+              Monthly
+            </span>
+            <button
+              onClick={() => setIsYearly(!isYearly)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                isYearly ? "bg-indigo-600" : "bg-gray-200"
+              }`}
+            >
+              <motion.span
+                layout
+                className="inline-block h-4 w-4 bg-white rounded-full shadow-sm"
+                animate={{
+                  x: isYearly ? 24 : 4,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                }}
+              />
+            </button>
+            <div className="flex items-center space-x-2">
+              <span className={`text-sm font-medium transition-colors ${isYearly ? "text-gray-900" : "text-gray-500"}`}>
+                Annually
+              </span>
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">Save ~17%</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Pricing Cards */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+        >
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`relative bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm border ${plan.popular ? 'border-blue-500' : 'border-gray-200 dark:border-gray-700'}`}
+              variants={cardVariants}
+              whileHover={{
+                y: -8,
+                transition: { duration: 0.2 },
+              }}
+              className={`relative bg-white rounded-large p-8 shadow-md hover:shadow-xl transition-shadow ${
+                plan.popular ? "ring-2 ring-indigo-500 shadow-lg" : "hover:shadow-lg"
+              }`}
             >
               {plan.popular && (
-                <div className="absolute top-0 right-0 -translate-y-1/2 px-3 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
-                  Most Popular
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm font-medium">Most Popular</span>
                 </div>
               )}
+
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  {plan.name}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
-                  {plan.description}
-                </p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+
                 <div className="mb-6">
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                    {plan.price}
-                  </span>
-                  <span className="text-gray-500 dark:text-gray-400 ml-2">
-                    {plan.period}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`${plan.name}-${isYearly}`}
+                      variants={priceVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="flex items-end justify-center"
+                    >
+                      {/* {plan.isEnterprise ? (
+                        <div className="text- 2xl font-bold text-gray-900">Custom</div>
+                      ) : ( */}
+                      <>
+                        <span className="text-5xl font-bold text-gray-900">
+                          ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+                        </span>
+                        <span className="text-lg text-gray-500 ml-2">/{isYearly ? "year" : "month"}</span>
+                      </>
+                      {/* )} */}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="text-sm text-gray-600 mb-6">
+                  <div className="font-medium">{plan.documents}</div>
+                  <div className="text-xs mt-1">{plan.extraDocPrice}</div>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`w-full py-3 px-6 rounded-xl font-semibold transition-all ${plan.buttonStyle} mb-8`}
+                >
+                  {plan.buttonText}
+                </motion.button>
+
+                <div className="space-y-4">
+                  {plan.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-start space-x-3">
+                      <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-gray-700 text-left">{feature}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <FaCheck className="w-5 h-5 text-green-500 mr-3 mt-0.5" />
-                    <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                className={`w-full py-3 px-6 rounded-lg font-medium transition-colors duration-200 ${plan.popular ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'}`}
-              >
-                {plan.cta}
-              </button>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
+        {/* Footer Note */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mt-12 text-center text-gray-500 dark:text-gray-400"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-16"
         >
-          All plans include a 14-day free trial. No credit card required.
+          <p className="text-sm text-gray-500">All plans include SSL encryption, 99.9% uptime guarantee, and 24/7 monitoring.</p>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
-};
-
-export default Pricing;
+}

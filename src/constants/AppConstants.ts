@@ -9,6 +9,7 @@ export const metadataConst = {
 
 export const navLinkData: NavLink[] = [
   { name: "home", id: 1, value: "home", link: "/", dropdown: false },
+  { name: "Pricing", id: 2, value: "pricing", link: "/pricing", dropdown: false },
   {
     name: "Service",
     id: 2,

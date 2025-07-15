@@ -90,8 +90,9 @@ const PrimaryNavbar = () => {
             );
           })}
         </div>
-        <div className="justify-between flex lg:w-44">
+        <div className="justify-between flex lg:w-64">
           <div className="lg:px-3 py-2.5 flex gap-2 justify-between items-center">
+            <div>Sign in</div>
             <LanguageSwitch />
             <ThemeSwitch />
           </div>
