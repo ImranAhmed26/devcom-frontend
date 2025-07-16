@@ -10,11 +10,11 @@ export function OCRResults() {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold dark:text-brandDark">Extracted Text</h2>
           <div className="flex gap-2">
-            <AppButton onClick={() => navigator.clipboard.writeText("Copied text")} icon={<Copy />}>
+            <AppButton onClick={() => navigator.clipboard.writeText("Copied text")} icon={<Copy className="h-4 w-4" />}>
               Copy
             </AppButton>
 
-            <AppButton onClick={() => {}} icon={<Download />}>
+            <AppButton onClick={() => {}} icon={<Download className="h-4 w-4" />}>
               Export
             </AppButton>
           </div>

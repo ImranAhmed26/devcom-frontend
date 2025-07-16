@@ -18,7 +18,7 @@ export function RecentWorkSpaceList() {
             View All
           </AppButton>
 
-          <AppButton onClick={() => {}} icon={<FolderPlus />}>
+          <AppButton onClick={() => {}} icon={<FolderPlus className="h-4 w-4" />}>
             Add Workspace
           </AppButton>
         </div>

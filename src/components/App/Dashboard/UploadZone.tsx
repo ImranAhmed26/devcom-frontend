@@ -55,7 +55,7 @@ export function UploadZone() {
             PDF
           </div>
         </div>
-        <AppButton onClick={() => {}} icon={<Upload />}>
+        <AppButton onClick={() => {}} icon={<Upload className="h-4 w-4" />}>
           Upload
         </AppButton>
       </div>

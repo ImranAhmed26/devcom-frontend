@@ -57,7 +57,7 @@ const faqs = [
   },
 ];
 
-function AccordionItem({ faq, index, isOpen, onToggle }: { faq: any; index: number; isOpen: boolean; onToggle: () => void }) {
+function AccordionItem({ faq, isOpen, onToggle }: { faq: any; index: number; isOpen: boolean; onToggle: () => void }) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg">
       <button
@@ -93,7 +93,7 @@ export function FAQ() {
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Everything You Need to Know</h2>
           <p className="text-lg text-gray-600">
-            Common questions about DocuMind AI and document processing. Can't find what you're looking for? We're here to help.
+            {` Common questions about DocuMind AI and document processing. Can't find what you're looking for? We're here to help.`}
           </p>
         </div>
 
@@ -126,7 +126,7 @@ export function FAQ() {
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
             <MessageCircle className="mx-auto h-12 w-12 text-blue-600 mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Still Have Questions?</h3>
-            <p className="text-gray-600 mb-6">Our team is here to help. Get in touch and we'll respond within 24 hours.</p>
+            <p className="text-gray-600 mb-6">{`Our team is here to help. Get in touch and we'll respond within 24 hours.`}</p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <button className="inline-flex items-center justify-center rounded-md bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
                 Contact Support

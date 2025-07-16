@@ -1,6 +1,5 @@
 import { NavLink } from "@/types/Home/banner";
 import { Upload, History, Settings, BarChart3, Folder, Home } from "lucide-react";
-import ReactCountryFlag from "react-country-flag";
 
 export const metadataConst = {
   title: "Dev",

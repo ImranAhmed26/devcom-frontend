@@ -128,12 +128,11 @@ const Accordion = ({ children }: { children: React.ReactNode }) => <div classNam
 
 const AccordionItem = ({
   children,
-  value,
   isOpen,
   onToggle,
 }: {
   children: React.ReactNode;
-  value: string;
+  value?: string;
   isOpen: boolean;
   onToggle: () => void;
 }) => (
@@ -239,7 +238,6 @@ const Progress = ({ value, className = "" }: { value: number; className?: string
 );
 
 export default function LandingPage() {
-  const [selectedPlan, setSelectedPlan] = useState("professional");
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("invoices");
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
@@ -560,8 +558,8 @@ export default function LandingPage() {
           >
             <h2 className="text-5xl font-bold text-gray-900 mb-8">The Hidden Cost of Manual Document Processing</h2>
             <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Every minute your team spends on manual data entry is costing your business more than you realize. Here's the
-              painful reality most finance teams face daily.
+              {`Every minute your team spends on manual data entry is costing your business more than you realize. Here's the
+              painful reality most finance teams face daily.`}
             </p>
           </motion.div>
 
@@ -669,7 +667,7 @@ export default function LandingPage() {
               The solution is here.
             </p>
             <Button size="lg" variant="secondary" className="text-red-600">
-              See How Much You're Losing
+              {`See How Much You're Losing`}
               <Calculator className="ml-2 w-5 h-5" />
             </Button>
           </motion.div>
@@ -1253,7 +1251,7 @@ export default function LandingPage() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <blockquote className="text-gray-700 text-lg leading-relaxed mb-8 italic">"{testimonial.quote}"</blockquote>
+                <blockquote className="text-gray-700 text-lg leading-relaxed mb-8 italic">{`"${testimonial.quote}"`}</blockquote>
                 <div className="flex items-center space-x-4 mb-6">
                   <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold">{testimonial.logo}</span>
@@ -1515,7 +1513,7 @@ export default function LandingPage() {
           >
             <h3 className="text-3xl font-bold mb-4">Need a Custom Solution?</h3>
             <p className="text-xl opacity-90 mb-8 max-w-3xl mx-auto">
-              Large enterprise with unique requirements? We'll create a custom package that fits your exact needs and budget.
+              {` Large enterprise with unique requirements? We'll create a custom package that fits your exact needs and budget.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" className="text-blue-600">
@@ -1813,8 +1811,8 @@ export default function LandingPage() {
           >
             <h2 className="text-6xl font-bold text-white mb-8">Ready to Transform Your Document Processing?</h2>
             <p className="text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Join 2,500+ finance teams who've already eliminated manual data entry and saved millions in processing costs. Start
-              your free trial today—no credit card required, no setup fees, no risk.
+              {`Join 2,500+ finance teams who've already eliminated manual data entry and saved millions in processing costs. Start
+              your free trial today—no credit card required, no setup fees, no risk.`}
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">

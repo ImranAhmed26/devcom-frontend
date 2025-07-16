@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import { FaRocket } from "react-icons/fa";
 import { AppButton } from "../Interface/Button/AppButton";
 import { ArrowRight, CheckCircle, PlayCircle } from "lucide-react";
 
@@ -16,8 +15,8 @@ const FinalCTA = () => {
         >
           <h2 className="text-6xl font-bold text-white mb-8">Ready to Transform Your Document Processing?</h2>
           <p className="text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Join 2,500+ finance teams who've already eliminated manual data entry and saved millions in processing costs. Start
-            your free trial today—no credit card required, no setup fees, no risk.
+            {`Join 2,500+ finance teams who've already eliminated manual data entry and saved millions in processing costs. Start
+            your free trial today—no credit card required, no setup fees, no risk.`}
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">

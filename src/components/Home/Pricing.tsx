@@ -16,9 +16,10 @@ export default function PricingPlans() {
       extraDocPrice: "",
       features: [
         "500 Documents monthly",
-        "$0.15 / extra doc",
+        "14 days trial period",
+        "$0.08 / extra doc",
         "Invoice & receipt OCR",
-        "30 days data retention",
+        "3 Users",
         "Email support",
       ],
       buttonText: "Get Started",
@@ -30,13 +31,7 @@ export default function PricingPlans() {
       yearlyPrice: 990,
       documents: "For companies with high volume of documents",
       extraDocPrice: "",
-      features: [
-        "1,500 Documents monthly",
-        "$0.10 / extra doc",
-        "All Basic features +",
-        "Advanced analytics & reporting",
-        "API access",
-      ],
+      features: ["1,500 Documents monthly", "14 days trial period", "$0.7 / extra doc", "API access", "Email support"],
       buttonText: "Get Started",
       buttonStyle: "bg-indigo-600 hover:bg-indigo-700 text-white",
       popular: true,
@@ -49,10 +44,11 @@ export default function PricingPlans() {
       extraDocPrice: "",
       features: [
         "5,000 Documents monthly",
-        "$0.08 / extra doc",
-        "All Growth features +",
-        "Priority support",
+        "14 days trial period",
+        "$0.06 / extra doc",
         "SLA & dedicated account manager",
+        "Advanced Models/ Customized needs for extra charge",
+        "Priority support",
       ],
       buttonText: "Get Started",
       buttonStyle: "bg-gray-900 hover:bg-gray-800 text-white",
@@ -103,14 +99,14 @@ export default function PricingPlans() {
   };
 
   return (
-    <div className="py-24 bg-gray-50 rounded-large">
+    <div className="py-6 bg-gray-50 rounded-large">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Pricing Plans.</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">Simple and transparent pricing. No surprise fees.</p>
@@ -121,7 +117,7 @@ export default function PricingPlans() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex justify-center mb-16"
+          className="flex justify-center mb-12"
         >
           <div className="flex items-center space-x-4">
             <span className={`text-sm font-medium transition-colors ${!isYearly ? "text-gray-900" : "text-gray-500"}`}>
@@ -162,7 +158,7 @@ export default function PricingPlans() {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
         >
-          {plans.map((plan, index) => (
+          {plans.map((plan) => (
             <motion.div
               key={plan.name}
               variants={cardVariants}
@@ -183,7 +179,7 @@ export default function PricingPlans() {
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
 
-                <div className="mb-6">
+                <div className="mb-">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`${plan.name}-${isYearly}`}
@@ -206,6 +202,7 @@ export default function PricingPlans() {
                     </motion.div>
                   </AnimatePresence>
                 </div>
+                <div className="h-6 my-1 line-through">{isYearly && <div>1200</div>}</div>
 
                 <div className="text-sm text-gray-600 mb-6">
                   <div className="font-medium">{plan.documents}</div>

@@ -99,7 +99,7 @@ export function Solution() {
                   <div className="h-2 bg-blue-600 rounded-full" style={{ width: "95%" }}></div>
                 </div>
                 <div className="text-sm text-gray-600">
-                  "DocuMind reduced our invoice processing time from 4 hours to 12 minutes"
+                  {`DocuMind reduced our invoice processing time from 4 hours to 12 minutes`}
                 </div>
               </div>
             </div>

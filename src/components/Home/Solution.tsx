@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import { Upload, Brain, Download, CheckCircle } from "lucide-react";
 
 const steps = [

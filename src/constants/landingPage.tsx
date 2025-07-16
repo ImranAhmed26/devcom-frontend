@@ -1,6 +1,6 @@
 import PlaceHolderImage from "../../public/assets/placeholder-image.jpg";
 import { Search, Lightbulb, Code2, Gauge, Rocket } from "lucide-react";
-import { ProcessStep, ProcessStepItem } from "@/types/Home/processStep";
+import { ProcessStepItem } from "@/types/Home/processStep";
 import {
   FaCloud,
   FaCloudUploadAlt,
@@ -12,10 +12,8 @@ import {
   FaPalette,
   FaRocket,
 } from "react-icons/fa";
-import { Service } from "@/types/Home/serviceItem";
-import { projectItem } from "@/types/projectItem";
+
 import { JSX } from "react";
-import { StaticImageData } from "next/image";
 import { Button } from "@/types/Home/button";
 import { ImpactDataItem } from "@/types/Home/impact";
 import { ProjectItem } from "@/types/Home/projectItem";
@@ -282,7 +280,7 @@ export const BANNER_DATA: {
         transition: {
           duration: 15,
           repeat: Infinity,
-          repeatType: "reverse" as "reverse",
+          repeatType: "reverse" as const,
           ease: "easeInOut",
         },
       },
@@ -300,7 +298,7 @@ export const BANNER_DATA: {
         transition: {
           duration: 8,
           repeat: Infinity,
-          repeatType: "reverse" as "reverse",
+          repeatType: "reverse" as const,
           ease: "easeInOut",
         },
       },
@@ -318,7 +316,7 @@ export const BANNER_DATA: {
         transition: {
           duration: 10,
           repeat: Infinity,
-          repeatType: "reverse" as "reverse",
+          repeatType: "reverse" as const,
           ease: "easeInOut",
         },
       },

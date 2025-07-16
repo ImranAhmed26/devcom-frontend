@@ -54,7 +54,7 @@ export const Testimonials = () => {
                 ))}
               </div>
               <Quote className="w-8 h-8 text-blue-600 mb-4" />
-              <p className="text-gray-700 mb-6 leading-relaxed">"{testimonial.content}"</p>
+              <p className="text-gray-700 mb-6 leading-relaxed">{`"${testimonial.content}"`}</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
                   {testimonial.image}

@@ -30,7 +30,7 @@ export const Solution = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Here's How We <span className="text-blue-600">Solve It</span>
+            {`Here's How We`} <span className="text-blue-600">Solve It</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Transform hours of manual work into seconds of automated processing with our AI-powered platform.
@@ -99,8 +99,8 @@ export const Solution = () => {
             <div className="bg-gray-50 rounded-xl p-8">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">Customer Success Story</h4>
               <blockquote className="text-gray-700 mb-4">
-                "DocuFlow cut our invoice processing time from 3 days to 3 hours. Our AP team now focuses on vendor relationships
-                instead of data entry. We've processed over 10,000 documents with zero errors."
+                {`"DocuFlow cut our invoice processing time from 3 days to 3 hours. Our AP team now focuses on vendor relationships
+                instead of data entry. We've processed over 10,000 documents with zero errors."`}
               </blockquote>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
@@ -108,7 +108,7 @@ export const Solution = () => {
                 </div>
                 <div>
                   <div className="font-semibold text-gray-900">Maria Kowalski</div>
-                  <div className="text-sm text-gray-500">Finance Director, TechCorp EU</div>
+                  <div className="text-sm text-gray-500">{`Finance Director, TechCorp EU`}</div>
                 </div>
               </div>
             </div>

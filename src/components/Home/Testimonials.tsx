@@ -8,22 +8,25 @@ const testimonials = [
     role: "Finance Director",
     company: "TechCorp Solutions",
     image: "/assets/placeholder-image.jpg",
-    quote: "The accuracy of the OCR system is remarkable. We've reduced our invoice processing time by 75% and virtually eliminated data entry errors."
+    quote:
+      "The accuracy of the OCR system is remarkable. We've reduced our invoice processing time by 75% and virtually eliminated data entry errors.",
   },
   {
     name: "Michael Chen",
     role: "Operations Manager",
     company: "Global Logistics Inc",
     image: "/assets/placeholder-image.jpg",
-    quote: "The platform's ability to handle multiple languages has been crucial for our international operations. Customer support is also exceptional."
+    quote:
+      "The platform's ability to handle multiple languages has been crucial for our international operations. Customer support is also exceptional.",
   },
   {
     name: "Anna Schmidt",
     role: "Head of Accounting",
     company: "European Retail Group",
     image: "/assets/placeholder-image.jpg",
-    quote: "GDPR compliance was our top priority. This solution not only meets all our security requirements but also delivers outstanding accuracy."
-  }
+    quote:
+      "GDPR compliance was our top priority. This solution not only meets all our security requirements but also delivers outstanding accuracy.",
+  },
 ];
 
 const Testimonials = () => {
@@ -60,24 +63,14 @@ const Testimonials = () => {
             >
               <div className="flex flex-col h-full">
                 <div className="flex-grow">
-                  <p className="text-gray-600 dark:text-gray-300 mb-6 italic">
-                    "{testimonial.quote}"
-                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-6 italic">{`"${testimonial.quote}"`}</p>
                 </div>
                 <div className="flex items-center mt-4">
                   <div className="flex-shrink-0">
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      width={48}
-                      height={48}
-                      className="rounded-full"
-                    />
+                    <Image src={testimonial.image} alt={testimonial.name} width={48} height={48} className="rounded-full" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {testimonial.name}
-                    </p>
+                    <p className="text-base font-semibold text-gray-900 dark:text-white">{testimonial.name}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       {testimonial.role}, {testimonial.company}
                     </p>
