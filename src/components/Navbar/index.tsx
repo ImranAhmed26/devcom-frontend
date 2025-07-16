@@ -40,7 +40,7 @@ const PrimaryNavbar = () => {
     <div
       className={`w-full flex justify-center sticky top-0 z-20 ${
         scrolled ? " bg-white/70  dark:bg-gray-900/70 backdrop-blur-xl" : "bg-white/0"
-      } transition-all duration-150`}
+      }`}
     >
       <div className="w-full max-w-8xl h-20 px-10 text-lg font-medium flex gap-4 items-center justify-between">
         <div className="">
@@ -70,7 +70,7 @@ const PrimaryNavbar = () => {
                         return (
                           <div
                             key={idx}
-                            className="group dark:hover:bg-gray-800 hover:bg-gray-100 hover:text-brandLight dark:hover:text-brandDark text-left w-full p-1.5 rounded-2xl transition-all duration-100 ease-in ease-out"
+                            className="group dark:hover:bg-gray-800 hover:bg-gray-100 hover:text-brandLight dark:hover:text-brandDark text-left w-full p-1.5 rounded-2xl"
                           >
                             <MenuItem>
                               <button onClick={() => handleNavLinkClick(`${navLink.link}${option.link}`)} className="text-left">
@@ -90,9 +90,11 @@ const PrimaryNavbar = () => {
             );
           })}
         </div>
-        <div className="justify-between flex lg:w-64">
+        <div className="justify-between flex lg:w-72 bg-red-10">
           <div className="lg:px-3 py-2.5 flex gap-2 justify-between items-center">
-            <div>Sign in</div>
+            <Link href={"/auth/login"} className="px-2 font-semibold bg-white/0 text-brandLight dark:text-indigo-200">
+              Sign in
+            </Link>
             <LanguageSwitch />
             <ThemeSwitch />
           </div>
