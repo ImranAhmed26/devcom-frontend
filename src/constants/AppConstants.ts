@@ -9,16 +9,17 @@ export const metadataConst = {
 export const navLinkData: NavLink[] = [
   { name: "home", id: 1, value: "home", link: "/", dropdown: false },
   { name: "Pricing", id: 2, value: "pricing", link: "/pricing", dropdown: false },
+  { name: "App", id: 2, value: "app", link: "/dashboard", dropdown: false },
   {
     name: "Service",
     id: 2,
-    value: "app",
+    value: "OCR",
     link: "/",
     dropdown: true,
     options: [
       {
-        name: "App",
-        link: "dashboard",
+        name: "OCR",
+        link: "/",
         details: "Collaborate, Share, and Track Your Work",
       },
     ],
