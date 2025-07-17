@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ASSET from "../../../../public/assets/asset-02.png";
@@ -35,16 +34,16 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-scree  flex items-center justify-center p-4 my-10 lg:my-16">
+    <div className="lg:min-h-[90%] flex items-center justify-center lg:p-4 lg:my-2">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden"
+        className="w-full max-w-md sm:max-w-xl lg:max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden"
       >
-        <div className="flex min-h-[600px]">
+        <div className="flex flex-col lg:flex-row min-h-[500px] min-w-[350px]">
           {/* Left Side - Illustration */}
-          <div className="flex-1 bg-gradient-to-br from-indigo-200 to-violet-200 p-12 flex flex-col justify-between relative overflow-hidden">
+          <div className="flex-1 bg-gradient-to-br from-indigo-200 to-violet-200 p-0 lg:p-4 flex flex-col justify-between relative overflow-hidden">
             {/* Floating Animation Elements */}
             <motion.div
               animate={{
@@ -56,7 +55,7 @@ export default function Login() {
                 repeat: Number.POSITIVE_INFINITY,
                 ease: "easeInOut",
               }}
-              className="absolute top-20 left-20 w-8 h-8 bg-violet-50 rounded-full opacity-60"
+              className="absolute top-20 left-20 w-6 h-6 lg:w-8 lg:h-8 bg-violet-50 rounded-full opacity-60"
             />
 
             <motion.div
@@ -70,54 +69,26 @@ export default function Login() {
                 ease: "easeInOut",
                 delay: 1,
               }}
-              className="absolute top-32 right-24 w-6 h-6 bg-indigo-600 rounded-full opacity-50"
+              className="absolute top-4 lg:top-32 right-20 w-5 h-5 lg:w-6 lg:h-6 bg-indigo-600 rounded-full opacity-50"
             />
-            {/* <motion.div
-              animate={{
-                rotate: 360,
-                scaleX: [1, 1.02, 1.03, 1.01, 1],
-                scaleY: [1, 1.05, 1.03, 1.02, 1],
-                borderRadius: ["50%", "52%", "49%", "50%", "51%"],
-                opacity: [0.4, 0.8, 1, 0.8, 0.4],
-              }}
-              transition={{
-                duration: 8,
-                ease: "easeInOut",
-                repeat: Infinity,
-              }}
-              className="absolute bottom-32 left-16 w-8 h-8 border-2 border-brandLight rounded-full"
-            /> */}
 
             {/* Main Illustration */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex-1 flex items-center justify-center border border-white/10 rounded-large"
+              className="flex-1 flex items-center justify-center"
             >
               <img
                 src={ASSET.src}
                 alt="Student studying with academic elements"
-                className="max-w-full h-auto object-contain border-white/10 rounded-large"
+                className="w-full lg:rounded-xl h-36 sm:h-40 object-cover object-[0_18%] lg:h-auto lg:object-contain"
               />
             </motion.div>
-
-            {/* Bottom Text */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-3"
-            >
-              <h2 className="text-3xl font-bold text-brandLight dark:bran text-center drop-shadow-lg">Panda Parse</h2>
-              <p className="text-gray-600 text-medium leading-relaxed text-center drop-shadow-md">
-                Clear pricing, save operation time and reduced cost
-              </p>
-            </motion.div> */}
           </div>
 
           {/* Right Side - Login Form */}
-          <div className="flex-1 p-12 flex flex-col justify-center">
+          <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -125,7 +96,7 @@ export default function Login() {
               className="max-w-md mx-auto w-full"
             >
               {/* Logo */}
-              <div className="text-center mb-12">
+              <div className="text-center mb-7">
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -138,13 +109,13 @@ export default function Login() {
                     </svg>
                   </div>
                   <span className="text-2xl font-bold text-gray-800">
-                    Panda <span className="text-brandLight">Parse</span>
+                    Panda <span className="text-indigo-500">Parse</span>
                   </span>
                 </motion.div>
               </div>
 
               {/* Login Form */}
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -155,7 +126,7 @@ export default function Login() {
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200 text-gray-800"
+                    className="w-full px-4 py-2 text-base bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200 text-gray-800"
                     placeholder="johnsmith007"
                   />
                 </motion.div>
@@ -170,10 +141,10 @@ export default function Login() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200 text-gray-800"
+                    className="w-full px-4 py-2 text-base bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200 text-gray-800"
                     placeholder="••••••••••••"
                   />
-                  <div className="text-right mt-2">
+                  <div className="text-right mt-1">
                     <button
                       type="button"
                       onClick={handleForgotPassword}
@@ -192,12 +163,16 @@ export default function Login() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center disabled:opacity-70"
+                  className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200 flex items-center justify-center disabled:opacity-70"
                 >
                   {isLoading ? (
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                      transition={{
+                        duration: 1,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: "linear",
+                      }}
                       className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                     />
                   ) : (
@@ -229,7 +204,7 @@ export default function Login() {
                   whileTap={{ scale: 0.98 }}
                   type="button"
                   onClick={handleGoogleSignIn}
-                  className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3"
+                  className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -257,7 +232,7 @@ export default function Login() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 1.1 }}
-                  className="text-center pt-4"
+                  className="text-center"
                 >
                   <span className="text-gray-600">Are you new? </span>
                   <button
