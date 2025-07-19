@@ -29,58 +29,78 @@ const Banner = () => {
   const altLink = t("button.alt.link");
 
   return (
-    <motion.div className="flex flex-col justify-center items-center min-h-[80vh] ">
+    <motion.div className="flex flex-col justify-center items-center min-h-[80vh] px-4 sm:px-6">
       <motion.div
-        className="flex flex-col lg:flex-row items-center justify-between w-full lg:min-w-[70vw] sm:px-4 px-8 py-8"
+        className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl py-8 lg:py-12 gap-8 lg:gap-0"
         variants={containerVariants()}
         initial="hidden"
         animate="visible"
       >
         {/* Left: Banner Content */}
         <motion.div
-          className="w-full lg:w-2/3 flex flex-col items-center justify-center text-center gap-6 h-full"
+          className="w-full lg:w-2/3 flex flex-col items-center lg:items-start text-center lg:text-left gap-2 sm:gap-4"
           variants={itemVariants()}
         >
-          <div className="mb-4 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 hover:bg-blue-200 transition-colors">
-            <Zap className="mr-1 h-3 w-3" />
+          {/* Badge */}
+          <div className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs sm:text-sm font-medium text-blue-800 hover:bg-blue-200 transition-colors">
+            <Zap className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
             AI-Powered Document Processing
           </div>
-          <motion.h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold" variants={itemVariants()}>
+
+          {/* Title */}
+          <motion.h1
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl py-2 font-extrabold leading-snug sm:leading-tight"
+            variants={itemVariants()}
+          >
             {HighlightWords(title, highlightedWords)}
           </motion.h1>
+
+          {/* Subtitle */}
           <motion.p
-            className="max-w-2xl font-extralight text-xl sm:text-2xl text-brandLight dark:text-brandDark"
+            className="max-w-2xl font-light sm:font-extralight text-lg sm:text-xl md:text-2xl text-brandLight dark:text-brandDark"
             variants={itemVariants()}
           >
             {subTitle}
           </motion.p>
-          <motion.div className="mt-0 flex items-center justify-center gap-8 text-sm text-gray-500" variants={itemVariants()}>
+
+          {/* Feature Badges */}
+          <motion.div
+            className="mt-2 sm:mt-0 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs sm:text-sm text-gray-500"
+            variants={itemVariants()}
+          >
             <div className="flex items-center gap-1">
-              <FileText className="h-4 w-4" />
+              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>14-day free trial</span>
             </div>
             <div className="flex items-center gap-1">
-              <Shield className="h-4 w-4" />
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>GDPR compliant</span>
             </div>
             <div className="flex items-center gap-1">
-              <Zap className="h-4 w-4" />
+              <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>Setup in 5 minutes</span>
             </div>
           </motion.div>
-          <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6" variants={itemVariants()}>
+
+          {/* Action Buttons */}
+          <motion.div
+            className="flex flex-row items-center lg:items-start justify-center lg:justify-start gap-3 sm:gap-4 pt-4 sm:pt-6"
+            variants={itemVariants()}
+          >
             <ActionButton title={actionTitle} func={() => handleStartBuilding(actionLink)} />
             <AltButton title={altTitle} func={() => handleStartBuilding(altLink)} />
           </motion.div>
         </motion.div>
 
         {/* Right: Roaming Cards */}
-        <motion.div className="w-full lg:w-1/2 flex items-center justify-center mt-10 lg:mt-0" variants={itemVariants()}>
+        <motion.div className="w-full lg:w-1/2 flex items-center justify-center sm:mt-6 lg:mt-0 bg-red-500" variants={itemVariants()}>
           <RoamingCards />
         </motion.div>
       </motion.div>
+
+      {/* Description */}
       <motion.p
-        className="max-w-5xl font-extralight text-xl sm:text-xl text-brandLight dark:text-brandDark text-center"
+        className="max-w-3xl sm:max-w-5xl font-light sm:font-extralight text-base sm:text-lg md:text-xl text-brandLight dark:text-brandDark text-center mt-4 sm:mt-6 px-2"
         variants={itemVariants()}
       >
         {description}
