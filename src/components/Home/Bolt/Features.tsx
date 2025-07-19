@@ -73,7 +73,8 @@ const features = [
   {
     icon: Smartphone,
     title: "Mobile Ready",
-    description: "Process documents on-the-go with our mobile app. Perfect for field teams and remote work.",
+    description:
+      "Process documents seamlessly on any device with our mobile-optimized platform—built for field teams and remote operations.",
     category: "Mobile",
   },
 ];
@@ -128,7 +129,9 @@ export function Features() {
           className="mt-16 text-center"
         >
           <div className="bg-blue-50 dark:bg-indigo-950 rounded-2xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-blue-900 dark:text-indigo-200 mb-4">Ready to Transform Your Document Workflow?</h3>
+            <h3 className="text-2xl font-bold text-blue-900 dark:text-indigo-200 mb-4">
+              Ready to Transform Your Document Workflow?
+            </h3>
             <p className="text-blue-800 dark:text-blue-50 mb-6">
               Join thousands of finance teams who have already eliminated manual data entry and reduced processing time by 95%.
             </p>

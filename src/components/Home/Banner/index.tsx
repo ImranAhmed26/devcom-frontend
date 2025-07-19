@@ -93,7 +93,7 @@ const Banner = () => {
         </motion.div>
 
         {/* Right: Roaming Cards */}
-        <motion.div className="w-full lg:w-1/2 flex items-center justify-center sm:mt-6 lg:mt-0 bg-red-500" variants={itemVariants()}>
+        <motion.div className="w-full lg:w-1/2 flex items-center justify-center sm:mt-6 lg:mt-0" variants={itemVariants()}>
           <RoamingCards />
         </motion.div>
       </motion.div>
