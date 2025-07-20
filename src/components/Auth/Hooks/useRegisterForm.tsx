@@ -3,8 +3,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRegister } from "@/lib/hooks/useAuth";
-import type { RegisterRequest } from "@/lib/api/auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import authApi, { type RegisterRequest } from "@/lib/api/auth";
 
 const registerSchema = z
   .object({
@@ -26,7 +27,35 @@ const registerSchema = z
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function useRegisterForm() {
-  const registerMutation = useRegister();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  // Direct registration mutation - simple and straightforward
+  const registerMutation = useMutation({
+    mutationFn: async (data: RegisterRequest) => {
+      console.log("🔥 Register mutation: Starting registration with data:", data);
+      try {
+        const result = await authApi.register(data);
+        console.log("🔥 Register mutation: API call successful:", result);
+        return result;
+      } catch (error) {
+        console.error("🔥 Register mutation: API call failed:", error);
+        throw error;
+      }
+    },
+    onSuccess: (response) => {
+      console.log("✅ Registration successful:", response.data.user);
+
+      // Invalidate any cached user data
+      queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
+
+      // Redirect to dashboard
+      router.push("/dashboard");
+    },
+    onError: (error: any) => {
+      console.error("❌ Registration failed:", error);
+    },
+  });
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -40,7 +69,7 @@ export function useRegisterForm() {
   });
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("🔥 Form submitted with data:", data);
+    console.log("🔥 Register form submitted with data:", data);
 
     // Transform form data to API request format
     const registerData: RegisterRequest = {
@@ -50,18 +79,11 @@ export function useRegisterForm() {
       companyName: data.companyName || undefined,
     };
 
-    console.log("🔥 Transformed register data:", registerData);
-    console.log("🔥 Register mutation object:", registerMutation);
-
+    console.log("🔥 Calling register mutation...");
     try {
-      console.log("🔥 Calling registerMutation.mutateAsync...");
-      const result = await registerMutation.mutateAsync(registerData);
-      console.log("🔥 Registration result:", result);
-      // Success is handled in the useRegister hook
+      await registerMutation.mutateAsync(registerData);
     } catch (error) {
-      // Error handling is done in the useRegister hook
-      // But we can add form-specific error handling here if needed
-      console.error("🔥 Registration form error:", error);
+      console.error("🔥 Register form error:", error);
     }
   });
 

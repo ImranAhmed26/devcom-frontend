@@ -55,15 +55,25 @@ export const authApi = {
 
   // Login user
   login: async (data: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
-    const response = await api.post<AuthResponse>("/auth/login", data);
+    console.log("🌟 authApi.login: Called with data:", data);
 
-    // Store tokens after successful login
-    if (response.success && response.data.token) {
-      TokenManager.setToken(response.data.token);
-      TokenManager.setRefreshToken(response.data.refreshToken);
+    try {
+      console.log("🌟 authApi.login: Making API call to /auth/login");
+      const response = await api.post<AuthResponse>("/auth/login", data);
+      console.log("🌟 authApi.login: API response:", response);
+
+      // Store tokens after successful login
+      if (response.success && response.data.token) {
+        console.log("🌟 authApi.login: Storing tokens");
+        TokenManager.setToken(response.data.token);
+        TokenManager.setRefreshToken(response.data.refreshToken);
+      }
+
+      return response;
+    } catch (error) {
+      console.error("🌟 authApi.login: API call failed:", error);
+      throw error;
     }
-
-    return response;
   },
 
   // Logout user

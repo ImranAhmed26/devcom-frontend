@@ -10,11 +10,11 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useLoginForm(async (data) => {
-    console.log("Login Attempt:", data);
-    await new Promise((res) => setTimeout(res, 1000));
-  });
+    formState: { errors },
+    isSubmitting,
+    error,
+    isSuccess,
+  } = useLoginForm();
 
   return (
     <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
@@ -24,11 +24,25 @@ export default function LoginForm() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Show API error if exists */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+              {error.message || "Login failed. Please try again."}
+            </div>
+          )}
+
+          {/* Show success message */}
+          {isSuccess && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm">
+              Login successful! Redirecting to dashboard...
+            </div>
+          )}
+
           <MotionFadeIn delay={0.4}>
             <AuthInput
               label="Your Email"
               type="email"
-              placeholder="johnsmith007"
+              placeholder="john@example.com"
               error={errors.email}
               register={register("email")}
             />
@@ -50,12 +64,12 @@ export default function LoginForm() {
           </MotionFadeIn>
 
           <AuthButton type="submit" isLoading={isSubmitting} delay={0.6}>
-            Sign in
+            {isSubmitting ? "Signing in..." : "Sign in"}
           </AuthButton>
 
           <MotionFadeIn delay={0.7} className="text-center">
             <span className="text-gray-600">New here? </span>
-            <Link href={'/auth/register'} type="button" className="text-indigo-500 hover:underline">
+            <Link href={"/auth/register"} type="button" className="text-indigo-500 hover:underline">
               Create an Account
             </Link>
           </MotionFadeIn>
