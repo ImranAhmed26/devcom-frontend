@@ -4,6 +4,7 @@ import MotionFadeIn from "./MotionFadeIn";
 import AuthButton from "./AuthButton";
 import AuthInput from "./AuthInput";
 import { useLoginForm } from "./Hooks/useLoginForm";
+import { Link } from "@/i18n/navigation";
 
 export default function LoginForm() {
   const {
@@ -54,9 +55,9 @@ export default function LoginForm() {
 
           <MotionFadeIn delay={0.7} className="text-center">
             <span className="text-gray-600">New here? </span>
-            <button type="button" className="text-indigo-500 hover:underline">
+            <Link href={'/auth/register'} type="button" className="text-indigo-500 hover:underline">
               Create an Account
-            </button>
+            </Link>
           </MotionFadeIn>
         </form>
       </MotionFadeIn>

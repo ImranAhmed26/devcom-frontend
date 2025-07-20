@@ -4,6 +4,7 @@ import MotionFadeIn from "./MotionFadeIn";
 import AuthButton from "./AuthButton";
 import AuthInput from "./AuthInput";
 import { useRegisterForm } from "./Hooks/useRegisterForm";
+import { Link } from "@/i18n/navigation";
 
 export default function RegisterForm() {
   const {
@@ -25,19 +26,31 @@ export default function RegisterForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <AuthInput label="Full Name" placeholder="John Smith" error={errors.name} register={register("name")} />
           <AuthInput label="Email" placeholder="john@example.com" error={errors.email} register={register("email")} />
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-5 sm:space-y-0">
+            <div className="flex-1">
+              <AuthInput
+                label="Password"
+                type="password"
+                placeholder="••••••••"
+                error={errors.password}
+                register={register("password")}
+              />
+            </div>
+            <div className="flex-1">
+              <AuthInput
+                label="Confirm Password"
+                type="password"
+                placeholder="••••••••"
+                error={errors.confirmPassword}
+                register={register("confirmPassword")}
+              />
+            </div>
+          </div>
           <AuthInput
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            error={errors.password}
-            register={register("password")}
-          />
-          <AuthInput
-            label="Confirm Password"
-            type="password"
-            placeholder="••••••••"
-            error={errors.confirmPassword}
-            register={register("confirmPassword")}
+            label="Company - To add team members"
+            placeholder="Your Company Name"
+            error={errors.companyName}
+            register={register("companyName")}
           />
 
           <AuthButton type="submit" isLoading={isSubmitting} delay={0.5}>
@@ -46,9 +59,9 @@ export default function RegisterForm() {
 
           <MotionFadeIn delay={0.6} className="text-center">
             <span className="text-gray-600">Already have an account? </span>
-            <button type="button" className="text-indigo-500 hover:underline">
+            <Link href={"/auth/login"} type="button" className="text-indigo-500 hover:underline">
               Sign in
-            </button>
+            </Link>
           </MotionFadeIn>
         </form>
       </MotionFadeIn>
