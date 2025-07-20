@@ -1,91 +1,157 @@
 "use client";
+
 import { motion } from "framer-motion";
-import { FaRobot, FaShieldAlt, FaCloud, FaChartBar, FaCode, FaGlobe } from "react-icons/fa";
+import { Brain, Shield, Zap, Globe, Database, Settings, FileText, BarChart3, Lock, Clock, Users, Smartphone } from "lucide-react";
 
 const features = [
   {
-    icon: <FaRobot className="w-8 h-8 text-blue-500" />,
-    title: "Advanced AI Recognition",
-    description: "99%+ accuracy in data extraction from various document formats using state-of-the-art OCR technology."
+    icon: Brain,
+    title: "Advanced AI OCR",
+    description: "State-of-the-art machine learning models trained on millions of documents for 99.8% accuracy.",
+    category: "AI Technology",
   },
   {
-    icon: <FaShieldAlt className="w-8 h-8 text-green-500" />,
-    title: "GDPR Compliant",
-    description: "Enterprise-grade security with EU data centers and full GDPR compliance for data protection."
+    icon: FileText,
+    title: "Multi-Format Support",
+    description: "Process PDF, JPG, PNG, and scanned documents. Handles invoices, receipts, contracts, and more.",
+    category: "Document Processing",
   },
   {
-    icon: <FaCloud className="w-8 h-8 text-purple-500" />,
-    title: "Cloud Processing",
-    description: "Process thousands of documents simultaneously with our scalable cloud infrastructure."
+    icon: Database,
+    title: "Structured Output",
+    description: "Export to JSON, CSV, XML, or integrate directly with your ERP, accounting, or CRM systems.",
+    category: "Data Export",
   },
   {
-    icon: <FaChartBar className="w-8 h-8 text-orange-500" />,
+    icon: Zap,
+    title: "Real-Time Processing",
+    description: "Process documents in seconds, not hours. Bulk upload support for high-volume operations.",
+    category: "Performance",
+  },
+  {
+    icon: Shield,
+    title: "Enterprise Security",
+    description: "SOC 2 Type II certified, GDPR compliant, with end-to-end encryption and data residency options.",
+    category: "Security",
+  },
+  {
+    icon: Settings,
+    title: "Custom Fields",
+    description: "Define custom extraction rules and validation logic for your specific document types.",
+    category: "Customization",
+  },
+  {
+    icon: Globe,
+    title: "Multi-Language",
+    description: "Support for 50+ languages including English, German, Dutch, French, Spanish, and more.",
+    category: "Localization",
+  },
+  {
+    icon: BarChart3,
     title: "Analytics Dashboard",
-    description: "Real-time insights into your document processing with detailed analytics and reporting."
+    description: "Track processing volumes, accuracy rates, and team productivity with detailed insights.",
+    category: "Analytics",
   },
   {
-    icon: <FaCode className="w-8 h-8 text-red-500" />,
-    title: "API Integration",
-    description: "Easy integration with your existing systems through our comprehensive REST API."
+    icon: Lock,
+    title: "Data Privacy",
+    description: "Your data never leaves your region. EU data stays in EU, US data stays in US.",
+    category: "Compliance",
   },
   {
-    icon: <FaGlobe className="w-8 h-8 text-teal-500" />,
-    title: "Multi-Language Support",
-    description: "Process documents in multiple languages with automatic language detection."
-  }
+    icon: Clock,
+    title: "24/7 Processing",
+    description: "Automated processing queue handles documents around the clock, even when you're offline.",
+    category: "Automation",
+  },
+  {
+    icon: Users,
+    title: "Team Collaboration",
+    description: "Multi-user access with role-based permissions, approval workflows, and audit trails.",
+    category: "Collaboration",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Ready",
+    description:
+      "Process documents seamlessly on any device with our mobile-optimized platform—built for field teams and remote operations.",
+    category: "Mobile",
+  },
 ];
 
-const Features = () => {
+export default function Features() {
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-4"
-          >
-            Powerful Features for Your Business
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-gray-600 dark:text-gray-300"
-          >
-            Everything you need for efficient document processing
-          </motion.p>
+          <div className="mb-4 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 hover:bg-blue-200 transition-colors">
+            <Zap className="mr-1 h-3 w-3" />
+            Powerful Features
+          </div>
+          <h2 className="text-3xl font-bold  mb-4">Everything You Need to Automate Document Processing</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Built for finance teams who demand accuracy, security, and scalability. Every feature designed to make your work
+            easier.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
-              key={feature.title}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
+              viewport={{ once: true }}
+              whileTap={{ scale: 0.95 }}
             >
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 mt-1">
-                  {feature.icon}
+              <div className="cursor-pointer h-full rounded-large border-0 border-gray-200 dark:border-gray-700 bg-white dark:bg-pentaGray p-6 shadow-sm hover:border-blue-200 dark:hover:border-brandDark transition-colors group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="h-12 w-12 bg-blue-100 dark:bg-brandDark flex items-center justify-center group-hover:bg-blue-200 transition-colors rounded-medium">
+                    <feature.icon className="h-6 w-6 text-brandLight dark:text-brandLight " />
+                  </div>
+                  <span className="inline-flex items-center rounded-full bg-gray-100 dark:bg-indigo-900 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:text-gray-400">
+                    {feature.category}
+                  </span>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {feature.description}
-                  </p>
-                </div>
+                <h3 className="text-lg font-semibold  mb-2 dark:text-brandDark">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{feature.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        >
+          <div className="bg-blue-50 dark:bg-indigo-950 rounded-2xl p-8 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-blue-900 dark:text-indigo-200 mb-4">
+              Ready to Transform Your Document Workflow?
+            </h3>
+            <p className="text-blue-800 dark:text-blue-50 mb-6">
+              Join thousands of finance teams who have already eliminated manual data entry and reduced processing time by 95%.
+            </p>
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-50">
+                <Clock className="h-4 w-4" />
+                <span className="text-sm">Setup in 5 minutes</span>
+              </div>
+              <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-200">
+                <Shield className="h-4 w-4" />
+                <span className="text-sm">14-day free trial</span>
+              </div>
+              <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-200">
+                <Users className="h-4 w-4" />
+                <span className="text-sm">No credit card required</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Features;
+}

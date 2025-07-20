@@ -1,77 +1,97 @@
 "use client";
+
 import { motion } from "framer-motion";
-import { FaExclamationCircle } from "react-icons/fa";
+import { Clock, AlertCircle, DollarSign, Users } from "lucide-react";
 
 const painPoints = [
   {
-    title: "Manual Data Entry Burden",
-    description: "Hours wasted on manual data entry from invoices and receipts, leading to delays and errors."
+    icon: Clock,
+    title: "Hours Lost Daily",
+    description: "Your team spends 3-4 hours every day manually extracting data from invoices and receipts.",
+    stat: "40%",
+    statLabel: "of finance time wasted",
   },
   {
-    title: "Costly Processing Errors",
-    description: "Human errors in data entry result in payment delays, compliance issues, and financial discrepancies."
+    icon: AlertCircle,
+    title: "Human Errors",
+    description: "Manual data entry leads to costly mistakes, delayed payments, and compliance issues.",
+    stat: "23%",
+    statLabel: "error rate in manual entry",
   },
   {
-    title: "Document Management Chaos",
-    description: "Scattered documents across emails, drives, and physical storage create inefficient workflows."
+    icon: DollarSign,
+    title: "Hidden Costs",
+    description: "Processing costs spiral as your business grows, requiring more staff and resources.",
+    stat: "$50K+",
+    statLabel: "annual processing costs",
   },
   {
-    title: "Compliance Risk Exposure",
-    description: "Manual processes increase the risk of non-compliance with tax regulations and audit requirements."
-  }
+    icon: Users,
+    title: "Team Frustration",
+    description: "Talented professionals stuck doing repetitive work instead of strategic analysis.",
+    stat: "65%",
+    statLabel: "want to automate tasks",
+  },
 ];
 
-const PainPoints = () => {
+export default function PainPoints() {
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        {/* Heading */}
         <div className="text-center mb-12">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-4"
-          >
-            Common Challenges in Document Processing
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-gray-600 dark:text-gray-300"
-          >
-            Are these pain points familiar to your business?
-          </motion.p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">The Hidden Cost of Manual Document Processing</h2>
+          <p className="text-base sm:text-lg max-w-2xl mx-auto text-gray-600">
+            Every day, finance teams across Europe and the US face the same exhausting challenges. Sound familiar?
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {painPoints.map((point, index) => (
             <motion.div
-              key={point.title}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
+              viewport={{ once: true }}
+              whileTap={{ scale: 1.05, transition: { duration: 0.3 } }}
+              className="cursor-pointer shadow-md rounded-2xl bg-gray-50 dark:bg-hexaGray backdrop--2xl px-5 py-5 border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300"
             >
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <FaExclamationCircle className="w-6 h-6 text-red-500" />
+              <div className="">
+                <div className="flex items-center justify-between mb-4">
+                  <point.icon className="h-7 w-7 sm:h-8 sm:w-8 text-red-500" />
+                  <div className="text-right">
+                    <div className="text-xl sm:text-2xl font-bold text-red-600">{point.stat}</div>
+                    <div className="text-xs sm:text-sm text-gray-500">{point.statLabel}</div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    {point.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {point.description}
-                  </p>
-                </div>
+                <h3 className="text-base sm:text-lg font-semibold mb-2">{point.title}</h3>
+                <p className="text-sm sm:text-base leading-relaxed text-gray-500">{point.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center"
+        >
+          <div className="bg-red-50 dark:bg-red-950/90 rounded-2xl p-6 sm:p-8 max-w-xl sm:max-w-3xl mx-auto drop-shadow-lg">
+            <h3 className="text-lg sm:text-xl font-semibold text-red-900 dark:text-red-300 mb-3 sm:mb-4">
+              The Real Question Is: How Much Is This Costing You?
+            </h3>
+            <p className="text-red-800 dark:text-red-50 text-sm sm:text-base">
+              A mid-sized company processing 500 documents monthly loses approximately
+              <span className="font-bold"> €120,000 annually</span> in inefficiencies, errors, and missed opportunities.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default PainPoints;
+}

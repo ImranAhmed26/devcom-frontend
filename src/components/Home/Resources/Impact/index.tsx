@@ -2,7 +2,7 @@
 import { useScroll } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
-import StackedCards from "@/components/Home/unused items/Impact/StackedCards";
+import StackedCards from "@/components/Home/Resources/Impact/StackedCards";
 import { BANNER_DATA } from "@/constants/landingPage";
 
 export default function Impact() {

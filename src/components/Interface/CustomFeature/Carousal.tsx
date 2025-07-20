@@ -3,7 +3,7 @@ import React from "react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { motion } from "framer-motion";
 import { Navigation } from "swiper/modules";
-import { Card } from "@/components/Home/unused items/Projects/Card";
+import { Card } from "@/components/Home/Resources/Projects/Card";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BANNER_DATA } from "@/constants/landingPage";
 
