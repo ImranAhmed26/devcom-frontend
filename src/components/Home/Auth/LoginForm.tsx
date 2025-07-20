@@ -24,7 +24,13 @@ export default function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <MotionFadeIn delay={0.4}>
-            <AuthInput label="Username or Email" placeholder="johnsmith007" error={errors.email} register={register("email")} />
+            <AuthInput
+              label="Your Email"
+              type="email"
+              placeholder="johnsmith007"
+              error={errors.email}
+              register={register("email")}
+            />
           </MotionFadeIn>
 
           <MotionFadeIn delay={0.5}>

@@ -25,7 +25,7 @@ export default function IllustrationSection() {
         <img
           src={ASSET.src}
           alt="Student studying"
-          className="w-full lg:rounded-2xl h-36 sm:h-40 object-cover object-[0_18%] lg:h-auto lg:object-contain"
+          className="w-full rounded-2xl h-36 sm:h-40 object-cover object-[0_18%] lg:h-auto lg:object-contain"
         />
       </motion.div>
     </div>

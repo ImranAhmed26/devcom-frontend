@@ -6,7 +6,7 @@ import LoginForm from "./LoginForm";
 
 export default function Login() {
   return (
-    <div className="lg:min-h-[70dvh] flex items-center justify-center lg:p-4 lg:my-2">
+    <div className="lg:min-h-[70dvh] flex items-center justify-center mt-6 lg:mt-6 lg:p-4 lg:my-2">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
