@@ -113,7 +113,7 @@ const RoamingCards = () => {
   }, []);
 
   return (
-    <div className={`relative w-full ${isMobile ? "h-[320px]" : " h-[600]"}  z-0`}>
+    <div className={`relative w-full ${isMobile ? "h-[320px]" : "h-[600px]"}  z-0`}>
       {miniFloatingCardsData.map((card) => (
         <RoamingCard key={card.title} card={card} isMobile={isMobile} />
       ))}
