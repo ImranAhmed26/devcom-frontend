@@ -10,11 +10,11 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useRegisterForm(async (data) => {
-    console.log("Register Attempt:", data);
-    await new Promise((res) => setTimeout(res, 1000));
-  });
+    formState: { errors },
+    isSubmitting,
+    error,
+    isSuccess,
+  } = useRegisterForm();
 
   return (
     <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
@@ -24,6 +24,20 @@ export default function RegisterForm() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Show API error if exists */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+              {error.message || "Registration failed. Please try again."}
+            </div>
+          )}
+
+          {/* Show success message */}
+          {isSuccess && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm">
+              Account created successfully! Redirecting to dashboard...
+            </div>
+          )}
+
           <AuthInput label="Full Name" placeholder="John Smith" error={errors.name} register={register("name")} />
           <AuthInput label="Email" placeholder="john@example.com" error={errors.email} register={register("email")} />
           <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-5 sm:space-y-0">
@@ -48,13 +62,13 @@ export default function RegisterForm() {
           </div>
           <AuthInput
             label="Company - To add team members"
-            placeholder="Your Company Name"
+            placeholder="Your Company Name (Optional)"
             error={errors.companyName}
             register={register("companyName")}
           />
 
           <AuthButton type="submit" isLoading={isSubmitting} delay={0.5}>
-            Create Account
+            {isSubmitting ? "Creating Account..." : "Create Account"}
           </AuthButton>
 
           <MotionFadeIn delay={0.6} className="text-center">
