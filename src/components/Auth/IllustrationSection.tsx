@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ASSET from "../../../../public/assets/asset-02.png";
+import ASSET from "../../../public/assets/asset-02.png";
 
 export default function IllustrationSection() {
   return (
