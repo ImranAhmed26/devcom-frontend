@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuthStore } from "@/lib/auth/authStore";
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ interface RouteGuardProps {
 }
 
 export default function RouteGuard({ children, requireAuth = true, redirectTo = "/auth/login" }: RouteGuardProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {

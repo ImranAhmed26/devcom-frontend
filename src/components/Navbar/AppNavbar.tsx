@@ -2,12 +2,12 @@
 import { useTranslations } from "next-intl";
 import ThemeSwitch from "../Interface/CustomFeature/ThemeSwitch";
 import LanguageDropdown from "../Interface/CustomFeature/LanguageSwitch";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuthStore } from "@/lib/auth/authStore";
 import React from "react";
 
 const AppNavbar = () => {
   const t = useTranslations("home");
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
 
   return (
     <header className="flex justify-between h-16 items-center gap-4 border-b border-gray-200 dark:border-none bg-white dark:bg-quadraGray px-4">

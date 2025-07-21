@@ -56,7 +56,7 @@ const SidebarNav = ({ onItemClick }: { onItemClick?: () => void }) => {
 const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => (
   <div className="px-4 pt-4 pb-10 border-t border-gray-200 dark:border-gray-600 space-y-1">
     {[
-      { icon: User, label: "Account", href: "#" },
+      { icon: User, label: "Account", href: "user" },
       { icon: CreditCard, label: "499 Tokens Remaining", href: "#" },
     ].map(({ icon: Icon, label, href }) => (
       <a

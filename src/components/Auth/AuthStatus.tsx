@@ -1,9 +1,9 @@
 "use client";
 
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuthStore } from "@/lib/auth/authStore";
 
 export default function AuthStatus() {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuthStore();
 
   if (isLoading) {
     return (

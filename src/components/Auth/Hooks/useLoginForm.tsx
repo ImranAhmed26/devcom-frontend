@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import authApi, { type LoginRequest } from "@/lib/api/auth";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuthStore } from "@/lib/auth/authStore";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -15,7 +15,7 @@ const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function useLoginForm() {
-  const { login } = useAuth();
+  const { login } = useAuthStore();
 
   // Direct login mutation - simple and straightforward
   const loginMutation = useMutation({

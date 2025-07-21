@@ -37,6 +37,11 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
           isLoading: false,
         });
+
+        // Redirect to dashboard after successful login
+        if (typeof window !== "undefined") {
+          window.location.href = "/dashboard";
+        }
       },
 
       logout: () => {
@@ -52,7 +57,7 @@ export const useAuthStore = create<AuthState>()(
           isLoading: false,
         });
 
-        // Redirect to home
+        // Redirect to home (using window.location for simplicity)
         if (typeof window !== "undefined") {
           window.location.href = "/";
         }
@@ -119,3 +124,16 @@ export const useAuthStore = create<AuthState>()(
 if (typeof window !== "undefined") {
   useAuthStore.getState().initializeAuth();
 }
+
+// Export a simple hook for easier usage (optional - you can use useAuthStore directly)
+export const useAuth = () => {
+  const store = useAuthStore();
+  return {
+    user: store.user,
+    isAuthenticated: store.isAuthenticated,
+    isLoading: store.isLoading,
+    login: store.login,
+    logout: store.logout,
+    updateUser: store.updateUser,
+  };
+};

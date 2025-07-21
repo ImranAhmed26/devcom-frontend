@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import authApi, { type RegisterRequest } from "@/lib/api/auth";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useAuthStore } from "@/lib/auth/authStore";
 
 const registerSchema = z
   .object({
@@ -27,7 +27,7 @@ const registerSchema = z
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function useRegisterForm() {
-  const { login } = useAuth();
+  const { login } = useAuthStore();
 
   // Direct registration mutation - simple and straightforward
   const registerMutation = useMutation({
