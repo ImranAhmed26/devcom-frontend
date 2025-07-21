@@ -1,5 +1,6 @@
-import api, { TokenManager } from "./api";
+import api from "./api";
 import type { ApiResponse } from "./api";
+import AuthStorage from "@/lib/auth/storage";
 
 // Authentication Types
 export interface RegisterRequest {
@@ -44,11 +45,8 @@ export const authApi = {
     console.log(" RES", response);
     console.log("Data ", data);
 
-    // Store tokens after successful registration
-    if (response.success && response.data.token) {
-      TokenManager.setToken(response.data.token);
-      TokenManager.setRefreshToken(response.data.refreshToken);
-    }
+    // Note: Token storage is now handled by the auth context
+    // The forms will handle storing tokens and user data
 
     return response;
   },
@@ -62,12 +60,8 @@ export const authApi = {
       const response = await api.post<AuthResponse>("/auth/login", data);
       console.log("🌟 authApi.login: API response:", response);
 
-      // Store tokens after successful login
-      if (response.success && response.data.token) {
-        console.log("🌟 authApi.login: Storing tokens");
-        TokenManager.setToken(response.data.token);
-        TokenManager.setRefreshToken(response.data.refreshToken);
-      }
+      // Note: Token storage is now handled by the auth context
+      // The forms will handle storing tokens and user data
 
       return response;
     } catch (error) {
@@ -83,7 +77,7 @@ export const authApi = {
       return response;
     } finally {
       // Always clear tokens, even if logout request fails
-      TokenManager.clearTokens();
+      AuthStorage.clearAuthData();
     }
   },
 
@@ -94,7 +88,7 @@ export const authApi = {
 
   // Refresh access token
   refreshToken: async (): Promise<ApiResponse<RefreshTokenResponse>> => {
-    const refreshToken = TokenManager.getRefreshToken();
+    const refreshToken = AuthStorage.getRefreshToken();
     if (!refreshToken) {
       throw new Error("No refresh token available");
     }
@@ -105,8 +99,8 @@ export const authApi = {
 
     // Update stored tokens
     if (response.success) {
-      TokenManager.setToken(response.data.token);
-      TokenManager.setRefreshToken(response.data.refreshToken);
+      AuthStorage.setAccessToken(response.data.token);
+      AuthStorage.setRefreshToken(response.data.refreshToken);
     }
 
     return response;

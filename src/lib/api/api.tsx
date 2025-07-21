@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import env from "@/lib/env";
+import AuthStorage from "@/lib/auth/storage";
 
 // Extend Axios types to include our custom metadata
 declare module "axios" {
@@ -50,40 +51,7 @@ interface ApiError {
   timestamp?: string;
 }
 
-// Token management utilities
-class TokenManager {
-  private static readonly TOKEN_KEY = "auth_token";
-  private static readonly REFRESH_TOKEN_KEY = "refresh_token";
-
-  static getToken(): string | null {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  static setToken(token: string): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    }
-  }
-
-  static getRefreshToken(): string | null {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-  }
-
-  static setRefreshToken(token: string): void {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
-    }
-  }
-
-  static clearTokens(): void {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(this.TOKEN_KEY);
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    }
-  }
-}
+// Using AuthStorage directly - no need for additional wrapper
 
 // Base API Class
 class Api {
@@ -112,7 +80,7 @@ class Api {
     this.instance.interceptors.request.use(
       (config) => {
         // Add auth token if available (SSR-safe)
-        const token = TokenManager.getToken();
+        const token = AuthStorage.getAccessToken();
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -160,7 +128,7 @@ class Api {
           originalRequest._retry = true;
 
           try {
-            const refreshToken = TokenManager.getRefreshToken();
+            const refreshToken = AuthStorage.getRefreshToken();
             if (refreshToken) {
               // Attempt to refresh token
               const response = await axios.post(`${this.instance.defaults.baseURL}/auth/refresh`, {
@@ -168,7 +136,7 @@ class Api {
               });
 
               const { token } = response.data;
-              TokenManager.setToken(token);
+              AuthStorage.setAccessToken(token);
 
               // Retry original request
               originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -176,7 +144,7 @@ class Api {
             }
           } catch {
             // Refresh failed, clear tokens
-            TokenManager.clearTokens();
+            AuthStorage.clearAuthData();
             if (typeof window !== "undefined") {
               window.location.href = "/auth/login";
             }
@@ -399,9 +367,8 @@ const api = new Api({
   retryDelay: 1000, // 1 second base delay
 });
 
-// Export both the API instance and TokenManager
+// Export the API instance
 export default api;
-export { TokenManager };
 export type { ApiResponse, ApiError, ApiErrorCode, ApiConfig };
 
 // Example usage with TanStack Query:

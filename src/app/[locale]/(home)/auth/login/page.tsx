@@ -1,8 +1,13 @@
 import React from "react";
 import Login from "@/components/Auth/Login";
+import { PublicRoute } from "@/components/Auth/RouteGuard";
 
 const page = () => {
-  return <Login />;
+  return (
+    <PublicRoute>
+      <Login />
+    </PublicRoute>
+  );
 };
 
 export default page;

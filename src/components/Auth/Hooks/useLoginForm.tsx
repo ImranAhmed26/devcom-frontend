@@ -3,9 +3,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import authApi, { type LoginRequest } from "@/lib/api/auth";
+import { useAuth } from "@/lib/auth/AuthContext";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -15,8 +15,7 @@ const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function useLoginForm() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const { login } = useAuth();
 
   // Direct login mutation - simple and straightforward
   const loginMutation = useMutation({
@@ -34,11 +33,20 @@ export function useLoginForm() {
     onSuccess: (response) => {
       console.log("✅ Login successful:", response.data.user);
 
-      // Invalidate any cached user data
-      queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
-
-      // Redirect to dashboard
-      router.push("/dashboard");
+      // Use auth context to handle login
+      login(
+        {
+          accessToken: response.data.token,
+          refreshToken: response.data.refreshToken,
+        },
+        {
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          role: response.data.user.role,
+          companyName: response.data.user.companyName,
+        }
+      );
     },
     onError: (error: any) => {
       console.error("❌ Login failed:", error);

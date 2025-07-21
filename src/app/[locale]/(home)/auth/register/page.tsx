@@ -1,11 +1,12 @@
 import React from "react";
 import Register from "@/components/Auth/Register";
+import { PublicRoute } from "@/components/Auth/RouteGuard";
 
 const page = () => {
   return (
-    <div>
+    <PublicRoute>
       <Register />
-    </div>
+    </PublicRoute>
   );
 };
 

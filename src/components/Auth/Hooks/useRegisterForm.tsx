@@ -3,9 +3,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import authApi, { type RegisterRequest } from "@/lib/api/auth";
+import { useAuth } from "@/lib/auth/AuthContext";
 
 const registerSchema = z
   .object({
@@ -27,8 +27,7 @@ const registerSchema = z
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function useRegisterForm() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const { login } = useAuth();
 
   // Direct registration mutation - simple and straightforward
   const registerMutation = useMutation({
@@ -46,11 +45,20 @@ export function useRegisterForm() {
     onSuccess: (response) => {
       console.log("✅ Registration successful:", response.data.user);
 
-      // Invalidate any cached user data
-      queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
-
-      // Redirect to dashboard
-      router.push("/dashboard");
+      // Use auth context to handle login after registration
+      login(
+        {
+          accessToken: response.data.token,
+          refreshToken: response.data.refreshToken,
+        },
+        {
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          role: response.data.user.role,
+          companyName: response.data.user.companyName,
+        }
+      );
     },
     onError: (error: any) => {
       console.error("❌ Registration failed:", error);
