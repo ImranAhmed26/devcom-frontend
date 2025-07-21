@@ -24,13 +24,14 @@ const SidebarHeader = () => (
 
 const SidebarNav = ({ onItemClick }: { onItemClick?: () => void }) => {
   const pathname = usePathname();
+  const normalizedPath = pathname.replace(/^\/[a-z]{2}(?=\/)/, "");
 
   return (
     <div className="flex-1 px-4 py-4">
       <p className="text-xs font-medium uppercase tracking-wider mb-3">Navigation</p>
       <div className="space-y-1">
         {sideBarData.menuItems.map((item) => {
-          const isActive = pathname === item.path || (pathname.startsWith(item.path + "/") && item.path !== "/app");
+          const isActive = normalizedPath === item.path || (normalizedPath.startsWith(item.path + "/") && item.path !== "/");
 
           return (
             <Link
