@@ -1,14 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { FolderKanban } from "lucide-react";
+import { FolderKanban, FolderPlus, Layers } from "lucide-react";
 import { workspaces } from "@/constants/AppConstants";
+import { AppButton } from "@/components/Interface/Button/AppButton";
+import { useTheme } from "next-themes";
 
 export function WorkSpaceList() {
+  const { theme } = useTheme();
   return (
     <div className="rounded-medium border border-gray-200 dark:border-gray-700">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 dark:bg-quadraGray rounded-t-medium">
-        <h2 className="text-lg font-semibold dark:text-white">Your Workspaces</h2>
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 dark:bg-quadraGray rounded-t-medium flex justify-between">
+        <h2 className="flex gap-2 items-center text-lg font-semibold dark:text-white">
+          {" "}
+          {<Layers color={theme === "dark" ? "#a18eff " : "#4f46e5"} />}Your Workspaces
+        </h2>
+        <div className="flex gap-2">
+          <AppButton onClick={() => {}} icon={<FolderPlus className="h-4 w-4" />}>
+            Add Workspace
+          </AppButton>
+        </div>
+        {/* <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 dark:bg-quadraGray rounded-t-medium">
+          <h2 className="text-lg font-semibold dark:text-white">Your Workspaces</h2>
+        
+        </div> */}
       </div>
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 dark:bg-transparent">
         {workspaces.data.map((ws) => (
