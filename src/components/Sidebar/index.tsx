@@ -56,18 +56,22 @@ const SidebarNav = ({ onItemClick }: { onItemClick?: () => void }) => {
 };
 
 const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => {
-  const { logout } = useAuthStore(); // ✅ Now we can use logout
+  const { logout } = useAuthStore();
+  const pathname = usePathname();
+  const normalizedPath = pathname.replace(/^\/[a-z]{2}(?=\/)/, "");
 
   const items = [
-    { icon: User, label: "Account", href: "user" },
-    { icon: CreditCard, label: "499 Tokens Remaining", href: "#" },
-    { icon: LogOut, label: "Logout", type: "button", click: logout },
+    { icon: User, label: "Account", path: "/user" },
+    { icon: CreditCard, label: "499 Tokens Remaining", path: "#" },
+    { icon: LogOut, label: "Logout", type: "button", click: logout, path: "" },
   ];
 
   return (
     <div className="px-4 pt-4 pb-5 border-t border-gray-200 dark:border-gray-600 space-y-1">
-      {items.map(({ icon: Icon, label, href, type, click }) =>
-        type === "button" ? (
+      {items.map(({ icon: Icon, label, path, type, click }) => {
+        const isActive = normalizedPath === path || (normalizedPath.startsWith(path + "/") && path !== "/");
+
+        return type === "button" ? (
           <button
             key={label}
             onClick={() => {
@@ -80,17 +84,21 @@ const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => {
             <span>{label}</span>
           </button>
         ) : (
-          <a
+          <Link
             key={label}
-            href={href}
+            href={path}
             onClick={onItemClick}
-            className="flex items-center gap-3 px-3 py-2 text-sm rounded-medium hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-brandDark transition-colors"
+            className={`flex items-center gap-3 px-3 py-2 text-sm rounded-medium   ${
+              isActive
+                ? "bg-brandLight dark:bg-brandDark text-white dark:text-gray-800 font-medium"
+                : "hover:bg-gray-500 hover:text-white dark:hover:bg-hexaGray dark:hover:text-brandDark"
+            }`}
           >
             <Icon className="h-4 w-4" />
             <span>{label}</span>
-          </a>
-        )
-      )}
+          </Link>
+        );
+      })}
     </div>
   );
 };
