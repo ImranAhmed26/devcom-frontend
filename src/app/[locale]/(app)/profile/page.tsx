@@ -1,4 +1,4 @@
-import AuthStatus from "@/components/App/Dashboard/user";
+import AuthStatus from "@/components/App/Profile";
 import React from "react";
 
 const page = () => {
