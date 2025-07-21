@@ -58,9 +58,9 @@ export const useAuthStore = create<AuthState>()(
         });
 
         // Redirect to home (using window.location for simplicity)
-        if (typeof window !== "undefined") {
-          window.location.href = "/";
-        }
+        // if (typeof window !== "undefined") {
+        //   window.location.href = "/";
+        // }
       },
 
       updateUser: (userData) => {

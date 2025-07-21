@@ -7,7 +7,7 @@ import React from "react";
 
 const AppNavbar = () => {
   const t = useTranslations("home");
-  const { user, logout } = useAuthStore();
+  const { user, } = useAuthStore();
 
   return (
     <header className="flex justify-between h-16 items-center gap-4 border-b border-gray-200 dark:border-none bg-white dark:bg-quadraGray px-4">
@@ -32,15 +32,6 @@ const AppNavbar = () => {
         <div className="flex gap-3 items-center">
           <LanguageDropdown />
           <ThemeSwitch />
-
-          {/* Logout button */}
-          <button
-            onClick={logout}
-            className="px-3 py-1.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-md transition-colors"
-            title="Logout"
-          >
-            Logout
-          </button>
         </div>
       </div>
     </header>

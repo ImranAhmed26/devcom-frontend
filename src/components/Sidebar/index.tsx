@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, CreditCard, User, Menu, X } from "lucide-react";
+import { FileText, CreditCard, User, Menu, X, LogOut } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
 import { sideBarData } from "@/constants/AppConstants";
 import clsx from "clsx";
+import { useAuthStore } from "@/lib/auth/authStore";
 
 const SidebarHeader = () => (
   <div className="h-16 px-4 py-2">
@@ -53,24 +54,45 @@ const SidebarNav = ({ onItemClick }: { onItemClick?: () => void }) => {
   );
 };
 
-const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => (
-  <div className="px-4 pt-4 pb-10 border-t border-gray-200 dark:border-gray-600 space-y-1">
-    {[
-      { icon: User, label: "Account", href: "user" },
-      { icon: CreditCard, label: "499 Tokens Remaining", href: "#" },
-    ].map(({ icon: Icon, label, href }) => (
-      <a
-        key={label}
-        href={href}
-        onClick={onItemClick}
-        className="flex items-center gap-3 px-3 py-2 text-sm rounded-medium hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-brandDark transition-colors"
-      >
-        <Icon className="h-4 w-4" />
-        <span>{label}</span>
-      </a>
-    ))}
-  </div>
-);
+const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => {
+  const { logout } = useAuthStore(); // ✅ Now we can use logout
+
+  const items = [
+    { icon: User, label: "Account", href: "user" },
+    { icon: CreditCard, label: "499 Tokens Remaining", href: "#" },
+    { icon: LogOut, label: "Logout", type: "button", click: logout },
+  ];
+
+  return (
+    <div className="px-4 pt-4 pb-5 border-t border-gray-200 dark:border-gray-600 space-y-1">
+      {items.map(({ icon: Icon, label, href, type, click }) =>
+        type === "button" ? (
+          <button
+            key={label}
+            onClick={() => {
+              click?.();
+              onItemClick?.(); // closes mobile sidebar if open
+            }}
+            className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-md transition-colors"
+          >
+            <Icon className="h-4 w-4" />
+            <span>{label}</span>
+          </button>
+        ) : (
+          <a
+            key={label}
+            href={href}
+            onClick={onItemClick}
+            className="flex items-center gap-3 px-3 py-2 text-sm rounded-medium hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-brandDark transition-colors"
+          >
+            <Icon className="h-4 w-4" />
+            <span>{label}</span>
+          </a>
+        )
+      )}
+    </div>
+  );
+};
 
 export function AppSidebar() {
   const [isOpen, setIsOpen] = useState(false);
