@@ -61,7 +61,7 @@ const SidebarFooter = ({ onItemClick }: { onItemClick?: () => void }) => {
   const normalizedPath = pathname.replace(/^\/[a-z]{2}(?=\/)/, "");
 
   const items = [
-    { icon: User, label: "Account", path: "/user" },
+    { icon: User, label: "Account", path: "/profile" },
     { icon: CreditCard, label: "499 Tokens Remaining", path: "#" },
     { icon: LogOut, label: "Logout", type: "button", click: logout, path: "" },
   ];
