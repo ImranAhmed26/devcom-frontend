@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useAuth } from "@/lib/auth/authStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -11,7 +11,8 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, redirectTo = "/auth/login", requireAuth = true }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, isUnauthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  const isUnauthenticated = !isAuthenticated;
   const router = useRouter();
 
   useEffect(() => {

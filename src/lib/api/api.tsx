@@ -143,11 +143,10 @@ class Api {
               return this.instance.request(originalRequest);
             }
           } catch {
-            // Refresh failed, clear tokens
+            // Refresh failed, clear tokens but don't auto-redirect
+            // Let the auth store/context handle logout decisions
             AuthStorage.clearAuthData();
-            if (typeof window !== "undefined") {
-              window.location.href = "/auth/login";
-            }
+            console.warn("🔄 Token refresh failed, tokens cleared");
           }
         }
 
