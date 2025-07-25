@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import AuthStorage, { type StoredUser } from "./storage";
+import { authEvents } from "./authEvents";
 
 interface AuthState {
   // State
@@ -14,6 +15,7 @@ interface AuthState {
   updateUser: (user: StoredUser) => void;
   setLoading: (loading: boolean) => void;
   initializeAuth: () => void;
+  handleTokenExpiration: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -41,7 +43,9 @@ export const useAuthStore = create<AuthState>()(
 
         // Redirect to dashboard after successful login
         if (typeof window !== "undefined") {
-          // window.location.href = "/dashboard";
+          // Use window.location for client-side redirects in Zustand store
+          // This maintains the current locale automatically
+          window.location.href = "/dashboard";
         }
       },
 
@@ -109,6 +113,27 @@ export const useAuthStore = create<AuthState>()(
           });
         }
       },
+
+      handleTokenExpiration: () => {
+        console.log("🔐 AuthStore: Handling token expiration");
+
+        // Clear localStorage
+        AuthStorage.clearAuthData();
+
+        // Update Zustand state
+        set({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+        });
+
+        // Redirect to login page
+        if (typeof window !== "undefined") {
+          // Use window.location for client-side redirects in Zustand store
+          // This maintains the current locale automatically
+          window.location.href = "/auth/login";
+        }
+      },
     }),
     {
       name: "auth-store",
@@ -124,6 +149,13 @@ export const useAuthStore = create<AuthState>()(
 // Initialize auth on app start
 if (typeof window !== "undefined") {
   useAuthStore.getState().initializeAuth();
+
+  // Subscribe to auth events
+  authEvents.subscribe((event) => {
+    if (event.type === "TOKEN_EXPIRED" || event.type === "UNAUTHORIZED") {
+      useAuthStore.getState().handleTokenExpiration();
+    }
+  });
 }
 
 // Export a simple hook for easier usage (optional - you can use useAuthStore directly)
@@ -136,5 +168,6 @@ export const useAuth = () => {
     login: store.login,
     logout: store.logout,
     updateUser: store.updateUser,
+    handleTokenExpiration: store.handleTokenExpiration,
   };
 };

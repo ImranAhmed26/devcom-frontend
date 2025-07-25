@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import env from "@/lib/env";
 import AuthStorage from "@/lib/auth/storage";
+import { authEvents } from "@/lib/auth/authEvents";
 
 // Extend Axios types to include our custom metadata
 declare module "axios" {
@@ -141,13 +142,22 @@ class Api {
               // Retry original request
               originalRequest.headers.Authorization = `Bearer ${token}`;
               return this.instance.request(originalRequest);
+            } else {
+              // No refresh token available
+              console.warn("🔄 No refresh token available");
+              authEvents.emit("TOKEN_EXPIRED", "No refresh token available");
             }
-          } catch {
-            // Refresh failed, clear tokens but don't auto-redirect
-            // Let the auth store/context handle logout decisions
+          } catch (refreshError) {
+            // Refresh failed, clear tokens and emit event
             AuthStorage.clearAuthData();
             console.warn("🔄 Token refresh failed, tokens cleared");
+            authEvents.emit("TOKEN_EXPIRED", "Token refresh failed");
           }
+        }
+
+        // Emit unauthorized event for 401 errors that couldn't be refreshed
+        if (error.response?.status === 401) {
+          authEvents.emit("UNAUTHORIZED", "Authentication required");
         }
 
         // Retry logic for network errors

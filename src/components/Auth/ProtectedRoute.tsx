@@ -1,8 +1,6 @@
 "use client";
 
-import { useAuth } from "@/lib/auth/authStore";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useAuthGuard } from "@/lib/auth/useAuthGuard";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -11,18 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, redirectTo = "/auth/login", requireAuth = true }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading } = useAuth();
-  const isUnauthenticated = !isAuthenticated;
-  const router = useRouter();
-
-  useEffect(() => {
-    if (requireAuth && isUnauthenticated) {
-      router.push(redirectTo);
-    } else if (!requireAuth && isAuthenticated) {
-      // Redirect authenticated users away from auth pages
-      router.push("/dashboard");
-    }
-  }, [isAuthenticated, isUnauthenticated, requireAuth, router, redirectTo]);
+  const { isLoading, shouldRender } = useAuthGuard({ redirectTo, requireAuth });
 
   // Show loading state
   if (isLoading) {
@@ -33,13 +20,9 @@ export default function ProtectedRoute({ children, redirectTo = "/auth/login", r
     );
   }
 
-  // Show content based on auth requirements
-  if (requireAuth && !isAuthenticated) {
-    return null; // Will redirect
-  }
-
-  if (!requireAuth && isAuthenticated) {
-    return null; // Will redirect
+  // Only render children if auth requirements are met
+  if (!shouldRender) {
+    return null; // Will redirect via useAuthGuard
   }
 
   return <>{children}</>;
