@@ -15,14 +15,34 @@ interface WorkspaceListProps {
 
 export function WorkspaceList({ className = "" }: WorkspaceListProps) {
   const { theme } = useTheme();
-  const { data: workspaces, isLoading, error, isError, refetch } = useWorkspaces();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const {
+    data: paginatedData,
+    isLoading,
+    error,
+    isError,
+    refetch,
+  } = useWorkspaces({
+    page: currentPage,
+    limit: pageSize,
+  });
+
   const deleteWorkspaceMutation = useDeleteWorkspace();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
+  // Extract workspaces array from paginated response
+  const workspaces = paginatedData?.data || [];
+  const totalWorkspaces = paginatedData?.total || 0;
+  const totalPages = paginatedData?.totalPages || 0;
+
   // Debug logging
   console.log("🎨 [WorkspaceList] Component render:");
+  console.log("🎨 [WorkspaceList] paginatedData:", paginatedData);
   console.log("🎨 [WorkspaceList] workspaces:", workspaces);
+  console.log("🎨 [WorkspaceList] totalWorkspaces:", totalWorkspaces);
   console.log("🎨 [WorkspaceList] isLoading:", isLoading);
   console.log("🎨 [WorkspaceList] isError:", isError);
   console.log("🎨 [WorkspaceList] error:", error);
@@ -124,7 +144,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 dark:bg-quadraGray rounded-t-medium flex justify-between items-center">
           <h2 className="flex gap-2 items-center text-lg font-semibold dark:text-white">
             <Layers color={theme === "dark" ? "#a18eff" : "#4f46e5"} />
-            Your Workspaces ({workspaces?.length || 0})
+            Your Workspaces ({totalWorkspaces})
           </h2>
           <div className="flex gap-2">
             <AppButton onClick={handleRefresh} icon={<RefreshCw className="h-4 w-4" />}>
@@ -143,7 +163,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
         </div>
 
         {/* Empty state */}
-        {!Array.isArray(workspaces) || workspaces.length === 0 ? (
+        {workspaces.length === 0 ? (
           <div className="p-12 text-center">
             <div className="text-gray-500 dark:text-gray-400 mb-4">
               <FolderKanban className="mx-auto h-16 w-16 text-gray-300 dark:text-gray-600" />
@@ -156,15 +176,60 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
           </div>
         ) : (
           /* Workspace grid */
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 dark:bg-transparent">
-            {(workspaces || []).map((workspace: Workspace) => (
-              <WorkspaceCard
-                key={workspace.id}
-                workspace={workspace}
-                onDelete={handleDeleteWorkspace}
-                isDeleting={deletingId === workspace.id}
-              />
-            ))}
+          <div className="p-6 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 dark:bg-transparent">
+              {workspaces.map((workspace: Workspace) => (
+                <WorkspaceCard
+                  key={workspace.id}
+                  workspace={workspace}
+                  onDelete={handleDeleteWorkspace}
+                  isDeleting={deletingId === workspace.id}
+                />
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-4">
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    Page {currentPage} of {totalPages} • {totalWorkspaces} total workspaces
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">Show:</span>
+                    <select
+                      value={pageSize}
+                      onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                        setCurrentPage(1); // Reset to first page when changing page size
+                      }}
+                      className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={50}>50</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    Previous
+                  </button>
+                  <span className="px-3 py-1 text-sm">{currentPage}</span>
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

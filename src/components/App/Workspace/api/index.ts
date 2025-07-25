@@ -1,13 +1,26 @@
 import api from "@/lib/api/api";
 import type { ApiResponse } from "@/lib/api/api";
-import type { Workspace, CreateWorkspaceRequest, UpdateWorkspaceRequest } from "../types";
+import type {
+  Workspace,
+  CreateWorkspaceRequest,
+  UpdateWorkspaceRequest,
+  WorkspaceListResponse,
+  PaginationParams,
+} from "../types";
 
 // Workspace API Functions
 export const workspaceApi = {
-  // Get all workspaces
-  getWorkspaces: async (): Promise<ApiResponse<Workspace[]>> => {
-    console.log("🏢 [Workspace API] Fetching workspaces from /workspace endpoint");
-    return await api.get<Workspace[]>("/workspace");
+  // Get all workspaces with pagination
+  getWorkspaces: async (params: PaginationParams = {}): Promise<ApiResponse<WorkspaceListResponse>> => {
+    const { page = 1, limit = 10 } = params;
+    console.log("🏢 [Workspace API] Fetching workspaces with pagination:", { page, limit });
+
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    return await api.get<WorkspaceListResponse>(`/workspace?${queryParams}`);
   },
 
   // Get workspace by ID

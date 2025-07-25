@@ -30,5 +30,21 @@ export interface WorkspaceState {
   isCreating: boolean;
 }
 
+// Pagination types
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export type WorkspaceListResponse = PaginatedResponse<Workspace>;
+
 // Re-export for convenience
 export type { Workspace as WorkspaceType };

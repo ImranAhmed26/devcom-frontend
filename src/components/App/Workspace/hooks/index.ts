@@ -1,31 +1,32 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { workspaceApi } from "../api";
-import type { Workspace, CreateWorkspaceRequest, UpdateWorkspaceRequest } from "../types";
+import type { Workspace, CreateWorkspaceRequest, UpdateWorkspaceRequest, PaginationParams } from "../types";
 
 // Query Keys - centralized for better cache management
 export const workspaceKeys = {
   all: ["workspaces"] as const,
   lists: () => [...workspaceKeys.all, "list"] as const,
-  list: (filters: Record<string, any>) => [...workspaceKeys.lists(), { filters }] as const,
+  list: (params: PaginationParams) => [...workspaceKeys.lists(), params] as const,
   details: () => [...workspaceKeys.all, "detail"] as const,
   detail: (id: string) => [...workspaceKeys.details(), id] as const,
 };
 
-// Hook to fetch all workspaces
-export function useWorkspaces() {
+// Hook to fetch workspaces with pagination
+export function useWorkspaces(params: PaginationParams = { page: 1, limit: 10 }) {
   return useQuery({
-    queryKey: workspaceKeys.lists(),
+    queryKey: workspaceKeys.list(params),
     queryFn: async () => {
-      console.log("🪝 [useWorkspaces] Fetching workspaces...");
-      const response = await workspaceApi.getWorkspaces();
+      console.log("🪝 [useWorkspaces] Fetching workspaces with params:", params);
+      const response = await workspaceApi.getWorkspaces(params);
       console.log("🪝 [useWorkspaces] API response:", response);
       console.log("🪝 [useWorkspaces] Response data:", response.data);
-      console.log("🪝 [useWorkspaces] Is array?", Array.isArray(response.data));
 
-      // Ensure we always return an array
-      const workspaces = Array.isArray(response.data) ? response.data : [];
-      console.log("🪝 [useWorkspaces] Returning workspaces:", workspaces);
-      return workspaces;
+      // The response now has pagination structure
+      const paginatedData = response.data;
+      console.log("🪝 [useWorkspaces] Paginated data:", paginatedData);
+      console.log("🪝 [useWorkspaces] Workspaces array:", paginatedData.data);
+
+      return paginatedData;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: (failureCount, error: any) => {
@@ -78,15 +79,9 @@ export function useCreateWorkspace() {
       return response.data;
     },
     onSuccess: (newWorkspace) => {
-      console.log("🪝 [useCreateWorkspace] Success, invalidating queries");
+      console.log("🪝 [useCreateWorkspace] Success, invalidating queries", newWorkspace);
 
-      // Add the new workspace to the cache optimistically
-      queryClient.setQueryData<Workspace[]>(workspaceKeys.lists(), (old) => {
-        if (!old) return [newWorkspace];
-        return [newWorkspace, ...old];
-      });
-
-      // Invalidate and refetch workspaces list
+      // Invalidate all workspace list queries (all pages)
       queryClient.invalidateQueries({ queryKey: workspaceKeys.lists() });
     },
     onError: (error: any) => {
@@ -150,16 +145,10 @@ export function useDeleteWorkspace() {
     onSuccess: (deletedId) => {
       console.log("🪝 [useDeleteWorkspace] Success, updating cache");
 
-      // Remove the workspace from the list cache optimistically
-      queryClient.setQueryData<Workspace[]>(workspaceKeys.lists(), (old) => {
-        if (!old) return [];
-        return old.filter((ws) => ws.id !== deletedId);
-      });
-
       // Remove the individual workspace cache
       queryClient.removeQueries({ queryKey: workspaceKeys.detail(deletedId) });
 
-      // Invalidate the list to ensure consistency
+      // Invalidate all workspace list queries (all pages)
       queryClient.invalidateQueries({ queryKey: workspaceKeys.lists() });
     },
     onError: (error: any) => {
