@@ -26,7 +26,8 @@ export const useAuthStore = create<AuthState>()(
 
       // Actions
       login: (tokens, userData) => {
-        console.log("🔐 AuthStore: Logging in user:", userData.name);
+        console.log("🔐 AuthStore: Logging in user:", userData);
+        console.log("🔐 AuthStore: Logging in token:", tokens);
 
         // Store in localStorage
         AuthStorage.setAuthData(tokens, userData);
@@ -40,7 +41,7 @@ export const useAuthStore = create<AuthState>()(
 
         // Redirect to dashboard after successful login
         if (typeof window !== "undefined") {
-          window.location.href = "/dashboard";
+          // window.location.href = "/dashboard";
         }
       },
 

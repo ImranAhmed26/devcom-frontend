@@ -20,6 +20,13 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
+  // Debug logging
+  console.log("🎨 [WorkspaceList] Component render:");
+  console.log("🎨 [WorkspaceList] workspaces:", workspaces);
+  console.log("🎨 [WorkspaceList] isLoading:", isLoading);
+  console.log("🎨 [WorkspaceList] isError:", isError);
+  console.log("🎨 [WorkspaceList] error:", error);
+
   const handleDeleteWorkspace = async (id: string, name: string) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete "${name}"?\n\nThis action cannot be undone and will permanently remove all associated documents and jobs.`
@@ -136,7 +143,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
         </div>
 
         {/* Empty state */}
-        {!workspaces || workspaces.length === 0 ? (
+        {!Array.isArray(workspaces) || workspaces.length === 0 ? (
           <div className="p-12 text-center">
             <div className="text-gray-500 dark:text-gray-400 mb-4">
               <FolderKanban className="mx-auto h-16 w-16 text-gray-300 dark:text-gray-600" />
@@ -150,7 +157,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
         ) : (
           /* Workspace grid */
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 dark:bg-transparent">
-            {workspaces.map((workspace: Workspace) => (
+            {(workspaces || []).map((workspace: Workspace) => (
               <WorkspaceCard
                 key={workspace.id}
                 workspace={workspace}

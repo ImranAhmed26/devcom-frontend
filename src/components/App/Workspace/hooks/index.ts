@@ -18,8 +18,14 @@ export function useWorkspaces() {
     queryFn: async () => {
       console.log("🪝 [useWorkspaces] Fetching workspaces...");
       const response = await workspaceApi.getWorkspaces();
-      console.log("🪝 [useWorkspaces] Fetched", response.data.length, "workspaces");
-      return response.data;
+      console.log("🪝 [useWorkspaces] API response:", response);
+      console.log("🪝 [useWorkspaces] Response data:", response.data);
+      console.log("🪝 [useWorkspaces] Is array?", Array.isArray(response.data));
+
+      // Ensure we always return an array
+      const workspaces = Array.isArray(response.data) ? response.data : [];
+      console.log("🪝 [useWorkspaces] Returning workspaces:", workspaces);
+      return workspaces;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: (failureCount, error: any) => {

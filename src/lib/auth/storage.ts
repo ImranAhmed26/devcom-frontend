@@ -31,8 +31,10 @@ class AuthStorage {
   }
 
   static setAccessToken(token: string): void {
+    console.log("🔍 [AuthStorage] setAccessToken called with:", token, typeof token);
     if (this.isBrowser()) {
       localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+      console.log("🔍 [AuthStorage] Token stored in localStorage:", localStorage.getItem(this.ACCESS_TOKEN_KEY));
     }
   }
 
@@ -42,8 +44,10 @@ class AuthStorage {
   }
 
   static setRefreshToken(token: string): void {
+    console.log("🔍 [AuthStorage] setRefreshToken called with:", token, typeof token);
     if (this.isBrowser()) {
       localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+      console.log("🔍 [AuthStorage] Refresh token stored in localStorage:", localStorage.getItem(this.REFRESH_TOKEN_KEY));
     }
   }
 
@@ -68,9 +72,17 @@ class AuthStorage {
 
   // Set all auth data at once (for login/register)
   static setAuthData(tokens: AuthTokens, user: StoredUser): void {
+    console.log("🔍 [AuthStorage] setAuthData called with:", { tokens, user });
+    console.log("🔍 [AuthStorage] accessToken:", tokens.accessToken);
+    console.log("🔍 [AuthStorage] refreshToken:", tokens.refreshToken);
+
     this.setAccessToken(tokens.accessToken);
     this.setRefreshToken(tokens.refreshToken);
     this.setUser(user);
+
+    // Verify what was actually stored
+    console.log("🔍 [AuthStorage] Stored accessToken:", this.getAccessToken());
+    console.log("🔍 [AuthStorage] Stored refreshToken:", this.getRefreshToken());
   }
 
   // Clear all auth data (for logout)
