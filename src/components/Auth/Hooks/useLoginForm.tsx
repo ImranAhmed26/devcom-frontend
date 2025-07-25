@@ -32,12 +32,16 @@ export function useLoginForm() {
     },
     onSuccess: (response) => {
       console.log("✅ Login successful:", response.data.user);
+      console.log("🔍 [Login] Full API response:", response);
+      console.log("🔍 [Login] Response data:", response.data);
+      console.log("🔍 [Login] Token from response:", response.data.access_token);
+      console.log("🔍 [Login] RefreshToken from response:", response.data.refresh_token);
 
       // Use auth context to handle login
       login(
         {
-          accessToken: response.data.token,
-          refreshToken: response.data.refreshToken,
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
         },
         {
           id: response.data.user.id,

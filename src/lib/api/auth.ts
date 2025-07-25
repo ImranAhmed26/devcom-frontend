@@ -17,8 +17,8 @@ export interface LoginRequest {
 
 export interface AuthResponse {
   user: User;
-  token: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface User {
@@ -52,7 +52,7 @@ export const authApi = {
   },
 
   // Login user
-  login: async (data: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
+  login: async (data: LoginRequest): Promise<ApiResponse<AuthResponse>> => { 
     console.log("🌟 authApi.login: Called with data:", data);
 
     try {
