@@ -48,6 +48,7 @@ export function useLoginForm() {
           name: response.data.user.name,
           email: response.data.user.email,
           role: response.data.user.role,
+          userType: response.data.user.userType,
           companyName: response.data.user.companyName,
         }
       );

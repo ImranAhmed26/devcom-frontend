@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FolderPlus, X } from "lucide-react";
+import { FolderPlus, X, Users, UserCheck } from "lucide-react";
 import { useCreateWorkspace } from "../hooks";
+import { useAuth } from "@/lib/auth/authStore";
+import { canManageWorkspaceMembers, getUserTypeName } from "@/lib/auth/permissions";
 import type { CreateWorkspaceRequest } from "../types";
 
 const createWorkspaceSchema = z.object({
@@ -17,12 +19,16 @@ type CreateWorkspaceFormValues = z.infer<typeof createWorkspaceSchema>;
 interface CreateWorkspaceFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
-  trigger?: React.ReactNode;
 }
 
-export function CreateWorkspaceForm({ onSuccess, onCancel, trigger }: CreateWorkspaceFormProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function CreateWorkspaceForm({ onSuccess, onCancel }: CreateWorkspaceFormProps) {
+  const { user } = useAuth();
+  console.log("USER", user);
   const createWorkspaceMutation = useCreateWorkspace();
+  const [addAllUsers, setAddAllUsers] = useState(true);
+
+  // Check if user can manage workspace members (company owners/admins)
+  const canManageMembers = canManageWorkspaceMembers(user);
 
   const {
     register,
@@ -38,9 +44,17 @@ export function CreateWorkspaceForm({ onSuccess, onCancel, trigger }: CreateWork
 
   const onSubmit = async (data: CreateWorkspaceFormValues) => {
     try {
-      await createWorkspaceMutation.mutateAsync(data as CreateWorkspaceRequest);
+      const workspaceData: CreateWorkspaceRequest = {
+        name: data.name,
+        // Only include user management fields if user can manage members
+        ...(canManageMembers && {
+          addAllUsers,
+          userList: addAllUsers ? [] : [], // TODO: Implement user selection when addAllUsers is false
+        }),
+      };
+
+      await createWorkspaceMutation.mutateAsync(workspaceData);
       reset();
-      setIsOpen(false);
       onSuccess?.();
     } catch (error) {
       console.error("Failed to create workspace:", error);
@@ -49,29 +63,9 @@ export function CreateWorkspaceForm({ onSuccess, onCancel, trigger }: CreateWork
 
   const handleCancel = () => {
     reset();
-    setIsOpen(false);
     onCancel?.();
   };
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-
-  // Render trigger button if form is closed
-  if (!isOpen) {
-    return (
-      <div onClick={handleOpen}>
-        {trigger || (
-          <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-            <FolderPlus className="w-4 h-4 mr-2" />
-            Create Workspace
-          </button>
-        )}
-      </div>
-    );
-  }
-
-  // Render form when open
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-w-md mx-auto">
       <div className="flex items-center justify-between mb-4">
@@ -96,6 +90,58 @@ export function CreateWorkspaceForm({ onSuccess, onCancel, trigger }: CreateWork
           />
           {errors.name && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name.message}</p>}
         </div>
+
+        {/* User Management Section - Only show for users who can manage members */}
+        {canManageMembers && (
+          <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
+            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+              <Users className="w-4 h-4 mr-2" />
+              Workspace Members
+            </h4>
+
+            <div className="space-y-3">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="userSelection"
+                  checked={addAllUsers}
+                  onChange={() => setAddAllUsers(true)}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                />
+                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 flex items-center">
+                  <UserCheck className="w-4 h-4 mr-1" />
+                  Add all company users
+                </span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="userSelection"
+                  checked={!addAllUsers}
+                  onChange={() => setAddAllUsers(false)}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                />
+                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 flex items-center">
+                  <Users className="w-4 h-4 mr-1" />
+                  Select specific users
+                </span>
+              </label>
+
+              {!addAllUsers && (
+                <div className="ml-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    User selection will be implemented in a future update. For now, only you will be added to the workspace.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              As a {user ? getUserTypeName(user.userType) : 'Company Owner'}, you will be automatically added as the workspace owner regardless of the selection above.
+            </p>
+          </div>
+        )}
 
         {/* Show API error if exists */}
         {createWorkspaceMutation.error && (

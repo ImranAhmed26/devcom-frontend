@@ -5,7 +5,8 @@ export interface StoredUser {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: number; // 0=ADMIN, 1=INTERNAL, 2=USER
+  userType: number; // 0=INDIVIDUAL_FREELANCER, 1=COMPANY_USER, 2=COMPANY_OWNER
   companyName?: string;
 }
 

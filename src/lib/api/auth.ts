@@ -26,15 +26,16 @@ export interface User {
   name: string;
   email: string;
   companyName?: string;
-  role: "user" | "admin";
+  role: number; // 0=ADMIN, 1=INTERNAL, 2=USER
+  userType: number; // 0=INDIVIDUAL_FREELANCER, 1=COMPANY_USER, 2=COMPANY_OWNER
   emailVerified: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface RefreshTokenResponse {
-  token: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 // Authentication API Functions
@@ -52,7 +53,7 @@ export const authApi = {
   },
 
   // Login user
-  login: async (data: LoginRequest): Promise<ApiResponse<AuthResponse>> => { 
+  login: async (data: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
     console.log("🌟 authApi.login: Called with data:", data);
 
     try {
@@ -99,8 +100,8 @@ export const authApi = {
 
     // Update stored tokens
     if (response.success) {
-      AuthStorage.setAccessToken(response.data.token);
-      AuthStorage.setRefreshToken(response.data.refreshToken);
+      AuthStorage.setAccessToken(response.data.access_token);
+      AuthStorage.setRefreshToken(response.data.refresh_token);
     }
 
     return response;

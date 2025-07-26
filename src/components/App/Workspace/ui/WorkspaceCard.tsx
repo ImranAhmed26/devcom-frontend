@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { FolderKanban, Trash2 } from "lucide-react";
 import type { Workspace } from "../types";
 
