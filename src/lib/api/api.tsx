@@ -150,7 +150,7 @@ class Api {
           } catch (refreshError) {
             // Refresh failed, clear tokens and emit event
             AuthStorage.clearAuthData();
-            console.warn("🔄 Token refresh failed, tokens cleared");
+            console.warn("🔄 Token refresh failed, tokens cleared", refreshError);
             authEvents.emit("TOKEN_EXPIRED", "Token refresh failed");
           }
         }
