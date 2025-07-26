@@ -34,8 +34,8 @@ export interface User {
 }
 
 export interface RefreshTokenResponse {
-  token: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 // Authentication API Functions
@@ -100,8 +100,8 @@ export const authApi = {
 
     // Update stored tokens
     if (response.success) {
-      AuthStorage.setAccessToken(response.data.token);
-      AuthStorage.setRefreshToken(response.data.refreshToken);
+      AuthStorage.setAccessToken(response.data.access_token);
+      AuthStorage.setRefreshToken(response.data.refresh_token);
     }
 
     return response;

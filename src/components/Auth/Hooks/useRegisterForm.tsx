@@ -48,14 +48,15 @@ export function useRegisterForm() {
       // Use auth context to handle login after registration
       login(
         {
-          accessToken: response.data.token,
-          refreshToken: response.data.refreshToken,
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
         },
         {
           id: response.data.user.id,
           name: response.data.user.name,
           email: response.data.user.email,
           role: response.data.user.role,
+          userType: response.data.user.userType,
           companyName: response.data.user.companyName,
         }
       );

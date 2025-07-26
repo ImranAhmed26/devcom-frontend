@@ -136,11 +136,11 @@ class Api {
                 refreshToken,
               });
 
-              const { token } = response.data;
-              AuthStorage.setAccessToken(token);
+              const { access_token } = response.data;
+              AuthStorage.setAccessToken(access_token);
 
               // Retry original request
-              originalRequest.headers.Authorization = `Bearer ${token}`;
+              originalRequest.headers.Authorization = `Bearer ${access_token}`;
               return this.instance.request(originalRequest);
             } else {
               // No refresh token available

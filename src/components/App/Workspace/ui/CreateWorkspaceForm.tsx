@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FolderPlus, X, Users, UserCheck } from "lucide-react";
 import { useCreateWorkspace } from "../hooks";
 import { useAuth } from "@/lib/auth/authStore";
-import { canManageWorkspaceMembers } from "@/lib/auth/permissions";
+import { canManageWorkspaceMembers, getUserTypeName } from "@/lib/auth/permissions";
 import type { CreateWorkspaceRequest } from "../types";
 
 const createWorkspaceSchema = z.object({
@@ -138,7 +138,7 @@ export function CreateWorkspaceForm({ onSuccess, onCancel }: CreateWorkspaceForm
             </div>
 
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              You will be automatically added as the workspace owner regardless of the selection above.
+              As a {user ? getUserTypeName(user.userType) : 'Company Owner'}, you will be automatically added as the workspace owner regardless of the selection above.
             </p>
           </div>
         )}
