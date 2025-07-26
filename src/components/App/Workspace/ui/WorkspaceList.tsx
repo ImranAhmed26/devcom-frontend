@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Layers, RefreshCw, FolderKanban, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useWorkspaces, useDeleteWorkspace } from "../hooks";
+import { useAuth } from "@/lib/auth/authStore";
+import { canCreateWorkspace } from "@/lib/auth/permissions";
 import { WorkspaceCard } from "./WorkspaceCard";
 import { CreateWorkspaceForm } from "./CreateWorkspaceForm";
 import { AppButton } from "@/components/Interface/Button/AppButton";
@@ -15,8 +17,12 @@ interface WorkspaceListProps {
 
 export function WorkspaceList({ className = "" }: WorkspaceListProps) {
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+
+  // Check if user can create workspaces
+  const userCanCreateWorkspace = canCreateWorkspace(user);
 
   const {
     data: paginatedData,
@@ -150,15 +156,11 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
             <AppButton onClick={handleRefresh} icon={<RefreshCw className="h-4 w-4" />}>
               Refresh
             </AppButton>
-            <CreateWorkspaceForm
-              onSuccess={handleCreateSuccess}
-              onCancel={handleCreateCancel}
-              trigger={
-                <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderKanban className="h-4 w-4" />}>
-                  Add Workspace
-                </AppButton>
-              }
-            />
+            {userCanCreateWorkspace && (
+              <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderKanban className="h-4 w-4" />}>
+                Add Workspace
+              </AppButton>
+            )}
           </div>
         </div>
 
@@ -170,9 +172,15 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
             </div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No workspaces found</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto">
-              Get started by creating your first workspace to organize your documents and OCR jobs.
+              {userCanCreateWorkspace
+                ? "Get started by creating your first workspace to organize your documents and OCR jobs."
+                : "You don't have access to any workspaces yet. Contact your company administrator to be added to a workspace."}
             </p>
-            <CreateWorkspaceForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
+            {userCanCreateWorkspace && (
+              <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderKanban className="h-4 w-4" />}>
+                Create Your First Workspace
+              </AppButton>
+            )}
           </div>
         ) : (
           /* Workspace grid */

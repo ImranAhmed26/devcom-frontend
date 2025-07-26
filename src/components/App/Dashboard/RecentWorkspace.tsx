@@ -4,8 +4,11 @@ import { Link } from "@/i18n/navigation";
 import { FolderPlus, FolderKanban, Layers } from "lucide-react";
 import { workspaces } from "@/constants/AppConstants";
 import { AppButton } from "@/components/Interface/Button/AppButton";
+import { useAuth } from "@/lib/auth/authStore";
 
 export function RecentWorkSpaceList() {
+  const { user } = useAuth();
+  console.log("USER", user);
   const hasWorkspaces = workspaces?.data?.length > 0;
   const recentWorkspaces = workspaces.data.slice(0, 6); // Max 6 items
 

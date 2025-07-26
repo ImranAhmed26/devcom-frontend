@@ -12,6 +12,8 @@ export interface Workspace {
 
 export interface CreateWorkspaceRequest {
   name: string;
+  addAllUsers?: boolean;
+  userList?: string[];
 }
 
 export interface UpdateWorkspaceRequest {
