@@ -28,7 +28,7 @@ export function DeleteWorkspaceModal({ workspaceName, onConfirm, onCancel, isDel
 
       <div className="mb-6">
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
-          Are you sure you want to delete <span className="font-semibold">"{workspaceName}"</span>?
+          Are you sure you want to delete <span className="font-semibold">{`${workspaceName}`}</span>?
         </p>
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
           <p className="text-sm text-red-700 dark:text-red-300">
