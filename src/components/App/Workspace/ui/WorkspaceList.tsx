@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth/authStore";
 import { canCreateWorkspace } from "@/lib/auth/permissions";
 import { WorkspaceCard } from "./WorkspaceCard";
 import { CreateWorkspaceForm } from "./CreateWorkspaceForm";
+import { DeleteWorkspaceModal } from "./DeleteWorkspaceModal";
 import { AppButton } from "@/components/Interface/Button/AppButton";
 import type { Workspace } from "../types";
 
@@ -38,6 +39,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
   const deleteWorkspaceMutation = useDeleteWorkspace();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [workspaceToDelete, setWorkspaceToDelete] = useState<{ id: string; name: string } | null>(null);
 
   // Extract workspaces array from paginated response
   const workspaces = paginatedData?.data || [];
@@ -54,20 +56,25 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
   console.log("🎨 [WorkspaceList] error:", error);
 
   const handleDeleteWorkspace = async (id: string, name: string) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${name}"?\n\nThis action cannot be undone and will permanently remove all associated documents and jobs.`
-    );
+    setWorkspaceToDelete({ id, name });
+  };
 
-    if (!confirmed) return;
+  const handleConfirmDelete = async () => {
+    if (!workspaceToDelete) return;
 
-    setDeletingId(id);
+    setDeletingId(workspaceToDelete.id);
     try {
-      await deleteWorkspaceMutation.mutateAsync(id);
+      await deleteWorkspaceMutation.mutateAsync(workspaceToDelete.id);
     } catch (error) {
       console.error("Failed to delete workspace:", error);
     } finally {
       setDeletingId(null);
+      setWorkspaceToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setWorkspaceToDelete(null);
   };
 
   const handleRefresh = () => {
@@ -246,6 +253,18 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
       {showCreateForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <CreateWorkspaceForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
+        </div>
+      )}
+
+      {/* Delete workspace confirmation modal */}
+      {workspaceToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <DeleteWorkspaceModal
+            workspaceName={workspaceToDelete.name}
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+            isDeleting={deletingId === workspaceToDelete.id}
+          />
         </div>
       )}
     </div>
