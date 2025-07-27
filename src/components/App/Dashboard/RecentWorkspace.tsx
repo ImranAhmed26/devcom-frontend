@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { FolderPlus, FolderKanban, Layers, AlertCircle, RefreshCw } from "lucide-react";
+import { FolderPlus, FolderKanban, Layers, AlertCircle } from "lucide-react";
 import { AppButton } from "@/components/Interface/Button/AppButton";
 import { useAuth } from "@/lib/auth/authStore";
 import { useRecentWorkspaces } from "@/components/App/Workspace/workspace";
@@ -23,10 +23,6 @@ export function RecentWorkSpaceList() {
         <div className="flex gap-2">
           <AppButton href="/workspace" icon={<Layers className="h-4 w-4" />}>
             View All
-          </AppButton>
-
-          <AppButton onClick={() => refetch()} icon={<RefreshCw className="h-4 w-4" />}>
-            Refresh
           </AppButton>
 
           {userCanCreateWorkspace && (

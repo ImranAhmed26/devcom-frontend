@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, RefreshCw, FolderKanban, AlertCircle } from "lucide-react";
+import { Layers, FolderKanban, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useWorkspaces, useDeleteWorkspace } from "../workspace";
 import { useAuth } from "@/lib/auth/authStore";
@@ -77,11 +77,6 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
     setWorkspaceToDelete(null);
   };
 
-  const handleRefresh = () => {
-    console.log("🔄 [WorkspaceList] Refreshing workspaces...");
-    refetch();
-  };
-
   const handleCreateSuccess = () => {
     setShowCreateForm(false);
     console.log("✅ [WorkspaceList] Workspace created, form closed");
@@ -122,9 +117,6 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
               <Layers color={theme === "dark" ? "#a18eff" : "#4f46e5"} />
               Your Workspaces
             </h2>
-            <AppButton onClick={handleRefresh} icon={<RefreshCw className="h-4 w-4" />}>
-              Retry
-            </AppButton>
           </div>
           <div className="p-6">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4">
@@ -136,7 +128,7 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
                     {(error as any)?.message || "Failed to fetch workspaces. Please check your connection and try again."}
                   </p>
                   <button
-                    onClick={handleRefresh}
+                    onClick={() => refetch()}
                     className="mt-3 text-sm text-red-800 dark:text-red-400 underline hover:no-underline"
                   >
                     Try again
@@ -160,9 +152,6 @@ export function WorkspaceList({ className = "" }: WorkspaceListProps) {
             Your Workspaces ({totalWorkspaces})
           </h2>
           <div className="flex gap-2">
-            <AppButton onClick={handleRefresh} icon={<RefreshCw className="h-4 w-4" />}>
-              Refresh
-            </AppButton>
             {userCanCreateWorkspace && (
               <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderKanban className="h-4 w-4" />}>
                 Add Workspace
