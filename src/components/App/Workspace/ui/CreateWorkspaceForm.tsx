@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FolderPlus, X, Users, UserCheck } from "lucide-react";
-import { useCreateWorkspace } from "../hooks";
+import { useCreateWorkspace } from "../workspace";
 import { useAuth } from "@/lib/auth/authStore";
 import { canManageWorkspaceMembers, getUserTypeName } from "@/lib/auth/permissions";
 import type { CreateWorkspaceRequest } from "../types";

@@ -14,7 +14,15 @@ export type {
 export { workspaceApi } from "./api";
 
 // Hooks
-export { useWorkspaces, useWorkspace, useCreateWorkspace, useUpdateWorkspace, useDeleteWorkspace, workspaceKeys } from "./hooks";
+export {
+  useWorkspaces,
+  useRecentWorkspaces,
+  useWorkspace,
+  useCreateWorkspace,
+  useUpdateWorkspace,
+  useDeleteWorkspace,
+  workspaceKeys,
+} from "./hooks";
 
 // UI Components
 export { WorkspaceList } from "./ui/WorkspaceList";

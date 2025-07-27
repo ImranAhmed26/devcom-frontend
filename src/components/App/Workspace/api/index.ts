@@ -46,6 +46,12 @@ export const workspaceApi = {
     console.log(`🏢 [Workspace API] Deleting workspace ${id}`);
     return await api.delete<{ message: string }>(`/workspace/${id}`);
   },
+
+  // Get recent workspaces (6 most recently used)
+  getRecentWorkspaces: async (): Promise<ApiResponse<Workspace[]>> => {
+    console.log("🏢 [Workspace API] Fetching recent workspaces");
+    return await api.get<Workspace[]>("/workspace/recent");
+  },
 };
 
 export default workspaceApi;
