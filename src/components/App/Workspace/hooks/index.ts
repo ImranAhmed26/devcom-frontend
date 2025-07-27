@@ -7,9 +7,47 @@ export const workspaceKeys = {
   all: ["workspaces"] as const,
   lists: () => [...workspaceKeys.all, "list"] as const,
   list: (params: PaginationParams) => [...workspaceKeys.lists(), params] as const,
+  recent: () => [...workspaceKeys.all, "recent"] as const,
   details: () => [...workspaceKeys.all, "detail"] as const,
   detail: (id: string) => [...workspaceKeys.details(), id] as const,
 };
+
+// Hook to fetch recent workspaces (max 6 for dashboard)
+export function useRecentWorkspaces() {
+  return useQuery({
+    queryKey: workspaceKeys.recent(),
+    queryFn: async () => {
+      console.log("🪝 [useRecentWorkspaces] Fetching recent workspaces...");
+      const response = await workspaceApi.getWorkspaces({ page: 1, limit: 6 });
+      console.log("🪝 [useRecentWorkspaces] API response:", response);
+
+      const paginatedData = response.data;
+      // Return just the workspaces array, sorted by creation date (most recent first)
+      const workspaces = paginatedData.data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+      console.log("🪝 [useRecentWorkspaces] Recent workspaces:", workspaces);
+      return workspaces;
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes (shorter than regular workspaces)
+    retry: (failureCount, error: any) => {
+      // Don't retry on auth errors
+      if (error?.code === "UNAUTHORIZED" || error?.status === 401) {
+        console.warn("🪝 [useRecentWorkspaces] Auth error, not retrying");
+        return false;
+      }
+      // Don't retry on 4xx errors
+      if (error?.status >= 400 && error?.status < 500) {
+        console.warn("🪝 [useRecentWorkspaces] Client error, not retrying");
+        return false;
+      }
+      console.log("🪝 [useRecentWorkspaces] Retrying...", failureCount);
+      return failureCount < 3;
+    },
+    meta: {
+      errorMessage: "Failed to load recent workspaces",
+    },
+  });
+}
 
 // Hook to fetch workspaces with pagination
 export function useWorkspaces(params: PaginationParams = { page: 1, limit: 10 }) {
@@ -83,6 +121,8 @@ export function useCreateWorkspace() {
 
       // Invalidate all workspace list queries (all pages)
       queryClient.invalidateQueries({ queryKey: workspaceKeys.lists() });
+      // Also invalidate recent workspaces
+      queryClient.invalidateQueries({ queryKey: workspaceKeys.recent() });
     },
     onError: (error: any) => {
       console.error("🪝 [useCreateWorkspace] Error:", error?.message || error);
@@ -120,6 +160,7 @@ export function useUpdateWorkspace() {
       // Invalidate related queries
       queryClient.invalidateQueries({ queryKey: workspaceKeys.lists() });
       queryClient.invalidateQueries({ queryKey: workspaceKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: workspaceKeys.recent() });
     },
     onError: (error: any) => {
       console.error("🪝 [useUpdateWorkspace] Error:", error?.message || error);
@@ -150,6 +191,8 @@ export function useDeleteWorkspace() {
 
       // Invalidate all workspace list queries (all pages)
       queryClient.invalidateQueries({ queryKey: workspaceKeys.lists() });
+      // Also invalidate recent workspaces
+      queryClient.invalidateQueries({ queryKey: workspaceKeys.recent() });
     },
     onError: (error: any) => {
       console.error("🪝 [useDeleteWorkspace] Error:", error?.message || error);
