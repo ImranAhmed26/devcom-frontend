@@ -274,17 +274,20 @@ export const individualWorkspaceApi = {
     await simulateDelay(400);
     simulateError(0.03);
 
-    if (workspaceId !== mockWorkspace.id) {
-      throw new Error("Workspace not found");
-    }
-
-    // Update mock workspace
-    Object.assign(mockWorkspace, updates, {
+    // Create updated workspace with the requested ID
+    const updatedWorkspace: Workspace = {
+      ...mockWorkspace,
+      ...updates,
+      id: workspaceId,
+      settings: {
+        ...mockWorkspace.settings,
+        ...updates.settings,
+      },
       updatedAt: new Date().toISOString(),
-    });
+    };
 
     return {
-      data: mockWorkspace,
+      data: updatedWorkspace,
       success: true,
       status: 200,
       message: "Workspace updated successfully",
