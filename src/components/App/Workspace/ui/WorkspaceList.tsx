@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Layers, RefreshCw, FolderKanban, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useWorkspaces, useDeleteWorkspace } from "../hooks";
+import { useWorkspaces, useDeleteWorkspace } from "../workspace";
 import { useAuth } from "@/lib/auth/authStore";
 import { canCreateWorkspace } from "@/lib/auth/permissions";
 import { WorkspaceCard } from "./WorkspaceCard";
