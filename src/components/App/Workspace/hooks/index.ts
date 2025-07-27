@@ -12,19 +12,17 @@ export const workspaceKeys = {
   detail: (id: string) => [...workspaceKeys.details(), id] as const,
 };
 
-// Hook to fetch recent workspaces (max 6 for dashboard)
+// Hook to fetch recent workspaces (6 most recently used)
 export function useRecentWorkspaces() {
   return useQuery({
     queryKey: workspaceKeys.recent(),
     queryFn: async () => {
       console.log("🪝 [useRecentWorkspaces] Fetching recent workspaces...");
-      const response = await workspaceApi.getWorkspaces({ page: 1, limit: 6 });
+      const response = await workspaceApi.getRecentWorkspaces();
       console.log("🪝 [useRecentWorkspaces] API response:", response);
 
-      const paginatedData = response.data;
-      // Return just the workspaces array, sorted by creation date (most recent first)
-      const workspaces = paginatedData.data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
+      // The API already returns the 6 most recently used workspaces, properly sorted
+      const workspaces = response.data;
       console.log("🪝 [useRecentWorkspaces] Recent workspaces:", workspaces);
       return workspaces;
     },
