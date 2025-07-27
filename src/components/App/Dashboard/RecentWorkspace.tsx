@@ -1,20 +1,31 @@
 "use client";
 
+import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { FolderPlus, FolderKanban, Layers, AlertCircle } from "lucide-react";
 import { AppButton } from "@/components/Interface/Button/AppButton";
 import { useAuth } from "@/lib/auth/authStore";
 import { useRecentWorkspaces } from "@/components/App/Workspace/workspace";
+import { CreateWorkspaceForm } from "@/components/App/Workspace/ui/CreateWorkspaceForm";
 import { canCreateWorkspace } from "@/lib/auth/permissions";
 
 export function RecentWorkSpaceList() {
   const { user } = useAuth();
   const { data: recentWorkspaces, isLoading, error, isError, refetch } = useRecentWorkspaces();
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   // Check if user can create workspaces
   const userCanCreateWorkspace = canCreateWorkspace(user);
 
   const hasWorkspaces = recentWorkspaces && recentWorkspaces.length > 0;
+
+  const handleCreateSuccess = () => {
+    setShowCreateForm(false);
+  };
+
+  const handleCreateCancel = () => {
+    setShowCreateForm(false);
+  };
 
   return (
     <div className="rounded-medium border border-gray-200 dark:border-gray-700">
@@ -26,7 +37,7 @@ export function RecentWorkSpaceList() {
           </AppButton>
 
           {userCanCreateWorkspace && (
-            <AppButton href="/workspace" icon={<FolderPlus className="h-4 w-4" />}>
+            <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderPlus className="h-4 w-4" />}>
               Add Workspace
             </AppButton>
           )}
@@ -110,13 +121,20 @@ export function RecentWorkSpaceList() {
                 : "You don't have access to any workspaces yet. Contact your company administrator."}
             </p>
             {userCanCreateWorkspace && (
-              <AppButton href="/workspace" icon={<FolderPlus className="h-4 w-4" />}>
+              <AppButton onClick={() => setShowCreateForm(true)} icon={<FolderPlus className="h-4 w-4" />}>
                 Create Your First Workspace
               </AppButton>
             )}
           </div>
         )}
       </div>
+
+      {/* Create workspace form modal */}
+      {showCreateForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <CreateWorkspaceForm onSuccess={handleCreateSuccess} onCancel={handleCreateCancel} />
+        </div>
+      )}
     </div>
   );
 }
