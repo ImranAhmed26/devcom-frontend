@@ -39,7 +39,7 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onExportAllClick }
           workspaceId: workspace.id,
           updates: { name: editedName.trim() },
         });
-      } catch (error) {
+      } catch {
         // Reset on error - the mutation will handle error display
         setEditedName(workspace.name);
       }
