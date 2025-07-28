@@ -9,6 +9,7 @@ import type {
   DocumentSearch,
   DocumentSort,
   WorkspaceUIState,
+  SortOption,
 } from "../types";
 
 interface WorkspaceStore {
@@ -64,13 +65,15 @@ interface WorkspaceStore {
   setSelectedDocument: (document: Document | null) => void;
   setSelectedDocuments: (documentIds: string[]) => void;
   toggleDocumentSelection: (documentId: string) => void;
+  selectAllDocuments: () => void;
   clearSelection: () => void;
 
   setShowUploadZone: (show: boolean) => void;
   setShowProcessingQueue: (show: boolean) => void;
   setShowSettings: (show: boolean) => void;
-  setViewMode: (mode: "grid" | "list") => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
+  setActiveTab: (tab: "upload" | "documents") => void;
+  switchToDocumentsTab: () => void;
 
   // Filter and Search Actions
   setFilters: (filters: DocumentFilters) => void;
@@ -78,6 +81,7 @@ interface WorkspaceStore {
   setSearch: (search: DocumentSearch) => void;
   clearSearch: () => void;
   setSort: (sort: DocumentSort) => void;
+  toggleSort: (field: SortOption) => void;
 
   // Loading Actions
   setLoading: (key: keyof WorkspaceStore["loading"], loading: boolean) => void;
@@ -102,8 +106,8 @@ const initialState = {
     showUploadZone: false,
     showProcessingQueue: false,
     showSettings: false,
-    viewMode: "grid" as const,
     sidebarCollapsed: false,
+    activeTab: "documents" as const,
   },
 
   filters: {},
@@ -112,7 +116,7 @@ const initialState = {
     searchIn: ["filename", "content"] as ("filename" | "content" | "metadata")[],
   },
   sort: {
-    field: "date" as const,
+    field: "uploaded" as const,
     direction: "desc" as const,
   },
 
@@ -222,6 +226,14 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           };
         }),
 
+      selectAllDocuments: () =>
+        set((state) => ({
+          ui: {
+            ...state.ui,
+            selectedDocuments: state.documents.map((doc) => doc.id),
+          },
+        })),
+
       clearSelection: () =>
         set((state) => ({
           ui: { ...state.ui, selectedDocuments: [], selectedDocument: null },
@@ -242,14 +254,19 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           ui: { ...state.ui, showSettings },
         })),
 
-      setViewMode: (viewMode) =>
-        set((state) => ({
-          ui: { ...state.ui, viewMode },
-        })),
-
       setSidebarCollapsed: (sidebarCollapsed) =>
         set((state) => ({
           ui: { ...state.ui, sidebarCollapsed },
+        })),
+
+      setActiveTab: (activeTab) =>
+        set((state) => ({
+          ui: { ...state.ui, activeTab },
+        })),
+
+      switchToDocumentsTab: () =>
+        set((state) => ({
+          ui: { ...state.ui, activeTab: "documents" },
         })),
 
       // Filter and Search Actions
@@ -268,6 +285,14 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
         }),
 
       setSort: (sort) => set({ sort }),
+
+      toggleSort: (field) =>
+        set((state) => {
+          const newDirection = state.sort.field === field && state.sort.direction === "asc" ? "desc" : "asc";
+          return {
+            sort: { field, direction: newDirection },
+          };
+        }),
 
       // Loading Actions
       setLoading: (key, loading) =>
@@ -362,6 +387,7 @@ export const useWorkspaceSelectors = () => {
             bValue = b.filename.toLowerCase();
             break;
           case "date":
+          case "uploaded":
             aValue = new Date(a.uploadedAt);
             bValue = new Date(b.uploadedAt);
             break;
@@ -404,5 +430,36 @@ export const useWorkspaceSelectors = () => {
 
     // Has any errors
     hasErrors: () => Object.values(store.errors).some(Boolean),
+
+    // Document statistics for table display
+    documentStats: () => {
+      const documents = store.documents;
+      return {
+        total: documents.length,
+        uploading: documents.filter((doc) => doc.status === "uploading").length,
+        queued: documents.filter((doc) => doc.status === "queued").length,
+        processing: documents.filter((doc) => doc.status === "processing").length,
+        completed: documents.filter((doc) => doc.status === "completed").length,
+        failed: documents.filter((doc) => doc.status === "failed").length,
+        selected: store.ui.selectedDocuments.length,
+      };
+    },
+
+    // Check if all documents are selected
+    allDocumentsSelected: () => {
+      const visibleDocuments = store.documents;
+      return visibleDocuments.length > 0 && store.ui.selectedDocuments.length === visibleDocuments.length;
+    },
+
+    // Check if some documents are selected (for indeterminate state)
+    someDocumentsSelected: () => {
+      return store.ui.selectedDocuments.length > 0 && store.ui.selectedDocuments.length < store.documents.length;
+    },
+
+    // Get current tab content count
+    tabCounts: () => ({
+      upload: store.uploadQueue.length,
+      documents: store.documents.length,
+    }),
   };
 };

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { ArrowLeft, Edit3, Settings, Share2, Download, Users, MoreHorizontal, Check, X } from "lucide-react";
+import { ArrowLeft, Edit3, Settings, Download, Users, MoreHorizontal, Check, X } from "lucide-react";
 import { useAuth } from "@/lib/auth/authStore";
 import { canManageWorkspaceMembers } from "@/lib/auth/permissions";
 import { useUpdateWorkspace } from "../hooks";
@@ -11,11 +11,10 @@ import type { Workspace } from "../types";
 interface WorkspaceHeaderProps {
   workspace: Workspace;
   onSettingsClick?: () => void;
-  onShareClick?: () => void;
   onExportAllClick?: () => void;
 }
 
-export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onExportAllClick }: WorkspaceHeaderProps) {
+export function WorkspaceHeader({ workspace, onSettingsClick, onExportAllClick }: WorkspaceHeaderProps) {
   const { user } = useAuth();
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(workspace.name);
@@ -41,8 +40,8 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
           updates: { name: editedName.trim() },
         });
       } catch (error) {
-        console.error("Failed to update workspace name:", error);
-        setEditedName(workspace.name); // Reset on error
+        // Reset on error - the mutation will handle error display
+        setEditedName(workspace.name);
       }
     }
     setIsEditingName(false);
@@ -62,11 +61,11 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 rounded-xl">
       <div className="px-6 py-4">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-          <Link href="/workspace" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+          <Link href="/workspace" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium">
             Workspaces
           </Link>
           <span>/</span>
@@ -74,18 +73,18 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
         </div>
 
         {/* Main Header Content */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Left Side - Back Button & Title */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-0 flex-1">
             <Link
               href="/workspace"
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors flex-shrink-0"
               title="Back to workspaces"
             >
               <ArrowLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
             </Link>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               {/* Workspace Name - Editable for owners */}
               {isEditingName ? (
                 <div className="flex items-center gap-2">
@@ -95,19 +94,23 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
                     onChange={(e) => setEditedName(e.target.value)}
                     onKeyDown={handleKeyPress}
                     onBlur={handleNameSave}
-                    className="text-2xl font-bold bg-transparent border-b-2 border-indigo-500 focus:outline-none text-gray-900 dark:text-gray-100 min-w-0"
+                    className="text-2xl font-bold bg-transparent border-b-2 border-indigo-500 dark:border-indigo-400 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-300 text-gray-900 dark:text-gray-100 min-w-0 transition-colors"
                     autoFocus
                     maxLength={100}
                   />
                   <button
                     onClick={handleNameSave}
                     disabled={updateWorkspaceMutation.isPending}
-                    className="p-1 text-green-600 hover:text-green-700 disabled:opacity-50"
+                    className="p-1 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 disabled:opacity-50 rounded-md transition-colors"
                     title="Save name"
                   >
                     <Check className="h-4 w-4" />
                   </button>
-                  <button onClick={handleNameCancel} className="p-1 text-red-600 hover:text-red-700" title="Cancel editing">
+                  <button
+                    onClick={handleNameCancel}
+                    className="p-1 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 rounded-md transition-colors"
+                    title="Cancel editing"
+                  >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
@@ -128,15 +131,17 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
 
               {/* Workspace Description */}
               {workspace.description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md truncate">{workspace.description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md truncate hidden sm:block">
+                  {workspace.description}
+                </p>
               )}
             </div>
           </div>
 
           {/* Right Side - Stats & Actions */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 lg:gap-6 flex-shrink-0">
             {/* Quick Stats */}
-            <div className="hidden md:flex items-center gap-6 text-sm">
+            <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm">
               <div className="text-center">
                 <div className="font-semibold text-gray-900 dark:text-gray-100">{workspace.stats.totalDocuments}</div>
                 <div className="text-gray-500 dark:text-gray-400">Documents</div>
@@ -161,12 +166,12 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               {/* Members Count */}
               {canManageMembers && (
                 <button
                   onClick={onSettingsClick}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                   title="Manage members"
                 >
                   <Users className="h-4 w-4" />
@@ -177,28 +182,18 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
               {/* Export All Button */}
               <button
                 onClick={onExportAllClick}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                 title="Export all documents"
               >
                 <Download className="h-4 w-4" />
                 <span className="hidden sm:inline">Export All</span>
               </button>
 
-              {/* Share Button */}
-              <button
-                onClick={onShareClick}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                title="Share workspace"
-              >
-                <Share2 className="h-4 w-4" />
-                <span className="hidden sm:inline">Share</span>
-              </button>
-
               {/* Settings Button - Only for owners */}
               {canManageWorkspace && (
                 <button
                   onClick={onSettingsClick}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                   title="Workspace settings"
                 >
                   <Settings className="h-4 w-4" />
@@ -210,7 +205,7 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
               <div className="relative md:hidden">
                 <button
                   onClick={() => setShowActions(!showActions)}
-                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </button>
@@ -227,17 +222,6 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
                       >
                         <Download className="h-4 w-4" />
                         Export All
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          onShareClick?.();
-                          setShowActions(false);
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <Share2 className="h-4 w-4" />
-                        Share Workspace
                       </button>
 
                       {canManageMembers && (
@@ -278,7 +262,7 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onShareClick, onEx
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400"></div>
                 <span className="text-sm text-blue-800 dark:text-blue-200">
                   Processing {workspace.stats.processingDocuments} document{workspace.stats.processingDocuments !== 1 ? "s" : ""}
                   ...
