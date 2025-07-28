@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useWorkspaceStore } from "../store/workspaceStore";
 import { useWorkspaceDetails, useWorkspaceDocuments, useDeleteDocument, useReprocessDocument } from "../hooks";
 import { WorkspaceHeader } from "./WorkspaceHeader";
-import { WorkspaceStats } from "./WorkspaceStats";
+import { TabNavigation } from "./TabNavigation";
 import { UploadZone } from "./UploadZone";
 import { DocumentList } from "./DocumentList";
 import type { WorkspacePageProps } from "../types";
@@ -18,16 +18,14 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   const sort = useWorkspaceStore((state) => state.sort);
   const ui = useWorkspaceStore((state) => state.ui);
   const setShowSettings = useWorkspaceStore((state) => state.setShowSettings);
-  const setShowUploadZone = useWorkspaceStore((state) => state.setShowUploadZone);
+  const setActiveTab = useWorkspaceStore((state) => state.setActiveTab);
   const reset = useWorkspaceStore((state) => state.reset);
 
   // Fetch workspace details
   const { isLoading: isLoadingWorkspace, error: workspaceError } = useWorkspaceDetails(workspaceId);
 
   // Fetch documents
-  const {
-    isLoading: isLoadingDocuments,
-  } = useWorkspaceDocuments({
+  const { isLoading: isLoadingDocuments } = useWorkspaceDocuments({
     workspaceId,
     page: 1,
     limit: 50, // For now, load first 50 documents
@@ -49,8 +47,8 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
 
   // Handle document selection
   const handleDocumentSelect = (document: any) => {
-    console.log("Document selected:", document);
     // TODO: Open document viewer
+    onDocumentSelect(document);
   };
 
   // Handle document deletion
@@ -93,22 +91,21 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
     setShowSettings(true);
   };
 
-  // Handle workspace sharing
-  const handleShareClick = () => {
-    console.log("Share workspace clicked");
-    // TODO: Implement sharing modal
-  };
-
   // Handle export all
   const handleExportAllClick = () => {
-    console.log("Export all clicked");
     // TODO: Implement export all functionality
+    onExportAllClick?.();
   };
 
   // Handle upload complete
-  const handleUploadComplete = (uploadedDocuments: any[]) => {
-    console.log("Upload completed:", uploadedDocuments);
-    setShowUploadZone(false);
+  const handleUploadComplete = () => {
+    // Switch to documents tab after successful upload
+    setActiveTab("documents");
+  };
+
+  // Handle tab change
+  const handleTabChange = (tab: "upload" | "documents") => {
+    setActiveTab(tab);
   };
 
   // Loading state
@@ -131,12 +128,10 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
 
           {/* Content skeleton */}
           <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-              ))}
-            </div>
-            <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+            {/* Tab navigation skeleton */}
+            <div className="h-14 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+            {/* Tab content skeleton */}
+            <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
           </div>
         </div>
       </div>
@@ -154,7 +149,7 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
           </p>
           <Link
             href="/workspace"
-            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
           >
             Back to Workspaces
           </Link>
@@ -170,56 +165,35 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Workspace Header */}
-      <WorkspaceHeader
-        workspace={workspace}
-        onSettingsClick={handleSettingsClick}
-        onShareClick={handleShareClick}
-        onExportAllClick={handleExportAllClick}
-      />
+      <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} onExportAllClick={handleExportAllClick} />
 
       {/* Main Content */}
-      <div className="p-6 space-y-6">
-        {/* Stats Overview */}
-        <WorkspaceStats stats={workspace.stats} isLoading={isLoadingWorkspace} />
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        {/* Tab Navigation */}
+        <TabNavigation activeTab={ui.activeTab} onTabChange={handleTabChange} documentCount={documents.length} />
 
-        {/* Upload Zone */}
-        {ui.showUploadZone && (
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Upload Documents</h2>
-              <button
-                onClick={() => setShowUploadZone(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                ×
-              </button>
+        {/* Tab Content */}
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 sm:p-6">
+          {ui.activeTab === "upload" && (
+            <div className="space-y-4">
+              <div className="text-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Upload Documents</h2>
+                <p className="text-gray-600 dark:text-gray-400">Upload your documents for OCR processing and analysis</p>
+              </div>
+              <UploadZone workspaceId={workspaceId} onUploadComplete={handleUploadComplete} />
             </div>
-            <UploadZone workspaceId={workspaceId} onUploadComplete={handleUploadComplete} />
-          </div>
-        )}
+          )}
 
-        {/* Quick Upload Button */}
-        {!ui.showUploadZone && (
-          <div className="text-center">
-            <button
-              onClick={() => setShowUploadZone(true)}
-              className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
-            >
-              Upload Documents
-            </button>
-          </div>
-        )}
-
-        {/* Documents List */}
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-          <DocumentList
-            documents={documents}
-            onDocumentSelect={handleDocumentSelect}
-            onDocumentDelete={handleDocumentDelete}
-            onDocumentReprocess={handleDocumentReprocess}
-            onDocumentDownload={handleDocumentDownload}
-            isLoading={isLoadingDocuments}
-          />
+          {ui.activeTab === "documents" && (
+            <DocumentList
+              documents={documents}
+              onDocumentSelect={handleDocumentSelect}
+              onDocumentDelete={handleDocumentDelete}
+              onDocumentReprocess={handleDocumentReprocess}
+              onDocumentDownload={handleDocumentDownload}
+              isLoading={isLoadingDocuments}
+            />
+          )}
         </div>
 
         {/* TODO: Add more sections */}

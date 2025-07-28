@@ -249,13 +249,17 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
         onDrop={handleDrop}
         onClick={handleClick}
         className={`
-          relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all
+          relative border-2 border-dashed rounded-xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-300 ease-in-out
           ${
             isDragOver
-              ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20"
-              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+              ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 scale-[1.02] shadow-xl shadow-indigo-500/10 dark:shadow-indigo-500/20"
+              : "border-gray-300 dark:border-gray-600 hover:border-indigo-400 dark:hover:border-indigo-500"
           }
-          ${disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50 dark:hover:bg-gray-800/50"}
+          ${
+            disabled
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/5 dark:hover:shadow-gray-900/20"
+          }
         `}
       >
         <input
@@ -270,13 +274,13 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
 
         <div className="space-y-4">
           <div
-            className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center ${
+            className={`mx-auto w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 ease-in-out ${
               isDragOver
-                ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400"
-                : "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500"
+                ? "bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 scale-110 shadow-lg shadow-indigo-500/20"
+                : "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600"
             }`}
           >
-            <Upload className="h-6 w-6" />
+            <Upload className={`transition-all duration-200 ${isDragOver ? "h-8 w-8" : "h-6 w-6"}`} />
           </div>
 
           <div>
@@ -285,18 +289,32 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Drag and drop files here, or click to select files</p>
 
-            <div className="text-xs text-gray-400 dark:text-gray-500 space-y-1">
-              <p>
-                Supported formats:{" "}
-                {Object.values(ALLOWED_FILE_TYPES)
-                  .map((t) => t.label)
-                  .join(", ")}
-              </p>
-              <p>
-                Maximum file size: {MAX_FILE_SIZE / (1024 * 1024)}MB • Maximum {MAX_FILES} files at once
-              </p>
+            <div className="text-xs text-gray-400 dark:text-gray-500 space-y-2">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-1 sm:gap-2">
+                <span className="mb-1 sm:mb-0">Supported formats:</span>
+                <div className="flex flex-wrap gap-1 justify-center">
+                  {Object.values(ALLOWED_FILE_TYPES).map((type, index) => (
+                    <span
+                      key={type.label}
+                      className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-600 dark:text-gray-300 font-medium"
+                    >
+                      {type.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+                <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md">
+                  Max: {MAX_FILE_SIZE / (1024 * 1024)}MB
+                </span>
+                <span className="hidden sm:inline">•</span>
+                <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md">Up to {MAX_FILES} files</span>
+              </div>
               {workspace?.settings.autoProcess && (
-                <p className="text-indigo-600 dark:text-indigo-400">✓ Auto-processing enabled</p>
+                <div className="flex items-center justify-center gap-1 text-indigo-600 dark:text-indigo-400">
+                  <CheckCircle className="h-3 w-3" />
+                  <span>Auto-processing enabled</span>
+                </div>
               )}
             </div>
           </div>
@@ -305,14 +323,19 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
 
       {/* Validation Errors */}
       {validationErrors.length > 0 && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 shadow-sm">
           <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <div>
+            <div className="p-1 bg-red-100 dark:bg-red-900/30 rounded-lg">
+              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+            </div>
+            <div className="flex-1">
               <h4 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">Upload Errors</h4>
               <ul className="text-sm text-red-700 dark:text-red-300 space-y-1">
                 {validationErrors.map((error, index) => (
-                  <li key={index}>• {error}</li>
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-red-500 dark:text-red-400 mt-1">•</span>
+                    <span>{error}</span>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -322,7 +345,7 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
 
       {/* Upload Queue */}
       {uploadQueue.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
           <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
             Upload Progress ({uploadQueue.length} file{uploadQueue.length !== 1 ? "s" : ""})
           </h4>
@@ -332,9 +355,14 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
               const FileIcon = getFileIcon(item.file.type);
 
               return (
-                <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600/50 hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors duration-200"
+                >
                   <div className="flex-shrink-0">
-                    <FileIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <div className="p-2 bg-white dark:bg-gray-600 rounded-lg shadow-sm">
+                      <FileIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    </div>
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -344,10 +372,14 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-1">
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-1 overflow-hidden">
                       <div
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          item.status === "completed" ? "bg-green-500" : item.status === "failed" ? "bg-red-500" : "bg-indigo-500"
+                        className={`h-2 rounded-full transition-all duration-500 ease-out ${
+                          item.status === "completed"
+                            ? "bg-gradient-to-r from-green-500 to-green-600"
+                            : item.status === "failed"
+                            ? "bg-gradient-to-r from-red-500 to-red-600"
+                            : "bg-gradient-to-r from-indigo-500 to-indigo-600"
                         }`}
                         style={{ width: `${item.progress}%` }}
                       />
@@ -379,7 +411,7 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
                       {item.status !== "pending" && (
                         <button
                           onClick={() => removeUploadItem(item.id)}
-                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                          className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-105"
                         >
                           <X className="h-3 w-3" />
                         </button>

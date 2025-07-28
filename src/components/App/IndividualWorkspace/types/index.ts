@@ -125,7 +125,7 @@ export type JobStatus = "pending" | "running" | "completed" | "failed" | "cancel
 export type UploadStatus = "pending" | "uploading" | "completed" | "failed";
 export type WorkspaceRole = "owner" | "editor" | "viewer";
 export type ExportFormat = "json" | "csv" | "txt";
-export type SortOption = "name" | "date" | "status" | "confidence" | "size";
+export type SortOption = "name" | "date" | "uploaded" | "status" | "confidence" | "size";
 export type SortDirection = "asc" | "desc";
 
 // Filter and Search Types
@@ -205,8 +205,8 @@ export interface WorkspaceUIState {
   showUploadZone: boolean;
   showProcessingQueue: boolean;
   showSettings: boolean;
-  viewMode: "grid" | "list";
   sidebarCollapsed: boolean;
+  activeTab: "upload" | "documents";
 }
 
 // Error Types
@@ -259,8 +259,6 @@ export interface DocumentListProps {
   onSearchChange: (search: DocumentSearch) => void;
   sort: DocumentSort;
   onSortChange: (sort: DocumentSort) => void;
-  viewMode: "grid" | "list";
-  onViewModeChange: (mode: "grid" | "list") => void;
 }
 
 export interface DocumentViewerProps {

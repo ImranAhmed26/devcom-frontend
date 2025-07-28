@@ -103,7 +103,7 @@ export function WorkspaceStats({ stats, isLoading, className = "" }: WorkspaceSt
   };
 
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 ${className}`}>
+    <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4 ${className}`}>
       {/* Total Documents */}
       <StatCard
         title="Total Documents"
@@ -191,7 +191,7 @@ export function QuickStatsBar({ stats, isLoading, className = "" }: QuickStatsBa
   const completionRate = stats.totalDocuments > 0 ? Math.round((stats.completedDocuments / stats.totalDocuments) * 100) : 0;
 
   return (
-    <div className={`flex items-center gap-6 text-sm ${className}`}>
+    <div className={`flex items-center gap-3 sm:gap-4 lg:gap-6 text-sm ${className}`}>
       <div className="text-center">
         <div className="font-semibold text-gray-900 dark:text-gray-100">{stats.totalDocuments}</div>
         <div className="text-gray-500 dark:text-gray-400">Total</div>
