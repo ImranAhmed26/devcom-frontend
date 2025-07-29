@@ -228,46 +228,9 @@ export interface ProcessingError extends WorkspaceError {
   retryable: boolean;
 }
 
-// WebSocket Event Types
-export interface WebSocketEvents {
-  "job:started": { jobId: string; documentId: string };
-  "job:progress": { jobId: string; progress: number; estimatedTimeRemaining?: number };
-  "job:completed": { jobId: string; result: OCRResult };
-  "job:failed": { jobId: string; error: string };
-  "document:uploaded": { document: Document };
-  "document:deleted": { documentId: string };
-  "document:updated": { document: Document };
-  "workspace:updated": { workspace: Workspace };
-  "workspace:member_added": { member: WorkspaceMember };
-  "workspace:member_removed": { userId: string };
-}
-
 // Component Props Types
 export interface WorkspacePageProps {
   workspaceId: string;
-}
-
-export interface DocumentListProps {
-  documents: Document[];
-  selectedDocuments: string[];
-  onDocumentSelect: (documentId: string) => void;
-  onDocumentMultiSelect: (documentIds: string[]) => void;
-  onDocumentDelete: (documentId: string) => void;
-  filters: DocumentFilters;
-  onFiltersChange: (filters: DocumentFilters) => void;
-  search: DocumentSearch;
-  onSearchChange: (search: DocumentSearch) => void;
-  sort: DocumentSort;
-  onSortChange: (sort: DocumentSort) => void;
-}
-
-export interface DocumentViewerProps {
-  document: Document | null;
-  ocrResult?: OCRResult;
-  onTextEdit: (text: string) => void;
-  onExport: (format: ExportFormat) => void;
-  onReprocess: () => void;
-  onClose: () => void;
 }
 
 export interface UploadZoneProps {
@@ -277,13 +240,4 @@ export interface UploadZoneProps {
   onUploadComplete: (documents: Document[]) => void;
   onUploadError: (error: UploadError) => void;
   disabled?: boolean;
-}
-
-export interface ProcessingQueueProps {
-  jobs: ProcessingJob[];
-  onJobCancel: (jobId: string) => void;
-  onJobRetry: (jobId: string) => void;
-  onJobDetails: (jobId: string) => void;
-  collapsed?: boolean;
-  onToggleCollapse: () => void;
 }

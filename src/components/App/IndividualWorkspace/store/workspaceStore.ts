@@ -9,7 +9,6 @@ import type {
   DocumentSearch,
   DocumentSort,
   WorkspaceUIState,
-  SortOption,
 } from "../types";
 
 interface WorkspaceStore {
@@ -64,24 +63,17 @@ interface WorkspaceStore {
   // UI Actions
   setSelectedDocument: (document: Document | null) => void;
   setSelectedDocuments: (documentIds: string[]) => void;
-  toggleDocumentSelection: (documentId: string) => void;
-  selectAllDocuments: () => void;
-  clearSelection: () => void;
 
   setShowUploadZone: (show: boolean) => void;
   setShowProcessingQueue: (show: boolean) => void;
   setShowSettings: (show: boolean) => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
   setActiveTab: (tab: "upload" | "documents") => void;
-  switchToDocumentsTab: () => void;
 
   // Filter and Search Actions
   setFilters: (filters: DocumentFilters) => void;
-  clearFilters: () => void;
   setSearch: (search: DocumentSearch) => void;
-  clearSearch: () => void;
   setSort: (sort: DocumentSort) => void;
-  toggleSort: (field: SortOption) => void;
 
   // Loading Actions
   setLoading: (key: keyof WorkspaceStore["loading"], loading: boolean) => void;
@@ -214,31 +206,6 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           ui: { ...state.ui, selectedDocuments },
         })),
 
-      toggleDocumentSelection: (documentId) =>
-        set((state) => {
-          const isSelected = state.ui.selectedDocuments.includes(documentId);
-          const selectedDocuments = isSelected
-            ? state.ui.selectedDocuments.filter((id) => id !== documentId)
-            : [...state.ui.selectedDocuments, documentId];
-
-          return {
-            ui: { ...state.ui, selectedDocuments },
-          };
-        }),
-
-      selectAllDocuments: () =>
-        set((state) => ({
-          ui: {
-            ...state.ui,
-            selectedDocuments: state.documents.map((doc) => doc.id),
-          },
-        })),
-
-      clearSelection: () =>
-        set((state) => ({
-          ui: { ...state.ui, selectedDocuments: [], selectedDocument: null },
-        })),
-
       setShowUploadZone: (showUploadZone) =>
         set((state) => ({
           ui: { ...state.ui, showUploadZone },
@@ -264,35 +231,12 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           ui: { ...state.ui, activeTab },
         })),
 
-      switchToDocumentsTab: () =>
-        set((state) => ({
-          ui: { ...state.ui, activeTab: "documents" },
-        })),
-
       // Filter and Search Actions
       setFilters: (filters) => set({ filters }),
 
-      clearFilters: () => set({ filters: {} }),
-
       setSearch: (search) => set({ search }),
 
-      clearSearch: () =>
-        set({
-          search: {
-            query: "",
-            searchIn: ["filename", "content"] as ("filename" | "content" | "metadata")[],
-          },
-        }),
-
       setSort: (sort) => set({ sort }),
-
-      toggleSort: (field) =>
-        set((state) => {
-          const newDirection = state.sort.field === field && state.sort.direction === "asc" ? "desc" : "asc";
-          return {
-            sort: { field, direction: newDirection },
-          };
-        }),
 
       // Loading Actions
       setLoading: (key, loading) =>

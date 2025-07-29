@@ -24,13 +24,11 @@ export function useWorkspaceDetails(workspaceId: string) {
   return useQuery({
     queryKey: individualWorkspaceKeys.workspace(workspaceId),
     queryFn: async () => {
-      console.log("🪝 [useWorkspaceDetails] Fetching workspace details for:", workspaceId);
       setLoading("workspace", true);
       setError("workspace", null);
 
       try {
         const response = await individualWorkspaceApi.getWorkspaceDetails(workspaceId);
-        console.log("🪝 [useWorkspaceDetails] Workspace details fetched:", response.data.name);
 
         // Update store
         setWorkspace(response.data);
@@ -444,3 +442,6 @@ export function useUpdateOCRResults() {
     },
   });
 }
+// Export additional custom hooks
+export { useWorkspaceDataManagement } from "./useWorkspaceDataManagement";
+export { useDocumentHandlers } from "./useDocumentHandlers";

@@ -30,14 +30,14 @@ export {
 // Components
 export { WorkspacePage } from "./components/WorkspacePage";
 export { WorkspaceHeader } from "./components/WorkspaceHeader";
-export { WorkspaceStats, QuickStatsBar } from "./components/WorkspaceStats";
-export { DocumentList } from "./components/DocumentList";
+
 export { DocumentTable } from "./components/DocumentTable";
 export { UploadZone } from "./components/UploadZone";
 export { TabNavigation } from "./components/TabNavigation";
 export type { TabType } from "./components/TabNavigation";
-// export { DocumentViewer } from './components/DocumentViewer'; // TODO: Implement
-// export { ProcessingQueue } from './components/ProcessingQueue'; // TODO: Implement
+// Future components to be implemented:
+// - DocumentViewer: Modal for viewing document details and OCR results
+// - ProcessingQueue: Component for monitoring document processing status
 
 // Re-export the main component as default for convenience
 export { WorkspacePage as default } from "./components/WorkspacePage";

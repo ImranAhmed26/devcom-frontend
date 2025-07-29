@@ -17,7 +17,7 @@ import {
   ChevronDown,
   MoreHorizontal,
 } from "lucide-react";
-import { Pagination } from "./Pagination";
+
 import type { Document, DocumentStatus } from "../types";
 
 interface DocumentTableProps {
@@ -29,9 +29,6 @@ interface DocumentTableProps {
   onDocumentReprocess: (documentId: string) => void;
   onDocumentDownload: (documentId: string) => void;
   onSort?: (field: string, direction: "asc" | "desc") => void;
-  currentPage?: number;
-  totalPages?: number;
-  onPageChange?: (page: number) => void;
   totalCount?: number;
   isLoading?: boolean;
   className?: string;
@@ -64,9 +61,6 @@ export function DocumentTable({
   onDocumentReprocess,
   onDocumentDownload,
   onSort,
-  currentPage = 1,
-  totalPages = 1,
-  onPageChange,
   totalCount,
   isLoading,
   className = "",
