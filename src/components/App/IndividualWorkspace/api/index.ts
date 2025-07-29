@@ -27,19 +27,42 @@ import {
 
 // Individual Workspace API Functions
 export const individualWorkspaceApi = {
-  // Get workspace details by ID
+  // Get workspace details by ID using workspace/id endpoint
   getWorkspaceDetails: async (workspaceId: string): Promise<ApiResponse<Workspace>> => {
-    console.log(`🏢 [Individual Workspace API] Fetching workspace details for ${workspaceId}`);
+    console.log(`🏢 [Individual Workspace API] Fetching workspace details from workspace/${workspaceId}`);
 
     await simulateDelay(300);
     simulateError(0.05); // 5% chance of error
 
+    // TODO: Replace with actual API call to workspace/{workspaceId} endpoint
+    // Example implementation:
+    // try {
+    //   const response = await fetch(`/api/workspace/${workspaceId}`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${token}`,
+    //     },
+    //   });
+    //
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! status: ${response.status}`);
+    //   }
+    //
+    //   const data = await response.json();
+    //   return data;
+    // } catch (error) {
+    //   throw new Error(`Failed to fetch workspace: ${error.message}`);
+    // }
+
     // For demo purposes, return mock workspace with the requested ID
+    // In real implementation, this data would come from the API response
     const workspace = {
       ...mockWorkspace,
       id: workspaceId,
-      name: `Workspace ${workspaceId}`,
-      description: `Demo workspace for ID: ${workspaceId}`,
+      // Use the original mock workspace name instead of showing the ID
+      name: mockWorkspace.name,
+      description: mockWorkspace.description,
     };
 
     return {
@@ -52,10 +75,16 @@ export const individualWorkspaceApi = {
 
   // Get documents in workspace with pagination and filtering
   getWorkspaceDocuments: async (params: GetDocumentsParams): Promise<ApiResponse<PaginatedResponse<Document>>> => {
-    console.log("🏢 [Individual Workspace API] Fetching workspace documents with params:", params);
+    console.log(
+      `🏢 [Individual Workspace API] Fetching documents from workspace/${params.workspaceId}/documents with params:`,
+      params
+    );
 
     await simulateDelay(400);
     simulateError(0.03); // 3% chance of error
+
+    // TODO: Replace with actual API call to workspace/{workspaceId}/documents endpoint
+    // Example: GET /api/workspace/{workspaceId}/documents?page=1&limit=20&filters=...
 
     // Update mock documents to use the requested workspace ID
     let filteredDocuments = mockDocuments.map((doc) => ({
@@ -195,10 +224,15 @@ export const individualWorkspaceApi = {
 
   // Upload documents to workspace
   uploadDocuments: async (request: UploadDocumentRequest): Promise<ApiResponse<Document[]>> => {
-    console.log("🏢 [Individual Workspace API] Uploading documents:", request.files.length, "files");
+    console.log(
+      `🏢 [Individual Workspace API] Uploading ${request.files.length} files to workspace/${request.workspaceId}/documents`
+    );
 
     await simulateDelay(1000); // Longer delay for upload simulation
     simulateError(0.05);
+
+    // TODO: Replace with actual API call to workspace/{workspaceId}/documents endpoint
+    // Example: POST /api/workspace/{workspaceId}/documents with FormData
 
     const uploadedDocuments: Document[] = [];
 
@@ -269,10 +303,13 @@ export const individualWorkspaceApi = {
 
   // Update workspace
   updateWorkspace: async (workspaceId: string, updates: UpdateWorkspaceRequest): Promise<ApiResponse<Workspace>> => {
-    console.log(`🏢 [Individual Workspace API] Updating workspace ${workspaceId}:`, updates);
+    console.log(`🏢 [Individual Workspace API] Updating workspace/${workspaceId}:`, updates);
 
     await simulateDelay(400);
     simulateError(0.03);
+
+    // TODO: Replace with actual API call to workspace/{workspaceId} endpoint
+    // Example: PUT /api/workspace/{workspaceId}
 
     // Create updated workspace with the requested ID
     const updatedWorkspace: Workspace = {
@@ -296,10 +333,13 @@ export const individualWorkspaceApi = {
 
   // Get processing jobs for workspace
   getProcessingJobs: async (workspaceId: string): Promise<ApiResponse<ProcessingJob[]>> => {
-    console.log(`🏢 [Individual Workspace API] Fetching processing jobs for workspace ${workspaceId}`);
+    console.log(`🏢 [Individual Workspace API] Fetching processing jobs from workspace/${workspaceId}/jobs`);
 
     await simulateDelay(200);
     simulateError(0.02);
+
+    // TODO: Replace with actual API call to workspace/{workspaceId}/jobs endpoint
+    // Example: GET /api/workspace/{workspaceId}/jobs
 
     // Update mock jobs to use the requested workspace ID
     const jobs = mockProcessingJobs.map((job) => ({

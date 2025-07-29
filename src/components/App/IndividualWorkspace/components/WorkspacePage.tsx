@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useWorkspaceStore } from "../store/workspaceStore";
-import { useWorkspaceDetails, useWorkspaceDocuments, useDeleteDocument, useReprocessDocument } from "../hooks";
+import {
+  useWorkspaceDetails,
+  useWorkspaceDocuments,
+  useDeleteDocument,
+  useReprocessDocument,
+  individualWorkspaceKeys,
+} from "../hooks";
 import { WorkspaceHeader } from "./WorkspaceHeader";
 import { TabNavigation } from "./TabNavigation";
 import { UploadZone } from "./UploadZone";
@@ -11,6 +18,8 @@ import { DocumentList } from "./DocumentList";
 import type { WorkspacePageProps } from "../types";
 
 export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
+  const queryClient = useQueryClient();
+  const previousWorkspaceId = useRef<string | null>(null);
   const workspace = useWorkspaceStore((state) => state.workspace);
   const documents = useWorkspaceStore((state) => state.documents);
   const filters = useWorkspaceStore((state) => state.filters);
@@ -38,17 +47,76 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   const deleteDocumentMutation = useDeleteDocument();
   const reprocessDocumentMutation = useReprocessDocument();
 
-  // Reset store when component unmounts or workspace changes
+  // Debug logging
+  console.log("🏢 [WorkspacePage] Rendering with:", {
+    workspaceId,
+    hasWorkspace: !!workspace,
+    workspaceName: workspace?.name,
+    documentsCount: documents.length,
+    isLoadingWorkspace,
+    workspaceError: !!workspaceError,
+  });
+
+  // Handle workspace changes and data management
+  useEffect(() => {
+    // Check if we have cached data for this workspace
+    const cachedWorkspace = queryClient.getQueryData(individualWorkspaceKeys.workspace(workspaceId));
+
+    // Only clear data if we're switching to a different workspace (not on initial load or revisit)
+    if (previousWorkspaceId.current && previousWorkspaceId.current !== workspaceId) {
+      console.log("🏢 [WorkspacePage] Switching from", previousWorkspaceId.current, "to", workspaceId);
+
+      // Clear previous workspace data when switching to a different workspace
+      const setWorkspace = useWorkspaceStore.getState().setWorkspace;
+      const setDocuments = useWorkspaceStore.getState().setDocuments;
+      const clearErrors = useWorkspaceStore.getState().clearErrors;
+
+      // Clear previous data
+      setWorkspace(null);
+      setDocuments([]);
+      clearErrors();
+
+      // If we have cached data for the new workspace, set it immediately
+      if (cachedWorkspace) {
+        console.log("🏢 [WorkspacePage] Using cached data for", workspaceId);
+        setWorkspace(cachedWorkspace);
+      }
+
+      // Clear any stale React Query cache for the previous workspace only
+      queryClient.removeQueries({
+        predicate: (query) => {
+          const queryKey = query.queryKey;
+          return (
+            queryKey.includes("individual-workspace") &&
+            queryKey.includes(previousWorkspaceId.current!) &&
+            !queryKey.includes(workspaceId)
+          );
+        },
+      });
+    } else if (!previousWorkspaceId.current && cachedWorkspace) {
+      // First load with cached data available
+      console.log("🏢 [WorkspacePage] First load with cached data for", workspaceId);
+      const setWorkspace = useWorkspaceStore.getState().setWorkspace;
+      setWorkspace(cachedWorkspace);
+    }
+
+    // Update the previous workspace ID
+    previousWorkspaceId.current = workspaceId;
+  }, [workspaceId, queryClient]);
+
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      reset();
+      // Only clear errors on unmount, keep data for potential re-visits
+      const clearErrors = useWorkspaceStore.getState().clearErrors;
+      clearErrors();
     };
-  }, [workspaceId, reset]);
+  }, []);
 
   // Handle document selection
   const handleDocumentSelect = (document: any) => {
     // TODO: Open document viewer
-    onDocumentSelect(document);
+    console.log("Document selected:", document);
   };
 
   // Handle document deletion
@@ -94,7 +162,7 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   // Handle export all
   const handleExportAllClick = () => {
     // TODO: Implement export all functionality
-    onExportAllClick?.();
+    console.log("Export all clicked");
   };
 
   // Handle upload complete
@@ -158,12 +226,51 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
     );
   }
 
-  if (!workspace) {
-    return null;
+  // Show loading state only if workspace is not loaded AND we're actively loading AND no cached data exists
+  const hasCachedData = !!queryClient.getQueryData(individualWorkspaceKeys.workspace(workspaceId));
+  if (!workspace && !workspaceError && isLoadingWorkspace && !hasCachedData) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="animate-pulse">
+          {/* Header skeleton */}
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mb-4"></div>
+            <div className="flex justify-between">
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48"></div>
+              <div className="flex gap-4">
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Content skeleton */}
+          <div className="p-6 space-y-6">
+            {/* Tab navigation skeleton */}
+            <div className="h-14 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+            {/* Tab content skeleton */}
+            <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If workspace is still not available and we're not loading, show a fallback
+  if (!workspace && !isLoadingWorkspace) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Loading Workspace...</h1>
+          <p className="text-gray-600 dark:text-gray-400">Please wait while we load your workspace.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div key={workspaceId} className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Workspace Header */}
       <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} onExportAllClick={handleExportAllClick} />
 
