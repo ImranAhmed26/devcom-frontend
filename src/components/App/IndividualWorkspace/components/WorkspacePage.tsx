@@ -37,6 +37,10 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   const { hasCachedData } = useWorkspaceDataManagement(workspaceId);
   const documentHandlers = useDocumentHandlers();
 
+  // Selection state calculations
+  const allSelected = documents.length > 0 && ui.selectedDocuments.length === documents.length;
+  const someSelected = ui.selectedDocuments.length > 0 && ui.selectedDocuments.length < documents.length;
+
   // Workspace handlers
   const handleSettingsClick = () => setShowSettings(true);
   const handleExportAllClick = () => {
@@ -129,10 +133,15 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
               documents={documents}
               selectedDocuments={ui.selectedDocuments}
               onDocumentSelect={documentHandlers.handleDocumentSelect}
-              onSelectionChange={() => {}}
+              onDocumentToggle={documentHandlers.handleDocumentToggle}
+              onSelectAll={documentHandlers.handleSelectAll}
+              allSelected={allSelected}
+              someSelected={someSelected}
               onDocumentDelete={documentHandlers.handleDocumentDelete}
               onDocumentReprocess={documentHandlers.handleDocumentReprocess}
               onDocumentDownload={documentHandlers.handleDocumentDownload}
+              onBulkDelete={documentHandlers.handleBulkDelete}
+              onBulkReprocess={documentHandlers.handleBulkReprocess}
               isLoading={isLoadingDocuments}
             />
           )}

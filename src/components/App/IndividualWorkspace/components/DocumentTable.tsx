@@ -24,10 +24,15 @@ interface DocumentTableProps {
   documents: Document[];
   selectedDocuments: string[];
   onDocumentSelect: (document: Document) => void;
-  onSelectionChange: (documentIds: string[]) => void;
+  onDocumentToggle: (documentId: string) => void;
+  onSelectAll: () => void;
+  allSelected: boolean;
+  someSelected: boolean;
   onDocumentDelete: (documentId: string) => void;
   onDocumentReprocess: (documentId: string) => void;
   onDocumentDownload: (documentId: string) => void;
+  onBulkDelete?: () => void;
+  onBulkReprocess?: () => void;
   onSort?: (field: string, direction: "asc" | "desc") => void;
   totalCount?: number;
   isLoading?: boolean;
@@ -56,10 +61,15 @@ export function DocumentTable({
   documents,
   selectedDocuments,
   onDocumentSelect,
-  onSelectionChange,
+  onDocumentToggle,
+  onSelectAll,
+  allSelected,
+  someSelected,
   onDocumentDelete,
   onDocumentReprocess,
   onDocumentDownload,
+  onBulkDelete,
+  onBulkReprocess,
   onSort,
   isLoading,
   className = "",
@@ -162,25 +172,6 @@ export function DocumentTable({
     onSort?.(field, newDirection);
   };
 
-  // Handle select all
-  const handleSelectAll = () => {
-    if (selectedDocuments.length === documents.length) {
-      onSelectionChange([]);
-    } else {
-      onSelectionChange(documents.map((doc) => doc.id));
-    }
-  };
-
-  // Handle individual selection
-  const handleDocumentSelection = (documentId: string) => {
-    const isSelected = selectedDocuments.includes(documentId);
-    if (isSelected) {
-      onSelectionChange(selectedDocuments.filter((id) => id !== documentId));
-    } else {
-      onSelectionChange([...selectedDocuments, documentId]);
-    }
-  };
-
   if (isLoading) {
     return (
       <div className={`space-y-4 ${className}`}>
@@ -229,8 +220,11 @@ export function DocumentTable({
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={selectedDocuments.length === documents.length}
-                onChange={handleSelectAll}
+                checked={allSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected && !allSelected;
+                }}
+                onChange={onSelectAll}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded"
               />
               <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -247,6 +241,39 @@ export function DocumentTable({
           </div>
         </div>
       </div>
+
+      {/* Bulk Action Toolbar */}
+      {selectedDocuments.length > 0 && (
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-indigo-900 dark:text-indigo-100">
+                {selectedDocuments.length} document{selectedDocuments.length !== 1 ? "s" : ""} selected
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {onBulkReprocess && (
+                <button
+                  onClick={onBulkReprocess}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-100 hover:bg-indigo-100 dark:hover:bg-indigo-800 rounded-md transition-colors"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Reprocess
+                </button>
+              )}
+              {onBulkDelete && (
+                <button
+                  onClick={onBulkDelete}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-700 dark:text-red-300 hover:text-red-900 dark:hover:text-red-100 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Table */}
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
@@ -273,7 +300,7 @@ export function DocumentTable({
                     <input
                       type="checkbox"
                       checked={isSelected}
-                      onChange={() => handleDocumentSelection(document.id)}
+                      onChange={() => onDocumentToggle(document.id)}
                       className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded"
                     />
 
@@ -403,24 +430,38 @@ export function DocumentTable({
                 `}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
-                  <span>{column.label}</span>
-                  {column.sortable && (
-                    <div className="flex flex-col">
-                      <ChevronUp
-                        className={`h-3 w-3 ${
-                          sortField === column.key && sortDirection === "asc"
-                            ? "text-indigo-600 dark:text-indigo-400"
-                            : "text-gray-400"
-                        }`}
-                      />
-                      <ChevronDown
-                        className={`h-3 w-3 -mt-1 ${
-                          sortField === column.key && sortDirection === "desc"
-                            ? "text-indigo-600 dark:text-indigo-400"
-                            : "text-gray-400"
-                        }`}
-                      />
-                    </div>
+                  {column.key === "selection" ? (
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      ref={(el) => {
+                        if (el) el.indeterminate = someSelected && !allSelected;
+                      }}
+                      onChange={onSelectAll}
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                  ) : (
+                    <>
+                      <span>{column.label}</span>
+                      {column.sortable && (
+                        <div className="flex flex-col">
+                          <ChevronUp
+                            className={`h-3 w-3 ${
+                              sortField === column.key && sortDirection === "asc"
+                                ? "text-indigo-600 dark:text-indigo-400"
+                                : "text-gray-400"
+                            }`}
+                          />
+                          <ChevronDown
+                            className={`h-3 w-3 -mt-1 ${
+                              sortField === column.key && sortDirection === "desc"
+                                ? "text-indigo-600 dark:text-indigo-400"
+                                : "text-gray-400"
+                            }`}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               ))}
@@ -454,7 +495,7 @@ export function DocumentTable({
                     <input
                       type="checkbox"
                       checked={isSelected}
-                      onChange={() => handleDocumentSelection(document.id)}
+                      onChange={() => onDocumentToggle(document.id)}
                       className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded"
                     />
                   </div>

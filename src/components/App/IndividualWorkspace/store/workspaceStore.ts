@@ -63,6 +63,9 @@ interface WorkspaceStore {
   // UI Actions
   setSelectedDocument: (document: Document | null) => void;
   setSelectedDocuments: (documentIds: string[]) => void;
+  toggleDocumentSelection: (documentId: string) => void;
+  selectAllDocuments: () => void;
+  clearSelection: () => void;
 
   setShowUploadZone: (show: boolean) => void;
   setShowProcessingQueue: (show: boolean) => void;
@@ -204,6 +207,31 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
       setSelectedDocuments: (selectedDocuments) =>
         set((state) => ({
           ui: { ...state.ui, selectedDocuments },
+        })),
+
+      toggleDocumentSelection: (documentId) =>
+        set((state) => {
+          const isSelected = state.ui.selectedDocuments.includes(documentId);
+          const selectedDocuments = isSelected
+            ? state.ui.selectedDocuments.filter((id) => id !== documentId)
+            : [...state.ui.selectedDocuments, documentId];
+
+          return {
+            ui: { ...state.ui, selectedDocuments },
+          };
+        }),
+
+      selectAllDocuments: () =>
+        set((state) => ({
+          ui: {
+            ...state.ui,
+            selectedDocuments: state.documents.map((doc) => doc.id),
+          },
+        })),
+
+      clearSelection: () =>
+        set((state) => ({
+          ui: { ...state.ui, selectedDocuments: [], selectedDocument: null },
         })),
 
       setShowUploadZone: (showUploadZone) =>

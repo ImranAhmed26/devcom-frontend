@@ -7,7 +7,11 @@ import { useDeleteDocument, useReprocessDocument } from "./index";
  */
 export function useDocumentHandlers() {
   const documents = useWorkspaceStore((state) => state.documents);
+  const selectedDocuments = useWorkspaceStore((state) => state.ui.selectedDocuments);
   const setActiveTab = useWorkspaceStore((state) => state.setActiveTab);
+  const toggleDocumentSelection = useWorkspaceStore((state) => state.toggleDocumentSelection);
+  const selectAllDocuments = useWorkspaceStore((state) => state.selectAllDocuments);
+  const clearSelection = useWorkspaceStore((state) => state.clearSelection);
 
   const deleteDocumentMutation = useDeleteDocument();
   const reprocessDocumentMutation = useReprocessDocument();
@@ -59,11 +63,74 @@ export function useDocumentHandlers() {
     setActiveTab("documents");
   };
 
+  // Handle individual document selection toggle
+  const handleDocumentToggle = (documentId: string) => {
+    toggleDocumentSelection(documentId);
+  };
+
+  // Handle select all toggle
+  const handleSelectAll = () => {
+    const allSelected = documents.length > 0 && selectedDocuments.length === documents.length;
+    if (allSelected) {
+      clearSelection();
+    } else {
+      selectAllDocuments();
+    }
+  };
+
+  // Handle bulk delete operation
+  const handleBulkDelete = async () => {
+    if (selectedDocuments.length === 0) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${selectedDocuments.length} selected document(s)?\n\nThis action cannot be undone.`
+    );
+
+    if (confirmed) {
+      try {
+        // Delete documents one by one
+        for (const documentId of selectedDocuments) {
+          await deleteDocumentMutation.mutateAsync(documentId);
+        }
+        // Clear selection after successful bulk delete
+        clearSelection();
+      } catch (error) {
+        console.error("Failed to delete documents:", error);
+        // Keep selection intact for retry
+      }
+    }
+  };
+
+  // Handle bulk reprocess operation
+  const handleBulkReprocess = async () => {
+    if (selectedDocuments.length === 0) return;
+
+    const confirmed = window.confirm(`Are you sure you want to reprocess ${selectedDocuments.length} selected document(s)?`);
+
+    if (confirmed) {
+      try {
+        // Reprocess documents one by one
+        for (const documentId of selectedDocuments) {
+          await reprocessDocumentMutation.mutateAsync(documentId);
+        }
+        // Clear selection after successful bulk reprocess
+        clearSelection();
+      } catch (error) {
+        console.error("Failed to reprocess documents:", error);
+        // Keep selection intact for retry
+      }
+    }
+  };
+
   return {
     handleDocumentSelect,
     handleDocumentDelete,
     handleDocumentReprocess,
     handleDocumentDownload,
     handleUploadComplete,
+    handleDocumentToggle,
+    handleSelectAll,
+    handleBulkDelete,
+    handleBulkReprocess,
   };
 }
