@@ -13,7 +13,8 @@ export function useDocumentHandlers() {
   const reprocessDocumentMutation = useReprocessDocument();
 
   // Handle document selection
-  const handleDocumentSelect = (document: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleDocumentSelect = (_document: any) => {
     // TODO: Open document viewer
   };
 

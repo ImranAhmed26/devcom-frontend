@@ -293,7 +293,7 @@ export function UploadZone({ workspaceId, onUploadComplete, disabled, className 
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-1 sm:gap-2">
                 <span className="mb-1 sm:mb-0">Supported formats:</span>
                 <div className="flex flex-wrap gap-1 justify-center">
-                  {Object.values(ALLOWED_FILE_TYPES).map((type, index) => (
+                  {Object.values(ALLOWED_FILE_TYPES).map((type) => (
                     <span
                       key={type.label}
                       className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-600 dark:text-gray-300 font-medium"

@@ -61,7 +61,6 @@ export function DocumentTable({
   onDocumentReprocess,
   onDocumentDownload,
   onSort,
-  totalCount,
   isLoading,
   className = "",
 }: DocumentTableProps) {
@@ -254,7 +253,7 @@ export function DocumentTable({
         {/* Mobile Card View */}
         <div className="block md:hidden">
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {documents.map((document, index) => {
+            {documents.map((document) => {
               const FileIcon = getFileIcon(document.mimeType);
               const statusDisplay = getStatusDisplay(document.status);
               const StatusIcon = statusDisplay.icon;
