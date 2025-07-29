@@ -15,7 +15,7 @@ import { WorkspaceHeader } from "./WorkspaceHeader";
 import { TabNavigation } from "./TabNavigation";
 import { UploadZone } from "./UploadZone";
 import { DocumentList } from "./DocumentList";
-import type { WorkspacePageProps } from "../types";
+import type { WorkspacePageProps, Workspace } from "../types";
 
 export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   const queryClient = useQueryClient();
@@ -28,7 +28,6 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   const ui = useWorkspaceStore((state) => state.ui);
   const setShowSettings = useWorkspaceStore((state) => state.setShowSettings);
   const setActiveTab = useWorkspaceStore((state) => state.setActiveTab);
-  const reset = useWorkspaceStore((state) => state.reset);
 
   // Fetch workspace details
   const { isLoading: isLoadingWorkspace, error: workspaceError } = useWorkspaceDetails(workspaceId);
@@ -60,7 +59,7 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   // Handle workspace changes and data management
   useEffect(() => {
     // Check if we have cached data for this workspace
-    const cachedWorkspace = queryClient.getQueryData(individualWorkspaceKeys.workspace(workspaceId));
+    const cachedWorkspace = queryClient.getQueryData<Workspace>(individualWorkspaceKeys.workspace(workspaceId));
 
     // Only clear data if we're switching to a different workspace (not on initial load or revisit)
     if (previousWorkspaceId.current && previousWorkspaceId.current !== workspaceId) {
@@ -176,8 +175,11 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
     setActiveTab(tab);
   };
 
-  // Loading state
-  if (isLoadingWorkspace) {
+  // Check if we have cached data to avoid unnecessary loading states
+  const hasCachedData = !!queryClient.getQueryData<Workspace>(individualWorkspaceKeys.workspace(workspaceId));
+
+  // Show loading state only if workspace is not loaded AND we're actively loading AND no cached data exists
+  if (!workspace && !workspaceError && isLoadingWorkspace && !hasCachedData) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-pulse">
@@ -213,7 +215,7 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Workspace Not Found</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The workspace you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to it.
+            The workspace you&apos;re looking for does not exist or you do not have access to it.
           </p>
           <Link
             href="/workspace"
@@ -221,37 +223,6 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
           >
             Back to Workspaces
           </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Show loading state only if workspace is not loaded AND we're actively loading AND no cached data exists
-  const hasCachedData = !!queryClient.getQueryData(individualWorkspaceKeys.workspace(workspaceId));
-  if (!workspace && !workspaceError && isLoadingWorkspace && !hasCachedData) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="animate-pulse">
-          {/* Header skeleton */}
-          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mb-4"></div>
-            <div className="flex justify-between">
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48"></div>
-              <div className="flex gap-4">
-                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Content skeleton */}
-          <div className="p-6 space-y-6">
-            {/* Tab navigation skeleton */}
-            <div className="h-14 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-            {/* Tab content skeleton */}
-            <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-          </div>
         </div>
       </div>
     );
@@ -267,6 +238,11 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
         </div>
       </div>
     );
+  }
+
+  // At this point, workspace should be available
+  if (!workspace) {
+    return null;
   }
 
   return (
