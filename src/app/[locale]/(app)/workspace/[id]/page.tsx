@@ -8,8 +8,9 @@ interface WorkspacePageProps {
   }>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function generateMetadata({ params }: WorkspacePageProps): Promise<Metadata> {
-  const { id } = await params;
+  // const { id } = await params;
 
   // TODO: Fetch workspace name from API to show in title
   // For now, use a generic title instead of showing the workspace ID
