@@ -28,16 +28,16 @@ export {
 } from "./hooks";
 
 // Components
-export { WorkspacePage } from "./components/WorkspacePage";
-export { WorkspaceHeader } from "./components/WorkspaceHeader";
+export { WorkspacePage } from "./ui/WorkspacePage";
+export { WorkspaceHeader } from "./ui/WorkspaceHeader";
 
-export { DocumentTable } from "./components/DocumentTable";
-export { UploadZone } from "./components/UploadZone";
-export { TabNavigation } from "./components/TabNavigation";
-export type { TabType } from "./components/TabNavigation";
+export { DocumentTable } from "./ui/DocumentTable";
+export { UploadZone } from "./ui/UploadZone";
+export { TabNavigation } from "./ui/TabNavigation";
+export type { TabType } from "./ui/TabNavigation";
 // Future components to be implemented:
 // - DocumentViewer: Modal for viewing document details and OCR results
 // - ProcessingQueue: Component for monitoring document processing status
 
 // Re-export the main component as default for convenience
-export { WorkspacePage as default } from "./components/WorkspacePage";
+export { WorkspacePage as default } from "./ui/WorkspacePage";
