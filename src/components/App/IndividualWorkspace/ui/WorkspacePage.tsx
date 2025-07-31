@@ -111,41 +111,39 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   }
 
   return (
-    <div key={workspaceId} className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div key={workspaceId} className="flex flex-col gap-3 min-h-screen bg-gray-5 dark:bg-gray-90">
       <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} onExportAllClick={handleExportAllClick} />
 
-      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-        <TabNavigation activeTab={ui.activeTab} onTabChange={handleTabChange} documentCount={documents.length} />
+      <TabNavigation activeTab={ui.activeTab} onTabChange={handleTabChange} documentCount={documents.length} />
 
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 sm:p-6">
-          {ui.activeTab === "upload" && (
-            <div className="space-y-4">
-              <div className="text-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Upload Documents</h2>
-                <p className="text-gray-600 dark:text-gray-400">Upload your documents for OCR processing and analysis</p>
-              </div>
-              <UploadZone workspaceId={workspaceId} onUploadComplete={documentHandlers.handleUploadComplete} />
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 sm:p-6">
+        {ui.activeTab === "upload" && (
+          <div className="space-y-4">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Upload Documents</h2>
+              <p className="text-gray-600 dark:text-gray-400">Upload your documents for OCR processing and analysis</p>
             </div>
-          )}
+            <UploadZone workspaceId={workspaceId} onUploadComplete={documentHandlers.handleUploadComplete} />
+          </div>
+        )}
 
-          {ui.activeTab === "documents" && (
-            <DocumentTable
-              documents={documents}
-              selectedDocuments={ui.selectedDocuments}
-              onDocumentSelect={documentHandlers.handleDocumentSelect}
-              onDocumentToggle={documentHandlers.handleDocumentToggle}
-              onSelectAll={documentHandlers.handleSelectAll}
-              allSelected={allSelected}
-              someSelected={someSelected}
-              onDocumentDelete={documentHandlers.handleDocumentDelete}
-              onDocumentReprocess={documentHandlers.handleDocumentReprocess}
-              onDocumentDownload={documentHandlers.handleDocumentDownload}
-              onBulkDelete={documentHandlers.handleBulkDelete}
-              onBulkReprocess={documentHandlers.handleBulkReprocess}
-              isLoading={isLoadingDocuments}
-            />
-          )}
-        </div>
+        {ui.activeTab === "documents" && (
+          <DocumentTable
+            documents={documents}
+            selectedDocuments={ui.selectedDocuments}
+            onDocumentSelect={documentHandlers.handleDocumentSelect}
+            onDocumentToggle={documentHandlers.handleDocumentToggle}
+            onSelectAll={documentHandlers.handleSelectAll}
+            allSelected={allSelected}
+            someSelected={someSelected}
+            onDocumentDelete={documentHandlers.handleDocumentDelete}
+            onDocumentReprocess={documentHandlers.handleDocumentReprocess}
+            onDocumentDownload={documentHandlers.handleDocumentDownload}
+            onBulkDelete={documentHandlers.handleBulkDelete}
+            onBulkReprocess={documentHandlers.handleBulkReprocess}
+            isLoading={isLoadingDocuments}
+          />
+        )}
       </div>
     </div>
   );
