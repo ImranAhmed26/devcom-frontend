@@ -23,8 +23,8 @@ const ALLOWED_FILE_TYPES = {
   "image/jpeg": { icon: Image, label: "JPEG" },
   "image/jpg": { icon: Image, label: "JPG" },
   "image/png": { icon: Image, label: "PNG" },
-  "image/tiff": { icon: Image, label: "TIFF" },
-  "image/webp": { icon: Image, label: "WebP" },
+  // "image/tiff": { icon: Image, label: "TIFF" },
+  // "image/webp": { icon: Image, label: "WebP" },
 };
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

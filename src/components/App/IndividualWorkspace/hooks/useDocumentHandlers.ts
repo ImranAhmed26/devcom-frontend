@@ -122,6 +122,28 @@ export function useDocumentHandlers() {
     }
   };
 
+  // Handle bulk export operation
+  const handleBulkExport = () => {
+    if (selectedDocuments.length === 0) return;
+
+    // TODO: Implement bulk export functionality
+    console.log(`Exporting ${selectedDocuments.length} selected documents:`, selectedDocuments);
+
+    // For now, just show an alert
+    alert(`Export functionality will be implemented soon.\nSelected ${selectedDocuments.length} documents for export.`);
+  };
+
+  // Handle export all operation
+  const handleExportAll = () => {
+    if (documents.length === 0) return;
+
+    // TODO: Implement export all functionality
+    console.log(`Exporting all ${documents.length} documents`);
+
+    // For now, just show an alert
+    alert(`Export functionality will be implemented soon.\nWill export all ${documents.length} documents.`);
+  };
+
   return {
     handleDocumentSelect,
     handleDocumentDelete,
@@ -132,5 +154,7 @@ export function useDocumentHandlers() {
     handleSelectAll,
     handleBulkDelete,
     handleBulkReprocess,
+    handleBulkExport,
+    handleExportAll,
   };
 }
