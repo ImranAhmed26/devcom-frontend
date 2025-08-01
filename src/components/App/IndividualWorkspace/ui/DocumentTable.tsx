@@ -302,7 +302,7 @@ export function DocumentTable({
       )}
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-large overflow-hidden">
         {/* Mobile Card View */}
         <div className="block md:hidden">
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
