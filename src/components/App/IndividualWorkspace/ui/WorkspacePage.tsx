@@ -44,9 +44,6 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
 
   // Workspace handlers
   const handleSettingsClick = () => setShowSettings(true);
-  const handleExportAllClick = () => {
-    // TODO: Implement export all functionality
-  };
   const handleTabChange = (tab: "upload" | "documents") => setActiveTab(tab);
 
   // Loading state - only show if no workspace data and no cached data
@@ -94,7 +91,7 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
   return (
     <div key={workspaceId} className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col gap-4 p-4 sm:p-6">
-        <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} onExportAllClick={handleExportAllClick} />
+        <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} />
 
         <TabNavigation activeTab={ui.activeTab} onTabChange={handleTabChange} documentCount={documents.length} />
 
@@ -123,6 +120,8 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
               onDocumentDownload={documentHandlers.handleDocumentDownload}
               onBulkDelete={documentHandlers.handleBulkDelete}
               onBulkReprocess={documentHandlers.handleBulkReprocess}
+              onBulkExport={documentHandlers.handleBulkExport}
+              onExportAll={documentHandlers.handleExportAll}
               isLoading={isLoadingDocuments}
             />
           )}

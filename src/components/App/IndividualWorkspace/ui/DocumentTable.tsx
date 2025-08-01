@@ -33,6 +33,8 @@ interface DocumentTableProps {
   onDocumentDownload: (documentId: string) => void;
   onBulkDelete?: () => void;
   onBulkReprocess?: () => void;
+  onBulkExport?: () => void;
+  onExportAll?: () => void;
   onSort?: (field: string, direction: "asc" | "desc") => void;
   totalCount?: number;
   isLoading?: boolean;
@@ -70,6 +72,8 @@ export function DocumentTable({
   onDocumentDownload,
   onBulkDelete,
   onBulkReprocess,
+  onBulkExport,
+  onExportAll,
   onSort,
   isLoading,
   className = "",
@@ -234,10 +238,23 @@ export function DocumentTable({
           )}
         </div>
 
-        {/* Mobile Sort Indicator */}
-        <div className="block md:hidden">
-          <div className="text-xs text-gray-500 dark:text-gray-400">
-            Sorted by {sortField} ({sortDirection === "asc" ? "ascending" : "descending"})
+        <div className="flex items-center gap-2">
+          {/* Export All Button */}
+          {onExportAll && documents.length > 0 && (
+            <button
+              onClick={onExportAll}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors border border-gray-300 dark:border-gray-600"
+            >
+              <Download className="h-4 w-4" />
+              Export All
+            </button>
+          )}
+
+          {/* Mobile Sort Indicator */}
+          <div className="block md:hidden">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Sorted by {sortField} ({sortDirection === "asc" ? "ascending" : "descending"})
+            </div>
           </div>
         </div>
       </div>
@@ -252,6 +269,15 @@ export function DocumentTable({
               </span>
             </div>
             <div className="flex items-center gap-2">
+              {onBulkExport && (
+                <button
+                  onClick={onBulkExport}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+                >
+                  <Download className="h-4 w-4" />
+                  Export
+                </button>
+              )}
               {onBulkReprocess && (
                 <button
                   onClick={onBulkReprocess}

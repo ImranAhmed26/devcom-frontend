@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { Settings, Download, Users, MoreHorizontal } from "lucide-react";
+import { Settings, Users, MoreHorizontal } from "lucide-react";
 import { useAuth } from "@/lib/auth/authStore";
 import { canManageWorkspaceMembers } from "@/lib/auth/permissions";
 import type { Workspace } from "../types";
@@ -10,10 +10,9 @@ import type { Workspace } from "../types";
 interface WorkspaceHeaderProps {
   workspace: Workspace;
   onSettingsClick?: () => void;
-  onExportAllClick?: () => void;
 }
 
-export function WorkspaceHeader({ workspace, onSettingsClick, onExportAllClick }: WorkspaceHeaderProps) {
+export function WorkspaceHeader({ workspace, onSettingsClick }: WorkspaceHeaderProps) {
   const { user } = useAuth();
   const [showActions, setShowActions] = useState(false);
 
@@ -73,16 +72,6 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onExportAllClick }
               </button>
             )}
 
-            {/* Export All Button */}
-            <button
-              onClick={onExportAllClick}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
-              title="Export all documents"
-            >
-              <Download className="h-4 w-4" />
-              <span className="hidden sm:inline">Export All</span>
-            </button>
-
             {/* Settings Button - Only for owners */}
             {canManageWorkspace && (
               <button
@@ -107,17 +96,6 @@ export function WorkspaceHeader({ workspace, onSettingsClick, onExportAllClick }
               {showActions && (
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                   <div className="py-2">
-                    <button
-                      onClick={() => {
-                        onExportAllClick?.();
-                        setShowActions(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <Download className="h-4 w-4" />
-                      Export All
-                    </button>
-
                     {canManageMembers && (
                       <button
                         onClick={() => {
