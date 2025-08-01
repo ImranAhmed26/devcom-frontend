@@ -30,7 +30,7 @@ export {
 // Components
 export { WorkspacePage } from "./ui/WorkspacePage";
 export { WorkspaceHeader } from "./ui/WorkspaceHeader";
-
+export { WorkspacePageSkeleton } from "./ui/WorkspacePageSkeleton";
 export { DocumentTable } from "./ui/DocumentTable";
 export { UploadZone } from "./ui/UploadZone";
 export { TabNavigation } from "./ui/TabNavigation";
