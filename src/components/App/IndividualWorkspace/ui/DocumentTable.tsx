@@ -180,23 +180,86 @@ export function DocumentTable({
     return (
       <div className={`space-y-4 ${className}`}>
         <div className="animate-pulse">
-          {/* Table header skeleton */}
-          <div className="grid grid-cols-[4rem_1fr_7rem_7rem_5rem_6rem_5rem] gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mb-2">
-            {columns.map((_, index) => (
-              <div key={index} className="h-4 bg-gray-200 dark:bg-gray-600 rounded"></div>
-            ))}
+          {/* Header Skeleton */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-2 mb-4">
+            <div className="flex items-center gap-4">
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32"></div>
+              <div className="flex items-center gap-2">
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+              </div>
+            </div>
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-md w-24"></div>
           </div>
-          {/* Table rows skeleton */}
-          {[...Array(5)].map((_, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-[4rem_1fr_7rem_7rem_5rem_6rem_5rem] gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg"
-            >
-              {columns.map((_, colIndex) => (
-                <div key={colIndex} className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+
+          {/* Table Container Skeleton */}
+          <div className="border border-gray-300 dark:border-gray-700 rounded-large overflow-hidden">
+            {/* Table Header Skeleton */}
+            <div className="hidden md:block">
+              <div className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                <div className="grid grid-cols-[4rem_1fr_7rem_7rem_5rem_6rem_5rem] gap-4 px-6 py-3">
+                  {columns.map((_, index) => (
+                    <div key={index} className="h-4 bg-gray-200 dark:bg-gray-600 rounded"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Table Rows Skeleton */}
+            <div className="divide-y divide-gray-300 dark:divide-gray-700">
+              {[...Array(5)].map((_, index) => (
+                <div key={index}>
+                  {/* Desktop Row */}
+                  <div className="hidden md:block">
+                    <div className="grid grid-cols-[4rem_1fr_7rem_7rem_5rem_6rem_5rem] gap-4 px-6 py-4">
+                      <div className="flex items-center justify-center">
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4"></div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-5"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded flex-1"></div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-md w-16"></div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
+                      </div>
+                      <div className="flex items-center justify-end">
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-10"></div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-8"></div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mobile Card */}
+                  <div className="block md:hidden p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4 mt-1"></div>
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-5 mt-1"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                        <div className="flex items-center gap-2">
+                          <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded-md w-16"></div>
+                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-8"></div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
+                          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
+                        </div>
+                      </div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4"></div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     );
