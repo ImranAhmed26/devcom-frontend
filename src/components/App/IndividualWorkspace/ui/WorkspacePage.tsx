@@ -90,10 +90,10 @@ export function WorkspacePage({ workspaceId }: WorkspacePageProps) {
 
   return (
     <div key={workspaceId} className="min-h-screen">
-      <div className="flex flex-col gap-4 p-4 sm:p-6">
+      <div className="flex flex-col gap-4">
         <WorkspaceHeader workspace={workspace} onSettingsClick={handleSettingsClick} />
 
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl">
+        <div className="border border-gray-300 dark:border-gray-700 rounded-xl">
           <TabNavigation activeTab={ui.activeTab} onTabChange={handleTabChange} documentCount={documents.length} />
           <div className="p-2">
             {ui.activeTab === "upload" && (

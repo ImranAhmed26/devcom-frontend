@@ -217,7 +217,7 @@ export function DocumentTable({
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-2">
         <div className="flex items-center gap-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Documents ({documents.length})</h2>
           {documents.length > 0 && (
@@ -302,7 +302,7 @@ export function DocumentTable({
       )}
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-large overflow-hidden">
+      <div className="border border-gray-300 dark:border-gray-700 rounded-large overflow-hidden">
         {/* Mobile Card View */}
         <div className="block md:hidden">
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -495,8 +495,8 @@ export function DocumentTable({
           </div>
 
           {/* Table Body */}
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {documents.map((document, index) => {
+          <div className="divide-y divide-gray-300 dark:divide-gray-700">
+            {documents.map((document) => {
               const FileIcon = getFileIcon(document.mimeType);
               const statusDisplay = getStatusDisplay(document.status);
               const StatusIcon = statusDisplay.icon;
@@ -507,13 +507,7 @@ export function DocumentTable({
                   key={document.id}
                   className={`
                   grid grid-cols-7 gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors
-                  ${
-                    isSelected
-                      ? "bg-indigo-50 dark:bg-indigo-900/20"
-                      : index % 2 === 0
-                      ? "bg-white dark:bg-gray-800"
-                      : "bg-gray-50/50 dark:bg-gray-700/20"
-                  }
+                  ${isSelected ? "bg-indigo-50 dark:bg-indigo-900/20" : ""}
                 `}
                 >
                   {/* Selection */}
