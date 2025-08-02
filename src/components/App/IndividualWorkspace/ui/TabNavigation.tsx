@@ -56,7 +56,7 @@ export function TabNavigation({ activeTab, onTabChange, uploadCount, documentCou
                   inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full min-w-[20px]
                   ${
                     isActive
-                      ? "bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-300"
+                      ? "bg-indigo-100 dark:bg-brandDark text-indigo-700 dark:text-gray-900"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
                   }
                 `}
